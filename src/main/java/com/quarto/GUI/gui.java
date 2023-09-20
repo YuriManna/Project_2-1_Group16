@@ -7,15 +7,19 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-class gui {
+class gui extends JFrame{
 
     JFrame frameObj;    
     JPanel pieces;
+    JPanel board;
+    JPanel full;
 // constructor  
 gui()  
 {    
 frameObj = new JFrame();    
+full = new JPanel();
 pieces = new JPanel ();
+board=new JPanel();
 DragListener drag = new DragListener();
 // creating 9 buttons  
 
@@ -35,7 +39,6 @@ JButton btn13 = new JButton("4,1");
 JButton btn14 = new JButton("4,2");    
 JButton btn15 = new JButton("4,3");    
 JButton btn16 = new JButton("4,4"); 
-JButton btn17 = new JButton("blabla"); 
 
 btn1.addMouseListener(drag);
 btn1.addMouseMotionListener(drag);
@@ -47,10 +50,11 @@ pieces.add(btn1); pieces.add(btn2); pieces.add(btn3);
 pieces.add(btn4); pieces.add(btn5); pieces.add(btn6); pieces.add(btn7); pieces.add(btn8);
 pieces.add(btn9); pieces.add(btn10);pieces.add(btn11);pieces.add(btn12);pieces.add(btn13);pieces.add(btn14);pieces.add(btn15);pieces.add(btn16);
 pieces.setLayout(new GridLayout(8, 2));    
-frameObj.setLayout(new GridLayout());
-frameObj.add(pieces);
-frameObj.add(btn17);
-frameObj.setSize(500, 500);    
+full.setLayout(new GridLayout());
+full.add(board);
+full.add(pieces);
+frameObj.add(full);
+frameObj.setSize(1000, 1000);    
 frameObj.setVisible(true);    
 }  
 
