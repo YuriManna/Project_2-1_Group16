@@ -12,6 +12,26 @@ public class Move {
         this.piece = piece;
         this.board = board;
     }
+    public void select(Pieces piece,int row, int column){
+        if (isValid(row,column)){
+            board.getBoard()[row][column] = piece;
+            piece.setRow(row);
+            piece.setColumn(column);
+            if (piece.isColor()==true){
+                for (int i = 0; i < board.getAvailableBlacks().length; i++) {
+                    if (board.getAvailableBlacks()[i] == piece){
+                        board.getAvailableBlacks()[i] = null;
+                    }
+                }
+            }else {
+                for (int i = 0; i < board.getAvailableWhites().length; i++) {
+                    if (board.getAvailableWhites()[i] == piece){
+                        board.getAvailableWhites()[i] = null;
+                    }
+                }
+            }
+        }
+    }
 
     public boolean isValid(int row, int column) {
         if (board.getBoard()[row][column] == null)

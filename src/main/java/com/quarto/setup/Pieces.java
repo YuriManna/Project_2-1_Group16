@@ -30,4 +30,12 @@ private int row;
     public void setRow(int row) {
         this.row = row;
     }
+
+    public boolean isColor() {
+        return Color;
+    }
+
+    public void setColor(boolean color) {
+        Color = color;
+    }
 }
