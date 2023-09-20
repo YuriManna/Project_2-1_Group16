@@ -14,4 +14,16 @@ public class Board {
         // Fourth letter Hole(T) or Full(F)
         Pieces WSSH = new Pieces(true, true, true ,true);
     }
+
+    public Pieces[][] getBoard() {
+        return Board;
+    }
+
+    public Pieces[] getAvailableWhites() {
+        return availableWhites;
+    }
+
+    public Pieces[] getAvailableBlacks() {
+        return availableBlacks;
+    }
 }
