@@ -1,17 +1,16 @@
 package com.quarto;
 
-import com.quarto.GUI.Table;
 import com.quarto.setup.Board;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.io.IOException;
 
 //@SpringBootApplication
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //SpringApplication.run(App.class, args);
 
         Board board = new Board();
-        Table table = new Table();
+
     }
 }
