@@ -6,10 +6,10 @@ private boolean Height;
 private boolean Hole;
 private boolean Shape;
 
-    public Pieces(boolean color, boolean height, boolean hole, boolean shape) {
+    public Pieces(boolean color, boolean height, boolean shape, boolean hole) {
         Color = color;
         Height = height;
-        Hole = hole;
         Shape = shape;
+        Hole = hole;
     }
 }
