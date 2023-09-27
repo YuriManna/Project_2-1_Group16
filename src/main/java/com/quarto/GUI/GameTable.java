@@ -20,10 +20,10 @@ public class GameTable {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
-    private static Dimension GAME_FRAME_DIMENSION = new Dimension(800,600);
-    private static Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
+    private static Dimension GAME_FRAME_DIMENSION = new Dimension(1100,750);
+    private static Dimension BOARD_PANEL_DIMENSION = new Dimension(700,700);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
-    private static Dimension SIDE_PANEL_DIMENSION = new Dimension(200,200);
+    private static Dimension SIDE_PANEL_DIMENSION = new Dimension(450,400);
     //main game frame
     public GameTable() throws IOException {
         this.board = new Board();
@@ -38,12 +38,13 @@ public class GameTable {
 
         this.boardPanel = new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
-        //this.boardPanel.setVisible(false);
+        this.boardPanel.setVisible(true);
 
         this.sidePanel = new SidePanel();
         this.gameFrame.add(this.sidePanel, BorderLayout.EAST);
 
         this.gameFrame.setLocationRelativeTo(null);
+        //this.gameFrame.setResizable(false);
         this.gameFrame.setVisible(true);
     }
     private void populateMenuBar(final JMenuBar tableMenuBar){
@@ -64,19 +65,28 @@ public class GameTable {
     //panel for the board of the game
     private class BoardPanel extends JPanel{
         final List<TilePanel> boardTiles;
-
+        Image im= ImageIO.read(getClass().getResource("/images/QuartoBoard.png"));
         BoardPanel() throws IOException {
             super(new GridLayout(4,4));
             this.boardTiles = new ArrayList<>();
+            //final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/QuartoBoard.png"));
+            //add(new JLabel(new ImageIcon(pieceImage)));
             for (int i = 0; i < 16; i++){
                 final TilePanel tilePanel = new TilePanel(this, i);
                 this.boardTiles.add(tilePanel);
                 add(tilePanel);
             }
             setPreferredSize(BOARD_PANEL_DIMENSION);
+            
             this.setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
-            validate();
 
+            validate();
+        }
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(im, 0, 0, getWidth(), getHeight(), this);
+        
         }
     }
     //panel for the tiles inside the board
@@ -88,8 +98,12 @@ public class GameTable {
             setPreferredSize(TILE_PANEL_DIMENSION);
             setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
             setBackground(Color.decode("#FFFACD"));
-            validate();
+            validate();            
+            setVisible(true);
+
         }
+        
+    
     }
         private void assignTilePieceIcon(final Board board,final TilePanel tilePanel, final int tileId, Pieces piece) throws IOException {
             tilePanel.removeAll();
@@ -135,7 +149,11 @@ public class GameTable {
             if(teamColor){color = Color.WHITE;
             }else{color = Color.GRAY;}
             setBackground(color);
+            //Pieces piece = board.getAvailableWhites().get(tileId);
+            //final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
+            //add(new JLabel(new ImageIcon(pieceImage)));
             assignTilePieceIcon(board, tileId,teamColor);
+
             validate();
         }
         private void assignTilePieceIcon(final Board board, final int tileId, boolean teamColor) throws IOException {
@@ -147,7 +165,6 @@ public class GameTable {
                 piece = board.getAvailableBlacks().get(tileId);
             }
             String url = "/images/"+piece.toString()+".png";
-
             try (InputStream inputStream = getClass().getResourceAsStream(url)) {
                 if (inputStream != null) {
                     final BufferedImage pieceImage = ImageIO.read(inputStream);
