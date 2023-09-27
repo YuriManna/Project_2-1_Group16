@@ -44,6 +44,7 @@ public class GameTable {
         this.gameFrame.add(this.sidePanel, BorderLayout.EAST);
 
         this.gameFrame.setLocationRelativeTo(null);
+        this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.gameFrame.setResizable(false);
         this.gameFrame.setVisible(true);
     }
