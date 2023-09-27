@@ -23,7 +23,7 @@ public class GameTable {
     private static Dimension GAME_FRAME_DIMENSION = new Dimension(1100,750);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(700,700);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
-    private static Dimension SIDE_PANEL_DIMENSION = new Dimension(450,400);
+    private static Dimension SIDE_PANEL_DIMENSION = new Dimension(700,700);
     //main game frame
     public GameTable() throws IOException {
         this.board = new Board();
@@ -99,6 +99,7 @@ public class GameTable {
             setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
             setBackground(Color.decode("#FFFACD"));
             validate();            
+            setOpaque(false);
             setVisible(true);
 
         }
@@ -153,7 +154,7 @@ public class GameTable {
             //final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
             //add(new JLabel(new ImageIcon(pieceImage)));
             assignTilePieceIcon(board, tileId,teamColor);
-
+            setVisible(false);
             validate();
         }
         private void assignTilePieceIcon(final Board board, final int tileId, boolean teamColor) throws IOException {
