@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
+
     private final int ROWS = 4;
     private final int COLS = 4;
     private final Pieces[][] board = new Pieces[ROWS][COLS];
@@ -59,4 +60,26 @@ public class Board {
     public Pieces[][] getBoard() {
         return board;
     }
+
+    public boolean tileIsOccupied(int tileId){
+        int tile = 0;
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                if(tile == tileId){
+                    return board[i][j] != null;
+                }
+                tile++;
+            }
+        }
+        return false;
+    }
+    public static void main(String[] args) {
+        Board board = new Board();
+        Pieces WSSH = new Pieces(true,true,true,true);
+        System.out.println(WSSH);
+        board.getBoard()[3][3] = WSSH;
+        System.out.println(board.tileIsOccupied(15));
+    }
 }
+
+
