@@ -7,12 +7,16 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 
 public class GameTable {
@@ -20,6 +24,8 @@ public class GameTable {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
+    private Pieces selectedPiece;
+
     private static Dimension GAME_FRAME_DIMENSION = new Dimension(1200,600);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,600);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
@@ -70,8 +76,6 @@ public class GameTable {
         BoardPanel() throws IOException {
             super(new GridLayout(4,4));
             this.boardTiles = new ArrayList<>();
-            //final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/QuartoBoard.png"));
-            //add(new JLabel(new ImageIcon(pieceImage)));
             for (int i = 0; i < 16; i++){
                 final TilePanel tilePanel = new TilePanel(this, i);
                 this.boardTiles.add(tilePanel);
@@ -97,24 +101,55 @@ public class GameTable {
             super(new GridBagLayout());
             this.tileId = tileId;
             setPreferredSize(TILE_PANEL_DIMENSION);
-            setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
+            //setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
             setBackground(Color.decode("#FFFACD"));
-            validate();            
-            setOpaque(false);
             setVisible(true);
+            setOpaque(false);
 
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+
+                    if(isLeftMouseButton(e)){
+                        if(selectedPiece == null){return;}
+                        board.addPiece(selectedPiece, tileId);
+                        board.removePiece(selectedPiece);
+
+                        try {
+                            assignTilePieceIcon(board, tileId, selectedPiece);
+                            sidePanel.reloadTiles();
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        System.out.println(board);
+                        selectedPiece = null;
+                    }
+                }
+
+                @Override
+                public void mousePressed(final MouseEvent e) {}
+                @Override
+                public void mouseReleased(final MouseEvent e) {}
+                @Override
+                public void mouseEntered(final MouseEvent e) {}
+                @Override
+                public void mouseExited(final MouseEvent e) {}
+            });
+
+            validate();
         }
         
     
-    }
-        private void assignTilePieceIcon(final Board board,final TilePanel tilePanel, final int tileId, Pieces piece) throws IOException {
-            tilePanel.removeAll();
+        private void assignTilePieceIcon(final Board board, final int tileId, Pieces piece) throws IOException {
+            this.removeAll();
+            if(piece == null){return;}
             if(board.tileIsOccupied(tileId)){
                 final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
-                tilePanel.add(new JLabel(new ImageIcon(pieceImage)));
+                this.add(new JLabel(new ImageIcon(pieceImage)));
             }
 
         }
+    }
     //panel for the unplaced pieces
     private class SidePanel extends JPanel{
         final List<SideTilePanel> whites;
@@ -138,6 +173,14 @@ public class GameTable {
             setPreferredSize(SIDE_PANEL_DIMENSION);
             validate();
         }
+        public void reloadTiles() throws IOException {
+            for(int i = 0; i < 8; i++){
+                whites.get(i).assignTilePieceIcon(board,i,true);
+                whites.get(i).setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
+                blacks.get(i).assignTilePieceIcon(board,i,false);
+                blacks.get(i).setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
+            }
+        }
     }
     //panel for tiles in the side board
     private class SideTilePanel extends JPanel{
@@ -151,10 +194,61 @@ public class GameTable {
             if(teamColor){color = Color.WHITE;
             }else{color = Color.GRAY;}
             setBackground(color);
-            //Pieces piece = board.getAvailableWhites().get(tileId);
-            //final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
-            //add(new JLabel(new ImageIcon(pieceImage)));
             assignTilePieceIcon(board, tileId,teamColor);
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+
+                    if(isRightMouseButton(e)){
+                        selectedPiece = null;
+                        try {
+                            sidePanel.reloadTiles();
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }else if(isLeftMouseButton(e)){
+                        Pieces piece;
+                        if(selectedPiece != null){
+                            if (teamColor) {
+                                piece = board.getAvailableWhites()[tileId];
+                            }else {
+                                piece = board.getAvailableBlacks()[tileId];
+                            }
+                            if(selectedPiece == piece) {
+                                selectedPiece = null;
+                                setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
+                            }
+                            return;
+                        }
+                        try {
+                            sidePanel.reloadTiles();
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        setBorder(new MatteBorder(2, 2, 2, 2, Color.red));
+                        if (teamColor) {
+                            piece = board.getAvailableWhites()[tileId];
+                        }else {
+                            piece = board.getAvailableBlacks()[tileId];
+                        }
+                        if (piece != null){
+                            selectedPiece = piece;
+                        }
+
+                        System.out.println("selected piece: " + selectedPiece);
+
+                    }
+                }
+
+                @Override
+                public void mousePressed(final MouseEvent e) {}
+                @Override
+                public void mouseReleased(final MouseEvent e) {}
+                @Override
+                public void mouseEntered(final MouseEvent e) {}
+                @Override
+                public void mouseExited(final MouseEvent e) {}
+            });
             setVisible(true);
             validate();
         }
@@ -162,10 +256,11 @@ public class GameTable {
             this.removeAll();
             Pieces piece;
             if (teamColor) {
-                piece = board.getAvailableWhites().get(tileId);
+                piece = board.getAvailableWhites()[tileId];
             }else {
-                piece = board.getAvailableBlacks().get(tileId);
+                piece = board.getAvailableBlacks()[tileId];
             }
+            if(piece == null){return;}
             String url = "/images/"+piece.toString()+".png";
             try (InputStream inputStream = getClass().getResourceAsStream(url)) {
                 if (inputStream != null) {

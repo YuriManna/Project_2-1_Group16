@@ -1,6 +1,7 @@
 package com.quarto.setup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -8,8 +9,8 @@ public class Board {
     private final int ROWS = 4;
     private final int COLS = 4;
     private final Pieces[][] board = new Pieces[ROWS][COLS];
-    private final ArrayList<Pieces> availableWhites = new ArrayList<>();
-    private final ArrayList<Pieces> availableBlacks = new ArrayList<>();
+    private final Pieces[] availableWhites;
+    private final Pieces[] availableBlacks;
 
     /**
      * constructs our board with all the pieces
@@ -27,7 +28,8 @@ public class Board {
         Pieces WBSF = new Pieces(true,false,true,false);
         Pieces WBCH = new Pieces(true,false,false,true);
         Pieces WBCF = new Pieces(true,false,false,false);
-        availableWhites.addAll(List.of(WSSH, WSSF, WSCH, WSCF, WBSH, WBSF, WBCH, WBCF));
+        ArrayList<Pieces> whitesList = new ArrayList<>(List.of(WSSH, WSSF, WSCH, WSCF, WBSH, WBSF, WBCH, WBCF));
+        availableWhites = whitesList.toArray(new Pieces[8]);
         Pieces BSSH = new Pieces(false,true,true,true);
         Pieces BSSF = new Pieces(false,true,true,false);
         Pieces BSCH = new Pieces(false,true,false,true);
@@ -36,20 +38,21 @@ public class Board {
         Pieces BBSF = new Pieces(false,false,true,false);
         Pieces BBCH = new Pieces(false,false,false,true);
         Pieces BBCF = new Pieces(false,false,false,false);
-        availableBlacks.addAll(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
+        ArrayList<Pieces> blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
+        availableBlacks = blacksList.toArray(new Pieces[8]);
     }
     /**
      * returns the arraylist containing the available whites
      * @return
      */
-    public ArrayList<Pieces> getAvailableWhites() {
+    public Pieces[] getAvailableWhites() {
         return availableWhites;
     }
     /**
      * returns the arraylist containing the available blacks
      * @return
      */
-    public ArrayList<Pieces> getAvailableBlacks() {
+    public Pieces[] getAvailableBlacks() {
         return availableBlacks;
     }
 
@@ -59,6 +62,40 @@ public class Board {
      */
     public Pieces[][] getBoard() {
         return board;
+    }
+
+    @Override
+    public String toString() {
+        String str = "\n";
+        for (Pieces[] row : board) {
+            str = str + "|";
+            for (Pieces p : row) {
+                if (p != null) {
+                    str = str + p.toString() + "|";
+                }else{
+                    str = str + "    |";
+                }
+            }
+            str = str + "\n";
+        }
+        str = str + "whites: ";
+        for(Pieces p : availableWhites){
+            if (p != null) {
+                str = str + p.toString() + "|";
+            }else{
+                str = str + "    |";
+            }
+        }
+        str = str + "\n" + "blacks: ";
+        for(Pieces p : availableBlacks){
+            if (p != null) {
+                str = str + p.toString() + "|";
+            }else{
+                str = str + "    |";
+            }
+        }
+        str = str + "\n";
+        return str;
     }
 
     public boolean tileIsOccupied(int tileId){
@@ -73,12 +110,27 @@ public class Board {
         }
         return false;
     }
-    public static void main(String[] args) {
-        Board board = new Board();
-        Pieces WSSH = new Pieces(true,true,true,true);
-        System.out.println(WSSH);
-        board.getBoard()[3][3] = WSSH;
-        System.out.println(board.tileIsOccupied(15));
+    public void addPiece(Pieces piece, int tileId){
+        int tile = 0;
+        for(int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (tile == tileId) {
+                    board[i][j] = piece;
+                }
+                tile++;
+            }
+        }
+    }
+
+    public void removePiece(Pieces Piece) {
+        for(int i = 0; i < 8; i++){
+            if(availableWhites[i] == Piece){
+                availableWhites[i] = null;
+            }
+            if(availableBlacks[i] == Piece){
+                availableBlacks[i] = null;
+            }
+        }
     }
 }
 

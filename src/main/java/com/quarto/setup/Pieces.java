@@ -13,6 +13,22 @@ private boolean Hole;
         Hole = hole;
     }
 
+    public boolean getColor() {
+        return Color;
+    }
+
+    public boolean getHeight() {
+        return Height;
+    }
+
+    public boolean getShape() {
+        return Shape;
+    }
+
+    public boolean getHole() {
+        return Hole;
+    }
+
     @Override
     public String toString() {
         char C,He,S,Ho;
