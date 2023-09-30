@@ -27,7 +27,7 @@ public class GameTable {
     private Pieces selectedPiece;
 
     private static Dimension GAME_FRAME_DIMENSION = new Dimension(1200,600);
-    private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,600);
+    private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);
     //main game frame
@@ -42,8 +42,13 @@ public class GameTable {
         populateMenuBar(tableMenuBar);
         this.gameFrame.setJMenuBar(tableMenuBar);
 
+        JPanel borderPanel = new JPanel();
+        borderPanel.setLayout(new BorderLayout());
+        borderPanel.setBorder(new MatteBorder(7, 7, 7, 7, new Color(165, 42, 42)));
+        this.gameFrame.add(borderPanel, BorderLayout.CENTER);
+
         this.boardPanel = new BoardPanel();
-        this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
+        borderPanel.add(this.boardPanel, BorderLayout.CENTER);
         this.boardPanel.setVisible(true);
 
         this.sidePanel = new SidePanel();
@@ -69,6 +74,7 @@ public class GameTable {
         fileMenu.add(exitMenuItem);
         return fileMenu;
     }
+
     //panel for the board of the game
     private class BoardPanel extends JPanel{
         final List<TilePanel> boardTiles;
@@ -83,8 +89,8 @@ public class GameTable {
             }
             setPreferredSize(BOARD_PANEL_DIMENSION);
             
-            this.setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
-
+            //this.setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
+            this.setBackground(new Color(165, 42, 42));
             validate();
         }
         @Override
@@ -169,7 +175,7 @@ public class GameTable {
                 this.blacks.add(sideTilePanel);
                 add(sideTilePanel);
             }
-
+            setBorder(new MatteBorder(40, 40, 40, 40, new Color(165, 42, 42)));
             setPreferredSize(SIDE_PANEL_DIMENSION);
             validate();
         }
@@ -191,8 +197,8 @@ public class GameTable {
             setPreferredSize(TILE_PANEL_DIMENSION);
             setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
             Color color;
-            if(teamColor){color = Color.WHITE;
-            }else{color = Color.GRAY;}
+            if(teamColor){color = new Color(120, 63, 4);
+            }else{color = new Color(245, 245, 220);}
             setBackground(color);
             assignTilePieceIcon(board, tileId,teamColor);
             addMouseListener(new MouseListener() {
@@ -200,6 +206,7 @@ public class GameTable {
                 public void mouseClicked(final MouseEvent e) {
 
                     if(isRightMouseButton(e)){
+                        if(selectedPiece == null){return;}
                         selectedPiece = null;
                         try {
                             sidePanel.reloadTiles();
@@ -225,7 +232,7 @@ public class GameTable {
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        setBorder(new MatteBorder(2, 2, 2, 2, Color.red));
+                        setBorder(new MatteBorder(3, 3, 3, 3, new Color(206, 32, 41)));
                         if (teamColor) {
                             piece = board.getAvailableWhites()[tileId];
                         }else {
