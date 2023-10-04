@@ -132,6 +132,18 @@ public class Board {
             }
         }
     }
+
+    public Pieces[][] getBoard() {
+        return Board;
+    }
+
+    public Pieces[] getAvailableWhites() {
+        return availableWhites;
+    }
+
+    public Pieces[] getAvailableBlacks() {
+        return availableBlacks;
+    }
 }
 
 
