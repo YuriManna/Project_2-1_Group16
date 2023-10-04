@@ -24,12 +24,21 @@ public class GameTable {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
+
+    private final JLabel turnLabel;
+
+    private final JPanel textPanel;
+
     private Pieces selectedPiece;
 
-    private static Dimension GAME_FRAME_DIMENSION = new Dimension(1200,600);
+    private static Dimension GAME_FRAME_DIMENSION = new Dimension(1250,650);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);
+
+    private static Dimension TURN_LABEL_DIMENSION = new Dimension(100,20);
+
+    private static int turnCounter = 1;
     //main game frame
     public GameTable() throws IOException {
         this.board = new Board();
@@ -54,6 +63,14 @@ public class GameTable {
         this.sidePanel = new SidePanel();
         this.gameFrame.add(this.sidePanel, BorderLayout.EAST);
 
+        this.textPanel = new JPanel();
+        this.textPanel.setSize(TURN_LABEL_DIMENSION);
+        this.textPanel.setBackground(new Color(227, 215, 183));
+        this.turnLabel = new JLabel("Player 1 starts the game! Choose a white piece");
+        this.turnLabel.setSize(TURN_LABEL_DIMENSION);
+        this.textPanel.add(this.turnLabel);
+        this.gameFrame.add(textPanel, BorderLayout.NORTH);
+
         this.gameFrame.setLocationRelativeTo(null);
         this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.gameFrame.setResizable(false);
@@ -64,14 +81,19 @@ public class GameTable {
     }
 
     private JMenu createFileMenu() {
-        final JMenu fileMenu = new JMenu("options");
-        final JMenuItem openPGN = new JMenuItem("load game");
+        final JMenu fileMenu = new JMenu("Options");
+        final JMenuItem openPGN = new JMenuItem("Load game");
         openPGN.addActionListener(e -> System.out.println("need a pgn file"));
         fileMenu.add(openPGN);
 
-        final JMenuItem exitMenuItem = new JMenuItem("exit");
+        final JMenuItem hideHelp = new JMenuItem("Hide help bar");
+        hideHelp.addActionListener(e -> textPanel.setVisible(false));
+        fileMenu.add(hideHelp);
+
+        final JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(e -> System.exit(0));
         fileMenu.add(exitMenuItem);
+
         return fileMenu;
     }
 
@@ -123,12 +145,23 @@ public class GameTable {
 
                         try {
                             assignTilePieceIcon(board, tileId, selectedPiece);
+
                             sidePanel.reloadTiles();
+                            //turnCounter++;
+                            if(turnCounter%2==0){
+                                turnLabel.setText("Player 2 chooses the opponent's piece");
+
+                            } else {
+                                turnLabel.setText("Player 1 chooses the opponent's piece");
+
+                            }
+
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                         System.out.println(board);
                         selectedPiece = null;
+                        turnCounter++;
                     }
                 }
 
@@ -152,6 +185,7 @@ public class GameTable {
             if(board.tileIsOccupied(tileId)){
                 final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
                 this.add(new JLabel(new ImageIcon(pieceImage)));
+
             }
 
         }
@@ -240,6 +274,21 @@ public class GameTable {
                         }
                         if (piece != null){
                             selectedPiece = piece;
+                            if(turnCounter%2==0){
+                                turnLabel.setText("Player 2 places the selected piece");
+                                if(selectedPiece.toString().charAt(0)!='B'){
+                                    selectedPiece = null;
+                                    turnLabel.setText("Wrong colour!");
+                                }
+
+                            } else {
+                                turnLabel.setText("Player 1 places the selected piece");
+                                if(selectedPiece.toString().charAt(0)!='W'){
+                                    selectedPiece = null;
+                                    turnLabel.setText("Wrong colour!");
+                                }
+                            }
+
                         }
 
                         System.out.println("selected piece: " + selectedPiece);
