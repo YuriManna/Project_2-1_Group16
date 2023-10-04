@@ -69,6 +69,9 @@ public class GameTable {
         openPGN.addActionListener(e -> System.out.println("need a pgn file"));
         fileMenu.add(openPGN);
 
+        final JMenuItem savePGN = new JMenuItem("save game");
+        savePGN.addActionListener(e -> new SaveLoad(board).save());
+
         final JMenuItem exitMenuItem = new JMenuItem("exit");
         exitMenuItem.addActionListener(e -> System.exit(0));
         fileMenu.add(exitMenuItem);
