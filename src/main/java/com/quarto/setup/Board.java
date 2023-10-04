@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Board {
+public class Board implements java.io.Serializable{
 
     private final int ROWS = 4;
     private final int COLS = 4;
-    private final Pieces[][] board = new Pieces[ROWS][COLS];
-    private final Pieces[] availableWhites;
-    private final Pieces[] availableBlacks;
+    private  Pieces[][] board = new Pieces[ROWS][COLS];
+    private  Pieces[] availableWhites;
+    private Pieces[] availableBlacks;
 
     /**
      * constructs our board with all the pieces
@@ -116,6 +116,8 @@ public class Board {
             for (int j = 0; j < 4; j++) {
                 if (tile == tileId) {
                     board[i][j] = piece;
+                    piece.setRow(i);
+                    piece.setCol(j);
                 }
                 tile++;
             }
@@ -131,6 +133,16 @@ public class Board {
                 availableBlacks[i] = null;
             }
         }
+    }
+    public void setAvailableBlacks(Pieces[] availableBlacks) {
+        this.availableBlacks = availableBlacks;
+    }
+    public void setAvailableWhites(Pieces[] availableWhites) {
+        this.availableWhites = availableWhites;
+    }
+
+    public void setBoard(Pieces[][] board) {
+        this.board = board;
     }
 }
 

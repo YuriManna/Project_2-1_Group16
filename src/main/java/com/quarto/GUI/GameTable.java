@@ -1,5 +1,7 @@
 package com.quarto.GUI;
 
+import com.quarto.data.Load;
+import com.quarto.data.Save;
 import com.quarto.setup.Board;
 import com.quarto.setup.Pieces;
 
@@ -20,7 +22,7 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 
 
 public class GameTable {
-    private final Board board;
+    private  Board board;
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
@@ -66,11 +68,14 @@ public class GameTable {
     private JMenu createFileMenu() {
         final JMenu fileMenu = new JMenu("options");
         final JMenuItem openPGN = new JMenuItem("load game");
-        openPGN.addActionListener(e -> System.out.println("need a pgn file"));
+        openPGN.addActionListener(e -> {board=new Load().load();
+                }
+        );
         fileMenu.add(openPGN);
 
         final JMenuItem savePGN = new JMenuItem("save game");
-        savePGN.addActionListener(e -> new SaveLoad(board).save());
+        savePGN.addActionListener(e -> new Save(board).save());
+        fileMenu.add(savePGN);
 
         final JMenuItem exitMenuItem = new JMenuItem("exit");
         exitMenuItem.addActionListener(e -> System.exit(0));
