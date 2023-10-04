@@ -145,16 +145,8 @@ public class GameTable {
 
                         try {
                             assignTilePieceIcon(board, tileId, selectedPiece);
-
                             sidePanel.reloadTiles();
-                            //turnCounter++;
-                            if(turnCounter%2==0){
-                                turnLabel.setText("Player 2 chooses the opponent's piece");
-
-                            } else {
-                                turnLabel.setText("Player 1 chooses the opponent's piece");
-
-                            }
+                            updateTurn(turnCounter);
 
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
@@ -273,26 +265,10 @@ public class GameTable {
                             piece = board.getAvailableBlacks()[tileId];
                         }
                         if (piece != null){
-                            selectedPiece = piece;
-                            if(turnCounter%2==0){
-                                turnLabel.setText("Player 2 places the selected piece");
-                                if(selectedPiece.toString().charAt(0)!='B'){
-                                    selectedPiece = null;
-                                    turnLabel.setText("Wrong colour!");
-                                }
-
-                            } else {
-                                turnLabel.setText("Player 1 places the selected piece");
-                                if(selectedPiece.toString().charAt(0)!='W'){
-                                    selectedPiece = null;
-                                    turnLabel.setText("Wrong colour!");
-                                }
-                            }
-
+                            selectedPiece = checkSelectedPieceColour(piece);
                         }
 
                         System.out.println("selected piece: " + selectedPiece);
-
                     }
                 }
 
@@ -328,6 +304,34 @@ public class GameTable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    private Pieces checkSelectedPieceColour(Pieces piece){
+        selectedPiece = piece;
+        if(turnCounter%2==0){
+            turnLabel.setText("Player 2 places the selected piece");
+            if(selectedPiece.toString().charAt(0)!='B'){
+                selectedPiece = null;
+                turnLabel.setText("Wrong colour!");
+            }
+
+        } else {
+            turnLabel.setText("Player 1 places the selected piece");
+            if(selectedPiece.toString().charAt(0)!='W'){
+                selectedPiece = null;
+                turnLabel.setText("Wrong colour!");
+            }
+        }
+        return selectedPiece;
+    }
+
+    private void updateTurn(int turnCounter){
+        if(turnCounter%2==0){
+            turnLabel.setText("Player 2 chooses the opponent's piece");
+
+        } else {
+            turnLabel.setText("Player 1 chooses the opponent's piece");
+
         }
     }
 }
