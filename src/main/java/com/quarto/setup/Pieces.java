@@ -7,12 +7,14 @@ private boolean Shape;
 private boolean Hole;
 private int column;
 private int row;
+public boolean[] Properties;
 
     public Pieces(boolean color, boolean height, boolean shape, boolean hole) {
         Color = color;
         Height = height;
         Shape = shape;
         Hole = hole;
+        Properties= new boolean[]{color, height, shape, hole};
     }
 
     public boolean getColor() {
@@ -68,4 +70,5 @@ private int row;
     public void setColor(boolean color) {
         Color = color;
     }
+
 }

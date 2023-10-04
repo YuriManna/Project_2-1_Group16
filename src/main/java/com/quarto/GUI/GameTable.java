@@ -31,7 +31,7 @@ public class GameTable {
 
     private Pieces selectedPiece;
 
-    private static Dimension GAME_FRAME_DIMENSION = new Dimension(1250,650);
+    private static Dimension GAME_FRAME_DIMENSION = new Dimension(1200,650);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);

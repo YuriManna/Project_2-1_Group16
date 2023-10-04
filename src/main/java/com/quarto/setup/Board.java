@@ -1,5 +1,6 @@
 package com.quarto.setup;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +64,7 @@ public class Board {
     public Pieces[][] getBoard() {
         return board;
     }
+
 
     @Override
     public String toString() {
@@ -133,6 +135,85 @@ public class Board {
         }
     }
 
+    public boolean checkIfWon(int x, int y){
+        /**
+         * 1. check vertically and horizontally
+         *      lock one of the coordinates and loop through the other
+         * 2. if possible check diagonally
+         *      2.1 if x and y match check downwards diagonal
+         *      2.2 if x+y=3 check upwards diagonal
+         */
+        boolean[] chechkingArray= new boolean[4];
+        Pieces referencePiece= getPieceFromBoard(x,y);
+
+        //Horizontal check
+        for (int i = 0; i < board.length; i++) {
+            if(i==y){break;}
+            if(board[x][i]==null){break;}
+            for (int j = 0; j <referencePiece.Properties.length; j++) {
+                if(referencePiece.Properties[j]==getPieceFromBoard(x,i).Properties[j]){
+                    chechkingArray[j]=true;
+                }
+            }
+        }
+        for (int j = 0; j <chechkingArray.length; j++) {
+            if(chechkingArray[j]==true){return true;}
+        }
+
+        //Vertical check
+        for (int i = 0; i < board.length; i++) {
+            if(i==y){break;}
+            if(board[i][y]==null){break;}
+            for (int j = 0; j <referencePiece.Properties.length; j++) {
+                if(referencePiece.Properties[j]==getPieceFromBoard(i,y).Properties[j]){
+                    chechkingArray[j]=true;
+                }
+            }
+        }
+        for (int j = 0; j <chechkingArray.length; j++) {
+            if(chechkingArray[j]==true){return true;}
+        }
+        //diagonal check(downwards)
+        if(x==y){
+            for (int i = 0; i <board.length ; i++) {
+                if (i == y) {break;}
+                if (board[i][y] == null) {break;}
+                for (int j = 0; j <referencePiece.Properties.length ; j++) {
+                    if(referencePiece.Properties[j]==getPieceFromBoard(i,i).Properties[j]){
+                        chechkingArray[j]=true;
+                    }
+                }
+
+            }
+            for (int j = 0; j <chechkingArray.length; j++) {
+                if(chechkingArray[j]==true){return true;}
+            }
+        }
+        //diagonal check(Upwards)
+        if(x+y==3){
+            for (int i = 0; i <board.length ; i++) {
+                if (i == y) {break;}
+                if (board[i][y] == null) {break;}
+                for (int j = 0; j <referencePiece.Properties.length ; j++) {
+                    int h =3-j;
+                    if(referencePiece.Properties[j]==getPieceFromBoard(j,h).Properties[j]){
+                        chechkingArray[j]=true;
+                    }
+
+                }
+            }
+            for (int j = 0; j <chechkingArray.length; j++) {
+                if(chechkingArray[j]==true){return true;}
+            }
+        }
+
+        return false;
+    }
+    public Pieces getPieceFromBoard(int x, int y){
+        //TODO change this method to acctually do something
+        Pieces piece= new Pieces(true,true,true,true);
+        return piece;
+    }
 
 }
 
