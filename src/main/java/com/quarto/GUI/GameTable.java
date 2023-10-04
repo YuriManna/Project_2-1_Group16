@@ -29,7 +29,7 @@ public class GameTable {
 
     private final JPanel textPanel;
 
-    private Pieces selectedPiece;
+    private Pieces selectedPiece;//TODO move to GameLogic
 
     private static Dimension GAME_FRAME_DIMENSION = new Dimension(1250,650);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
@@ -139,7 +139,7 @@ public class GameTable {
                 public void mouseClicked(final MouseEvent e) {
 
                     if(isLeftMouseButton(e)){
-                        if(selectedPiece == null){return;}
+                        if(selectedPiece == null){return;} // Moved to GameLogic
                         board.addPiece(selectedPiece, tileId);
                         board.removePiece(selectedPiece);
 
@@ -306,7 +306,7 @@ public class GameTable {
             }
         }
     }
-    private Pieces checkSelectedPieceColour(Pieces piece){
+    private Pieces checkSelectedPieceColour(Pieces piece){//TODO move to game logic
         selectedPiece = piece;
         if(turnCounter%2==0){
             turnLabel.setText("Player 2 places the selected piece");
@@ -325,7 +325,7 @@ public class GameTable {
         return selectedPiece;
     }
 
-    private void updateTurn(int turnCounter){
+    private void updateTurn(int turnCounter){//TODO move to game logic
         if(turnCounter%2==0){
             turnLabel.setText("Player 2 chooses the opponent's piece");
 

@@ -12,7 +12,7 @@ public class Move {
         this.piece = piece;
         this.board = board;
     }
-    public void select(Pieces piece,int row, int column){
+    public void select(Pieces piece,int row, int column){//TODO move everything thats useful to GameLogic
         if (isValid(row,column)){
             board.getBoard()[row][column] = piece;
             piece.setRow(row);

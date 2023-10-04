@@ -3,7 +3,7 @@ package com.quarto.setup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player {//Store available pieces and clour
     private boolean isFirstPlayer;
     private List<Pieces> availablePieces;
     private Pieces playablePiece;

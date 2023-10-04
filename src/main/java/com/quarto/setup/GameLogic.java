@@ -18,7 +18,17 @@ public class GameLogic {
         // you place it
     }
     public static void pickOpponentPiece(Player curentPlayersPieces){
-        //list out the Pieces
+        //list out the Pieces nad pick
+        //Remove the piece from the available pieces
         //Opponenet makes the choice
     }
+    //TODO from tile ID to x y
+    //TODO return boolean if piece can be placed
+    /*
+    1.CurrentMove
+    2.PickPiece
+    3.Translation from ID-> coordinates
+    4.Move form Board winCondition
+        4.1 If all pieces placed ->Draw
+     */
 }
