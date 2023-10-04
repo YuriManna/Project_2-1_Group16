@@ -16,12 +16,12 @@ public class GameMainPage extends JFrame {
         setTitle("Quarto");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600); // Set a larger size for better visibility
-
+        setLocationRelativeTo(null);
         // Load an image to use as a background
 
 
 
-        ImageIcon backgroundImage = new ImageIcon(ImageIO.read(getClass().getResource("/images/QuartoBoard.png")));
+        ImageIcon backgroundImage = new ImageIcon(ImageIO.read(getClass().getResource("/images/QuartoBoard.png")));//change the image for background!!!
         JLabel backgroundLabel = new JLabel(backgroundImage);
         backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
 
@@ -67,7 +67,7 @@ public class GameMainPage extends JFrame {
                 // Create a new frame to display the text
                 JFrame textFrame = new JFrame("You better know this by heart");
                 textFrame.setSize(400, 300);
-
+                textFrame.setLocationRelativeTo(null);
                 // Create a JTextArea to display the text
                 JTextArea textArea = new JTextArea("add rules here later. I guess");
                 textArea.setEditable(false);
