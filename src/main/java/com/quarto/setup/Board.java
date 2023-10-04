@@ -1,6 +1,7 @@
 package com.quarto.setup;
 
 import java.lang.ref.Reference;
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,77 +65,6 @@ public class Board {
     public Pieces[][] getBoard() {
         return board;
     }
-
-
-    @Override
-    public String toString() {
-        String str = "\n";
-        for (Pieces[] row : board) {
-            str = str + "|";
-            for (Pieces p : row) {
-                if (p != null) {
-                    str = str + p.toString() + "|";
-                }else{
-                    str = str + "    |";
-                }
-            }
-            str = str + "\n";
-        }
-        str = str + "whites: ";
-        for(Pieces p : availableWhites){
-            if (p != null) {
-                str = str + p.toString() + "|";
-            }else{
-                str = str + "    |";
-            }
-        }
-        str = str + "\n" + "blacks: ";
-        for(Pieces p : availableBlacks){
-            if (p != null) {
-                str = str + p.toString() + "|";
-            }else{
-                str = str + "    |";
-            }
-        }
-        str = str + "\n";
-        return str;
-    }
-
-    public boolean tileIsOccupied(int tileId){
-        int tile = 0;
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 4; j++){
-                if(tile == tileId){
-                    return board[i][j] != null;
-                }
-                tile++;
-            }
-        }
-        return false;
-    }
-    public void addPiece(Pieces piece, int tileId){
-        int tile = 0;
-        for(int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (tile == tileId) {
-                    board[i][j] = piece;
-                }
-                tile++;
-            }
-        }
-    }
-
-    public void removePiece(Pieces Piece) {
-        for(int i = 0; i < 8; i++){
-            if(availableWhites[i] == Piece){
-                availableWhites[i] = null;
-            }
-            if(availableBlacks[i] == Piece){
-                availableBlacks[i] = null;
-            }
-        }
-    }
-
     public boolean checkIfWon(int x, int y){
         /**
          * 1. check vertically and horizontally
@@ -214,6 +144,78 @@ public class Board {
         Pieces piece= new Pieces(true,true,true,true);
         return piece;
     }
+
+
+    @Override
+    public String toString() {
+        String str = "\n";
+        for (Pieces[] row : board) {
+            str = str + "|";
+            for (Pieces p : row) {
+                if (p != null) {
+                    str = str + p.toString() + "|";
+                }else{
+                    str = str + "    |";
+                }
+            }
+            str = str + "\n";
+        }
+        str = str + "whites: ";
+        for(Pieces p : availableWhites){
+            if (p != null) {
+                str = str + p.toString() + "|";
+            }else{
+                str = str + "    |";
+            }
+        }
+        str = str + "\n" + "blacks: ";
+        for(Pieces p : availableBlacks){
+            if (p != null) {
+                str = str + p.toString() + "|";
+            }else{
+                str = str + "    |";
+            }
+        }
+        str = str + "\n";
+        return str;
+    }
+
+    public boolean tileIsOccupied(int tileId){
+        int tile = 0;
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                if(tile == tileId){
+                    return board[i][j] != null;
+                }
+                tile++;
+            }
+        }
+        return false;
+    }
+    public void addPiece(Pieces piece, int tileId){
+        int tile = 0;
+        for(int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (tile == tileId) {
+                    board[i][j] = piece;
+                }
+                tile++;
+            }
+        }
+    }
+
+    public void removePiece(Pieces Piece) {
+        for(int i = 0; i < 8; i++){
+            if(availableWhites[i] == Piece){
+                availableWhites[i] = null;
+            }
+            if(availableBlacks[i] == Piece){
+                availableBlacks[i] = null;
+            }
+        }
+    }
+
+
 
 }
 
