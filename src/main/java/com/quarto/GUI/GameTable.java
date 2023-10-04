@@ -139,7 +139,7 @@ public class GameTable {
                 public void mouseClicked(final MouseEvent e) {
 
                     if(isLeftMouseButton(e)){
-                        if(selectedPiece == null){return;}
+                        if(selectedPiece == null || board.tileIsOccupied(tileId)){return;}
                         board.addPiece(selectedPiece, tileId);
                         board.removePiece(selectedPiece);
 
