@@ -12,12 +12,12 @@ public class GameLogic {
     * comment: have to implement win condition here too
 
      */
-    public static Pieces currentMove(Player player){
+    public static void currentMove(Player player){
         moveCounter++;
         //opponent picks piece that will be placed
         // you place it
     }
-    public static Pieces pickOpponentPiece(Player curentPlayersPieces){
+    public static void pickOpponentPiece(Player curentPlayersPieces){
         //list out the Pieces
         //Opponenet makes the choice
     }

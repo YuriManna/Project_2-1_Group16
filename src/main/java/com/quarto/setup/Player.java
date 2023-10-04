@@ -23,7 +23,7 @@ public class Player {
         return availablePieces;
     }
 
-    public choosePiece(Player player){
+    public void choosePiece(Player player){
 
     }
 }
