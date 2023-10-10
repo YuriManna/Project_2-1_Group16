@@ -135,12 +135,13 @@ public class GameTable {
 
                     if(isLeftMouseButton(e)){
                     Pieces selectedPiece = gameLogic.getSelectedPiece();
+                        if(selectedPiece==null){return;}
                         board.addPiece(selectedPiece, tileId);
                         board.removePiece(selectedPiece);
                         try {
                             assignTilePieceIcon(board, tileId, selectedPiece);
                             sidePanel.reloadTiles();
-                            gameLogic.updateTurn();
+                            gameLogic.checkTurn();
                             turnLabel.setText(gameLogic.getMessage());
 
                         } catch (IOException ex) {
@@ -148,7 +149,7 @@ public class GameTable {
                         }
                         System.out.println(board);
                         gameLogic.setPiece(null);
-                        gameLogic.incrementTurnCounter();
+
                     }
                 }
 
@@ -172,7 +173,7 @@ public class GameTable {
             if(board.tileIsOccupied(tileId)){
                 final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
                 this.add(new JLabel(new ImageIcon(pieceImage)));
-
+                gameLogic.incrementTurnCounter();
             }
 
         }

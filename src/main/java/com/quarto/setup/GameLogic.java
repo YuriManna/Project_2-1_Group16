@@ -96,7 +96,7 @@ public class GameLogic {
         return selectedPiece;
     }
 
-    public void updateTurn(){
+    public void checkTurn(){
         if(this.turnCounter%2==0){
            setMessage("Player 2 chooses the opponent's piece");
         } else {
@@ -105,6 +105,7 @@ public class GameLogic {
     }
 
     public void incrementTurnCounter(){
+        System.out.println(turnCounter);
         this.turnCounter++;
     }
 
@@ -116,9 +117,7 @@ public class GameLogic {
     }
 
     public Pieces getSelectedPiece(){
-        if(selectedPiece == null) {
-            return null;
-        } else return this.selectedPiece;
+        return this.selectedPiece;
     }
 
     public void setPiece(Pieces piece){
