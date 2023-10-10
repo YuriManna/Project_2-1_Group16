@@ -30,7 +30,7 @@ public class GameLogic {
      */
     public GameLogic(){};
     public void currentMove(Player player){
-        turnCounter++;
+
         //opponent picks piece that will be placed
         // you place it
     }
@@ -116,7 +116,9 @@ public class GameLogic {
     }
 
     public Pieces getSelectedPiece(){
-        return this.selectedPiece;
+        if(selectedPiece == null) {
+            return null;
+        } else return this.selectedPiece;
     }
 
     public void setPiece(Pieces piece){

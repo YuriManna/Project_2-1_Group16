@@ -28,8 +28,6 @@ public class GameTable {
     private final JLabel turnLabel;
     private final JPanel textPanel;
 
-    private Pieces selectedPiece;
-
     private static Dimension GAME_FRAME_DIMENSION = new Dimension(1250,650);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
@@ -136,10 +134,9 @@ public class GameTable {
                 public void mouseClicked(final MouseEvent e) {
 
                     if(isLeftMouseButton(e)){
-                        if(selectedPiece == null){return;} // Moved to GameLogic
+                    Pieces selectedPiece = gameLogic.getSelectedPiece();
                         board.addPiece(selectedPiece, tileId);
                         board.removePiece(selectedPiece);
-
                         try {
                             assignTilePieceIcon(board, tileId, selectedPiece);
                             sidePanel.reloadTiles();
@@ -150,7 +147,7 @@ public class GameTable {
                             throw new RuntimeException(ex);
                         }
                         System.out.println(board);
-                        selectedPiece = null;
+                        gameLogic.setPiece(null);
                         gameLogic.incrementTurnCounter();
                     }
                 }
@@ -230,23 +227,23 @@ public class GameTable {
                 public void mouseClicked(final MouseEvent e) {
 
                     if(isRightMouseButton(e)){
-                        if(selectedPiece == null){return;}
-                        selectedPiece = null;
+                        gameLogic.setPiece(null);
                         try {
                             sidePanel.reloadTiles();
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
+                        
                     }else if(isLeftMouseButton(e)){
                         Pieces piece;
-                        if(selectedPiece != null){
+                        if(gameLogic.getSelectedPiece() != null){
                             if (teamColor) {
                                 piece = board.getAvailableWhites()[tileId];
                             }else {
                                 piece = board.getAvailableBlacks()[tileId];
                             }
-                            if(selectedPiece == piece) {
-                                selectedPiece = null;
+                            if(gameLogic.getSelectedPiece() == piece) {
+                                gameLogic.setPiece(null);
                                 setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
                             }
                             return;
@@ -263,11 +260,10 @@ public class GameTable {
                             piece = board.getAvailableBlacks()[tileId];
                         }
                         if (piece != null){
-                            selectedPiece = gameLogic.checkSelectedPieceColour(piece);
+                            gameLogic.setPiece(gameLogic.checkSelectedPieceColour(piece));
                             turnLabel.setText(gameLogic.getMessage());
-
                         }
-                        System.out.println("selected piece: " + selectedPiece);
+                        System.out.println("selected piece: " + gameLogic.getSelectedPiece());
                     }
                 }
 
