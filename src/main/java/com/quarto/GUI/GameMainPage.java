@@ -2,41 +2,46 @@ package com.quarto.GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class GameMainPage extends JFrame {
     private JButton button1, button2, button3, button4;
+    private JFrame textFrame;
+    private int size = 600;
 
     public GameMainPage() throws IOException {
         setTitle("Quarto");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 600); // Set a larger size for better visibility
+        setSize(size, size); // Set a larger size for better visibility
         setLocationRelativeTo(null);
         // Load an image to use as a background
 
-
-
-        ImageIcon backgroundImage = new ImageIcon(ImageIO.read(getClass().getResource("/images/QuartoBoard.png")));//change the image for background!!!
+        Image backImage = (ImageIO.read(getClass().getResource("/images/QuartoMain.png")));
+        Image scaledBackImage = backImage.getScaledInstance(size,size, Image.SCALE_SMOOTH);
+        ImageIcon backgroundImage = new ImageIcon(scaledBackImage);
         JLabel backgroundLabel = new JLabel(backgroundImage);
-        backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
+        //backgroundLabel.setBounds(0, 0, backgroundImage.getIconWidth(), backgroundImage.getIconHeight());
 
         // Create buttons and set their preferred size
-        button1 = new JButton("PvP");
-        button2 = new JButton("PvCP");
-        button3 = new JButton("Rules");
-        button4 = new JButton("Quit");
+        button1 = coolButton("PvP");
+        button2 = coolButton("PvCPU");
+        button3 = coolButton("Rules");
+        button4 = coolButton("Quit");
         
-        Dimension buttonSize = new Dimension(100, 50); // Adjust button size as needed
+        Dimension buttonSize = new Dimension(120, 65); // Adjust button size as needed
         button1.setPreferredSize(buttonSize);
         button2.setPreferredSize(buttonSize);
         button3.setPreferredSize(buttonSize);
         button4.setPreferredSize(buttonSize);
-
 
         // Create a panel to hold the buttons
         JPanel buttonPanel = new JPanel();
@@ -64,15 +69,16 @@ public class GameMainPage extends JFrame {
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Create a new frame to display the text
-                JFrame textFrame = new JFrame("You better know this by heart");
-                textFrame.setSize(400, 300);
+                if(textFrame != null){
+                    textFrame.dispose();
+                }
+                textFrame = new JFrame("You better know this by heart");
+                textFrame.setSize(400, 415);
                 textFrame.setLocationRelativeTo(null);
-                // Create a JTextArea to display the text
-                JTextArea textArea = new JTextArea("add rules here later. I guess");
-                textArea.setEditable(false);
+                textFrame.setResizable(false);
 
-                // Add the JTextArea to the frame
+                JTextArea textArea = rulesTextArea();
+
                 textFrame.add(textArea);
                 textFrame.setVisible(true);
             }
@@ -100,7 +106,56 @@ public class GameMainPage extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) throws IOException {
-        GameMainPage p = new GameMainPage();    
+    private static JButton coolButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 20));
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(189, 31, 55)); // Gradient start color
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        //button.setContentAreaFilled(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Add hover effect using MouseAdapter
+        button.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                button.setBackground(new Color(0, 122, 255)); // Gradient end color on hover
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                button.setBackground(new Color(189, 31, 55)); // Restore original color on exit
+            }
+        });
+
+        return button;
+    }
+    // Create a customized JTextArea with cool styling
+    private static JTextArea rulesTextArea() {
+        JTextArea textArea = new JTextArea();
+        textArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        textArea.setForeground(Color.BLACK);
+        textArea.setBackground(Color.lightGray);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+        textArea.setMargin(new Insets(10, 10, 10, 10));
+
+        // Insert your game rules here
+        String gameRules = "Game rules:\n" +
+                "In Quarto, two players compete in a game played on a 4x4 grid with 16 unique pieces, each possessing four distinct attributes: big/small, dark/light, square/round, and hollow/solid.\n" +
+                "\n" +
+                "The objective of Quarto is to be the first player to create a row, column, or diagonal of four pieces on the board that share at least one common attribute.\n" +
+                "\n" +
+                "Players take turns placing one of their pieces on an empty space on the board and then select the next piece for their opponent to play. The opponent must place the chosen piece on their turn.\n" +
+                "\n" +
+                "The game ends immediately when a player successfully creates a row, column, or diagonal of four pieces with a common attribute. This player wins the game.\n" +
+                "\n" +
+                "If the entire board is filled, and no player has achieved the winning condition, the game results in a draw.\n"
+                ;
+
+        textArea.setText(gameRules);
+
+        return textArea;
     }
 }
