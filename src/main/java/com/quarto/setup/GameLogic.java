@@ -11,8 +11,7 @@ import static javax.swing.SwingUtilities.isLeftMouseButton;
 
 public class GameLogic {
     private int turnCounter = 1;
-    private JLabel turnLabel = new JLabel();
-    private final Board board = new Board();
+    private final Board board;
     private String message = "";
 
     private Pieces selectedPiece;
@@ -28,7 +27,10 @@ public class GameLogic {
     * comment: have to implement win condition here too
 
      */
-    public GameLogic(){};
+    public GameLogic(){
+        this.board = new Board();
+    }
+
     public void currentMove(Player player){
 
         //opponent picks piece that will be placed
@@ -48,33 +50,6 @@ public class GameLogic {
     4.Move form Board winCondition
         4.1 If all pieces placed ->Draw
      */
-//    public void pickPiece(Pieces piece, int tileId){
-//
-//        Pieces selectedPiece = piece;
-//
-//        if(selectedPiece == null){return;}
-//        board.addPiece(selectedPiece, tileId);
-//        board.removePiece(selectedPiece);
-//
-//        try {
-//            assignTilePieceIcon(board, tileId, selectedPiece);
-//            sidePanel.reloadTiles();
-//            updateTurn(turnCounter);
-//
-//        } catch (IOException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//        System.out.println(board);
-//        selectedPiece = null;
-//        turnCounter++;
-//    }
-
-
-//    public chceckSelectedPiece() {
-//        if (selectedPiece == null) {return;}
-//        board.addPiece(selectedPiece, tileId);
-//        board.removePiece(selectedPiece);
-//    }
 
 
     public Pieces checkSelectedPieceColour(Pieces piece){
@@ -105,7 +80,6 @@ public class GameLogic {
     }
 
     public void incrementTurnCounter(){
-        System.out.println(turnCounter);
         this.turnCounter++;
     }
 
@@ -120,7 +94,18 @@ public class GameLogic {
         return this.selectedPiece;
     }
 
-    public void setPiece(Pieces piece){
+    public void setPiece(Pieces piece) {
         this.selectedPiece = piece;
     }
+    public Board getBoard(){
+        return this.board;
+    }
+
+    public void checkIfWon(){
+
+    }
+
+
 }
+
+

@@ -21,24 +21,24 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 
 
 public class GameTable {
-    private final Board board;
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
     private final JLabel turnLabel;
     private final JPanel textPanel;
-
     private static Dimension GAME_FRAME_DIMENSION = new Dimension(1250,650);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);
     private static Dimension TURN_LABEL_DIMENSION = new Dimension(100,20);
 
+
+
     private GameLogic gameLogic = new GameLogic();
 
     //main game frame
     public GameTable() throws IOException {
-        this.board = new Board();
+        //this.board = new Board();
 
         this.gameFrame = new JFrame("Quarto");
         this.gameFrame.setSize(GAME_FRAME_DIMENSION);
@@ -60,6 +60,7 @@ public class GameTable {
         this.sidePanel = new SidePanel();
         this.gameFrame.add(this.sidePanel, BorderLayout.EAST);
 
+
         this.textPanel = new JPanel();
         this.textPanel.setSize(TURN_LABEL_DIMENSION);
         this.textPanel.setBackground(new Color(227, 215, 183));
@@ -79,6 +80,11 @@ public class GameTable {
 
     private JMenu createFileMenu() {
         final JMenu fileMenu = new JMenu("Options");
+
+        final JMenuItem finish = new JMenuItem("Finish game");
+        finish.addActionListener(e -> gameLogic.checkIfWon());
+        fileMenu.add(finish);
+
         final JMenuItem openPGN = new JMenuItem("Load game");
         openPGN.addActionListener(e -> System.out.println("need a pgn file"));
         fileMenu.add(openPGN);
@@ -93,6 +99,7 @@ public class GameTable {
 
         return fileMenu;
     }
+
 
     //panel for the board of the game
     private class BoardPanel extends JPanel{
@@ -136,10 +143,10 @@ public class GameTable {
                     if(isLeftMouseButton(e)){
                     Pieces selectedPiece = gameLogic.getSelectedPiece();
                         if(selectedPiece==null){return;}
-                        board.addPiece(selectedPiece, tileId);
-                        board.removePiece(selectedPiece);
+                        gameLogic.getBoard().addPiece(selectedPiece, tileId);
+                        gameLogic.getBoard().removePiece(selectedPiece);
                         try {
-                            assignTilePieceIcon(board, tileId, selectedPiece);
+                            assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
                             sidePanel.reloadTiles();
                             gameLogic.checkTurn();
                             turnLabel.setText(gameLogic.getMessage());
@@ -147,9 +154,9 @@ public class GameTable {
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        System.out.println(board);
+                        System.out.println(gameLogic.getBoard());
                         gameLogic.setPiece(null);
-
+                        gameLogic.incrementTurnCounter();
                     }
                 }
 
@@ -173,7 +180,6 @@ public class GameTable {
             if(board.tileIsOccupied(tileId)){
                 final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
                 this.add(new JLabel(new ImageIcon(pieceImage)));
-                gameLogic.incrementTurnCounter();
             }
 
         }
@@ -203,9 +209,9 @@ public class GameTable {
         }
         public void reloadTiles() throws IOException {
             for(int i = 0; i < 8; i++){
-                whites.get(i).assignTilePieceIcon(board,i,true);
+                whites.get(i).assignTilePieceIcon(gameLogic.getBoard(),i,true);
                 whites.get(i).setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
-                blacks.get(i).assignTilePieceIcon(board,i,false);
+                blacks.get(i).assignTilePieceIcon(gameLogic.getBoard(),i,false);
                 blacks.get(i).setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
             }
         }
@@ -222,7 +228,7 @@ public class GameTable {
             if(teamColor){color = new Color(120, 63, 4);
             }else{color = new Color(245, 245, 220);}
             setBackground(color);
-            assignTilePieceIcon(board, tileId,teamColor);
+            assignTilePieceIcon(gameLogic.getBoard(), tileId,teamColor);
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -239,9 +245,9 @@ public class GameTable {
                         Pieces piece;
                         if(gameLogic.getSelectedPiece() != null){
                             if (teamColor) {
-                                piece = board.getAvailableWhites()[tileId];
+                                piece = gameLogic.getBoard().getAvailableWhites()[tileId];
                             }else {
-                                piece = board.getAvailableBlacks()[tileId];
+                                piece = gameLogic.getBoard().getAvailableBlacks()[tileId];
                             }
                             if(gameLogic.getSelectedPiece() == piece) {
                                 gameLogic.setPiece(null);
@@ -256,9 +262,9 @@ public class GameTable {
                         }
                         setBorder(new MatteBorder(3, 3, 3, 3, new Color(206, 32, 41)));
                         if (teamColor) {
-                            piece = board.getAvailableWhites()[tileId];
+                            piece = gameLogic.getBoard().getAvailableWhites()[tileId];
                         }else {
-                            piece = board.getAvailableBlacks()[tileId];
+                            piece = gameLogic.getBoard().getAvailableBlacks()[tileId];
                         }
                         if (piece != null){
                             gameLogic.setPiece(gameLogic.checkSelectedPieceColour(piece));
@@ -280,6 +286,7 @@ public class GameTable {
             setVisible(true);
             validate();
         }
+
         private void assignTilePieceIcon(final Board board, final int tileId, boolean teamColor) throws IOException {
             this.removeAll();
             Pieces piece;
