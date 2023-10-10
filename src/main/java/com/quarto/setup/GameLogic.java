@@ -114,4 +114,12 @@ public class GameLogic {
     public String getMessage(){
         return this.message;
     }
+
+    public Pieces getSelectedPiece(){
+        return this.selectedPiece;
+    }
+
+    public void setPiece(Pieces piece){
+        this.selectedPiece = piece;
+    }
 }
