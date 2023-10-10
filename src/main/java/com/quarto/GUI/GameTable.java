@@ -1,6 +1,7 @@
 package com.quarto.GUI;
 
 import com.quarto.setup.Board;
+import com.quarto.setup.GameLogic;
 import com.quarto.setup.Pieces;
 
 import javax.imageio.ImageIO;
@@ -24,21 +25,19 @@ public class GameTable {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
-
     private final JLabel turnLabel;
-
     private final JPanel textPanel;
 
-    private Pieces selectedPiece;//TODO move to GameLogic
+    private Pieces selectedPiece;
 
     private static Dimension GAME_FRAME_DIMENSION = new Dimension(1250,650);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);
-
     private static Dimension TURN_LABEL_DIMENSION = new Dimension(100,20);
 
-    private static int turnCounter = 1;
+    private GameLogic gameLogic = new GameLogic();
+
     //main game frame
     public GameTable() throws IOException {
         this.board = new Board();
@@ -110,8 +109,7 @@ public class GameTable {
                 add(tilePanel);
             }
             setPreferredSize(BOARD_PANEL_DIMENSION);
-            
-            //this.setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
+
             this.setBackground(new Color(165, 42, 42));
             validate();
         }
@@ -129,7 +127,6 @@ public class GameTable {
             super(new GridBagLayout());
             this.tileId = tileId;
             setPreferredSize(TILE_PANEL_DIMENSION);
-            //setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
             setBackground(Color.decode("#FFFACD"));
             setVisible(true);
             setOpaque(false);
@@ -146,14 +143,15 @@ public class GameTable {
                         try {
                             assignTilePieceIcon(board, tileId, selectedPiece);
                             sidePanel.reloadTiles();
-                            updateTurn(turnCounter);
+                            gameLogic.updateTurn();
+                            turnLabel.setText(gameLogic.getMessage());
 
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                         System.out.println(board);
                         selectedPiece = null;
-                        turnCounter++;
+                        gameLogic.incrementTurnCounter();
                     }
                 }
 
@@ -265,9 +263,10 @@ public class GameTable {
                             piece = board.getAvailableBlacks()[tileId];
                         }
                         if (piece != null){
-                            selectedPiece = checkSelectedPieceColour(piece);
-                        }
+                            selectedPiece = gameLogic.checkSelectedPieceColour(piece);
+                            turnLabel.setText(gameLogic.getMessage());
 
+                        }
                         System.out.println("selected piece: " + selectedPiece);
                     }
                 }
@@ -306,32 +305,5 @@ public class GameTable {
             }
         }
     }
-    private Pieces checkSelectedPieceColour(Pieces piece){//TODO move to game logic
-        selectedPiece = piece;
-        if(turnCounter%2==0){
-            turnLabel.setText("Player 2 places the selected piece");
-            if(selectedPiece.toString().charAt(0)!='B'){
-                selectedPiece = null;
-                turnLabel.setText("Wrong colour!");
-            }
 
-        } else {
-            turnLabel.setText("Player 1 places the selected piece");
-            if(selectedPiece.toString().charAt(0)!='W'){
-                selectedPiece = null;
-                turnLabel.setText("Wrong colour!");
-            }
-        }
-        return selectedPiece;
-    }
-
-    private void updateTurn(int turnCounter){//TODO move to game logic
-        if(turnCounter%2==0){
-            turnLabel.setText("Player 2 chooses the opponent's piece");
-
-        } else {
-            turnLabel.setText("Player 1 chooses the opponent's piece");
-
-        }
-    }
 }
