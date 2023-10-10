@@ -51,6 +51,7 @@ public class GameMainPage extends JFrame {
                 try {
                     GameTable gameTable = new GameTable();
                     setVisible(false);
+                    dispose();
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -72,7 +73,7 @@ public class GameMainPage extends JFrame {
                 if(textFrame != null){
                     textFrame.dispose();
                 }
-                textFrame = new JFrame("You better know this by heart");
+                textFrame = new JFrame("Game rules");
                 textFrame.setSize(400, 415);
                 textFrame.setLocationRelativeTo(null);
                 textFrame.setResizable(false);
@@ -114,7 +115,6 @@ public class GameMainPage extends JFrame {
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
-        //button.setContentAreaFilled(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // Add hover effect using MouseAdapter
@@ -142,7 +142,7 @@ public class GameMainPage extends JFrame {
         textArea.setMargin(new Insets(10, 10, 10, 10));
 
         // Insert your game rules here
-        String gameRules = "Game rules:\n" +
+        String gameRules =
                 "In Quarto, two players compete in a game played on a 4x4 grid with 16 unique pieces, each possessing four distinct attributes: big/small, dark/light, square/round, and hollow/solid.\n" +
                 "\n" +
                 "The objective of Quarto is to be the first player to create a row, column, or diagonal of four pieces on the board that share at least one common attribute.\n" +
@@ -155,7 +155,6 @@ public class GameMainPage extends JFrame {
                 ;
 
         textArea.setText(gameRules);
-
         return textArea;
     }
 }

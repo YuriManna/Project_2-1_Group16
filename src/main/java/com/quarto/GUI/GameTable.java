@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -77,24 +79,50 @@ public class GameTable {
         this.gameFrame.setVisible(true);
     }
     private void populateMenuBar(final JMenuBar tableMenuBar){
-        tableMenuBar.add(createFileMenu());
+        tableMenuBar.add(createOptionMenu());
+        tableMenuBar.add(createFileButton());
+        tableMenuBar.add(createbackToMain());
+
+    }
+    private JButton createbackToMain(){
+        final JButton backToMain = new JButton("Back to main menu");
+        backToMain.setBackground(Color.white);
+        backToMain.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    GameMainPage mainmenu = new GameMainPage();
+                    gameFrame.dispose();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        return backToMain;
+    }
+    private JButton createFileButton(){
+        final JButton openPGN = new JButton("Load game");
+        openPGN.setBackground(Color.WHITE);
+        return openPGN;
     }
 
-    private JMenu createFileMenu() {
-        final JMenu fileMenu = new JMenu("Options");
-        final JMenuItem openPGN = new JMenuItem("Load game");
+    private JMenu createOptionMenu() {
+        final JMenu optionsMenu = new JMenu("Options");
+        final JMenu openPGN = new JMenu("Load game");
         openPGN.addActionListener(e -> System.out.println("need a pgn file"));
-        fileMenu.add(openPGN);
 
         final JMenuItem hideHelp = new JMenuItem("Hide help bar");
         hideHelp.addActionListener(e -> textPanel.setVisible(false));
-        fileMenu.add(hideHelp);
+        optionsMenu.add(hideHelp);
+        final JMenuItem showBar = new JMenuItem("Show help bar");
+        showBar.addActionListener(e -> textPanel.setVisible(true));
+        optionsMenu.add(showBar);
 
         final JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(e -> System.exit(0));
-        fileMenu.add(exitMenuItem);
+        optionsMenu.add(exitMenuItem);
 
-        return fileMenu;
+        return optionsMenu;
     }
 
     //panel for the board of the game
