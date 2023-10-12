@@ -1,7 +1,8 @@
 package com.quarto.setup;
 
 public class Pieces {
-private boolean Color;
+    public boolean[] Properties;
+    private boolean Color;
 private boolean Height;
 private boolean Shape;
 private boolean Hole;
@@ -13,6 +14,7 @@ private int row;
         Height = height;
         Shape = shape;
         Hole = hole;
+        Properties = new boolean[]{color, height, shape, hole};
     }
 
     public boolean getColor() {
