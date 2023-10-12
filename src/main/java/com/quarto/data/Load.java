@@ -10,10 +10,6 @@ import java.io.ObjectInputStream;
 
 public class Load {
     Board board;
-    JFrame gameFrame;
-    JPanel boardPanel;
-    JPanel sidePanel;
-    Pieces selectedPiece;
     public Board load(){
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));
