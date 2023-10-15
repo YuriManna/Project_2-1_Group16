@@ -64,7 +64,7 @@ public class GameTable {
         this.textPanel = new JPanel();
         this.textPanel.setSize(TURN_LABEL_DIMENSION);
         this.textPanel.setBackground(new Color(227, 215, 183));
-        this.turnLabel = new JLabel("Player 1 starts the game! Choose a white piece");
+        this.turnLabel = new JLabel("White starts the game! Choose a white piece");
         this.turnLabel.setSize(TURN_LABEL_DIMENSION);
         this.textPanel.add(this.turnLabel);
         this.gameFrame.add(textPanel, BorderLayout.NORTH);
@@ -163,13 +163,14 @@ public class GameTable {
 
                     if(isLeftMouseButton(e)){
                     Pieces selectedPiece = gameLogic.getSelectedPiece();
-                        if(selectedPiece==null){return;}
+                        if(selectedPiece == null || gameLogic.getBoard().tileIsOccupied(tileId) || gameLogic.getBoard().isGameWon()){return;}
                         gameLogic.getBoard().addPiece(selectedPiece, tileId);
                         gameLogic.getBoard().removePiece(selectedPiece);
                         try {
                             assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
                             sidePanel.reloadTiles();
                             gameLogic.checkTurn();
+                            gameLogic.checkGameStatus();
                             turnLabel.setText(gameLogic.getMessage());
 
                         } catch (IOException ex) {
@@ -253,7 +254,7 @@ public class GameTable {
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
-
+                    if(gameLogic.getBoard().isGameWon()){return;}
                     if(isRightMouseButton(e)){
                         gameLogic.setPiece(null);
                         try {

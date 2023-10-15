@@ -31,16 +31,7 @@ public class GameLogic {
         this.board = new Board();
     }
 
-    public void currentMove(Player player){
 
-        //opponent picks piece that will be placed
-        // you place it
-    }
-    public void pickOpponentPiece(Player curentPlayersPieces){
-        //list out the Pieces nad pick
-        //Remove the piece from the available pieces
-        //Opponent makes the choice
-    }
 
 
     /**
@@ -162,14 +153,14 @@ public class GameLogic {
     public Pieces checkSelectedPieceColour(Pieces piece){
         Pieces selectedPiece = piece;
         if(this.turnCounter%2==0){
-            setMessage("Player 2 places the selected piece");
+            setMessage("Black places the selected piece");
             if(selectedPiece.toString().charAt(0)!='B'){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
             }
 
         } else {
-            setMessage("Player 1 places the selected piece");
+            setMessage("White places the selected piece");
             if(selectedPiece.toString().charAt(0)!='W'){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
@@ -180,9 +171,21 @@ public class GameLogic {
 
     public void checkTurn(){
         if(this.turnCounter%2==0){
-           setMessage("Player 2 chooses the opponent's piece");
+           setMessage("Black chooses the opponent's piece");
         } else {
-            setMessage("Player 1 chooses the opponent's piece");
+            setMessage("White chooses the opponent's piece");
+        }
+    }
+    public void checkGameStatus(){
+        if(board.isGameWon()){
+            if(this.turnCounter%2==0){
+                setMessage("Black won the game!");
+            } else {
+                setMessage("White won the game!");
+            }
+        }
+        else if(board.isGameDrawn()){
+            setMessage("It's a tie!");
         }
     }
 
@@ -207,6 +210,7 @@ public class GameLogic {
     public Board getBoard(){
         return this.board;
     }
+
 
 }
 

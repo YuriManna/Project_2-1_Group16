@@ -14,6 +14,9 @@ public class Board {
     private final Pieces[] availableWhites;
     private final Pieces[] availableBlacks;
 
+    private boolean gameWon = false;
+    private boolean gameDrawn = false;
+
     /**
      * constructs our board with all the pieces
      */
@@ -65,84 +68,6 @@ public class Board {
     public Pieces[][] getBoard() {
         return board;
     }
-    public boolean checkIfWon(int x, int y){
-        /**
-         * 1. check vertically and horizontally
-         *      lock one of the coordinates and loop through the other
-         * 2. if possible check diagonally
-         *      2.1 if x and y match check downwards diagonal
-         *      2.2 if x+y=3 check upwards diagonal
-         */
-        boolean[] chechkingArray= new boolean[4];
-        Pieces referencePiece= getPieceFromBoard(x,y);
-
-        //Horizontal check
-        for (int i = 0; i < board.length; i++) {
-            if(i==y){break;}
-            if(board[x][i]==null){break;}
-            for (int j = 0; j <referencePiece.Properties.length; j++) {
-                if(referencePiece.Properties[j]==getPieceFromBoard(x,i).Properties[j]){
-                    chechkingArray[j]=true;
-                }
-            }
-        }
-        for (int j = 0; j <chechkingArray.length; j++) {
-            if(chechkingArray[j]==true){return true;}
-        }
-
-        //Vertical check
-        for (int i = 0; i < board.length; i++) {
-            if(i==y){break;}
-            if(board[i][y]==null){break;}
-            for (int j = 0; j <referencePiece.Properties.length; j++) {
-                if(referencePiece.Properties[j]==getPieceFromBoard(i,y).Properties[j]){
-                    chechkingArray[j]=true;
-                }
-            }
-        }
-        for (int j = 0; j <chechkingArray.length; j++) {
-            if(chechkingArray[j]==true){return true;}
-        }
-        //diagonal check(downwards)
-        if(x==y){
-            for (int i = 0; i <board.length ; i++) {
-                if (i == y) {break;}
-                if (board[i][y] == null) {break;}
-                for (int j = 0; j <referencePiece.Properties.length ; j++) {
-                    if(referencePiece.Properties[j]==getPieceFromBoard(i,i).Properties[j]){
-                        chechkingArray[j]=true;
-                    }
-                }
-
-            }
-            for (int j = 0; j <chechkingArray.length; j++) {
-                if(chechkingArray[j]==true){return true;}
-            }
-        }
-        //diagonal check(Upwards)
-        if(x+y==3){
-            for (int i = 0; i <board.length ; i++) {
-                if (i == y) {break;}
-                if (board[i][y] == null) {break;}
-                for (int j = 0; j <referencePiece.Properties.length ; j++) {
-                    int h =3-j;
-                    if(referencePiece.Properties[j]==getPieceFromBoard(j,h).Properties[j]){
-                        chechkingArray[j]=true;
-                    }
-
-                }
-            }
-            for (int j = 0; j <chechkingArray.length; j++) {
-                if(chechkingArray[j]==true){return true;}
-            }
-        }
-
-        return false;
-    }
-    public Pieces getPieceFromBoard(int x, int y){
-        return board[y][x];
-    }
-
 
     @Override
     public String toString() {
@@ -191,14 +116,27 @@ public class Board {
         return false;
     }
     public void addPiece(Pieces piece, int tileId){
+        if(gameWon){return;}
         int tile = 0;
+        int x = 0;
+        int y = 0;
         for(int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (tile == tileId) {
                     board[i][j] = piece;
+                    y = i;
+                    x = j;
                 }
                 tile++;
             }
+        }
+        if(checkIfWon(x,y)){
+            gameWon = true;
+            System.out.println("game has been won!");
+        }
+        else if(checkIfDraw()){
+            gameDrawn = true;
+            System.out.println("game ended in a tie!");
         }
     }
 
@@ -219,6 +157,125 @@ public class Board {
         else{
             return (4*y+x);
         }
+    }
+
+
+    /**
+     * method to check if the conditions are met for winning
+     * @param x position of the row on the board at which the winning piece is positioned
+     * @param y position of the column on the board at which the winning piece is positioned
+     * @return true or false if the player that placed the piece at position (x, y) won
+     * */
+    public boolean checkIfWon(int x, int y){
+        /**
+         * 1. check vertically and horizontally
+         *      lock one of the coordinates and loop through the other
+         * 2. if possible check diagonally
+         *      2.1 if x and y match check downwards diagonal
+         *      2.2 if x+y=3 check upwards diagonal
+         */
+        boolean[] chechkingArray= new boolean[4];
+        Pieces referencePiece= getPieceFromBoard(x,y);
+
+
+        //Horizontal check
+        for (int i = 0; i < getBoard().length; i++) {
+            if(i==y){break;}
+            if(getBoard()[x][i]==null){break;}
+            for (int j = 0; j <referencePiece.Properties.length; j++) {
+                if(referencePiece.Properties[j]==getPieceFromBoard(x,i).Properties[j]){
+                    chechkingArray[j]=true;
+                }
+            }
+        }
+        for (int j = 0; j <chechkingArray.length; j++) {
+            if(chechkingArray[j]==true){return true;}
+        }
+
+        //Vertical check
+        for (int i = 0; i < getBoard().length; i++) {
+            if(i==y){break;}
+            if(getBoard()[i][y]==null){break;}
+            for (int j = 0; j <referencePiece.Properties.length; j++) {
+                if(referencePiece.Properties[j]==getPieceFromBoard(i,y).Properties[j]){
+                    chechkingArray[j]=true;
+                }
+            }
+        }
+        for (int j = 0; j <chechkingArray.length; j++) {
+            if(chechkingArray[j]==true){return true;}
+        }
+
+        // Diagonal check(downwards)
+        if(x==y){
+            for (int i = 0; i <getBoard().length ; i++) {
+                if (i == y) {break;}
+                if (getBoard()[i][y] == null) {break;}
+                for (int j = 0; j <referencePiece.Properties.length ; j++) {
+                    if(referencePiece.Properties[j]==getPieceFromBoard(i,i).Properties[j]){
+                        chechkingArray[j]=true;
+                    }
+                }
+
+            }
+            for (int j = 0; j <chechkingArray.length; j++) {
+                if(chechkingArray[j]==true){return true;}
+            }
+        }
+
+        // Diagonal check(Upwards)
+        if(x+y==3){
+            for (int i = 0; i <getBoard().length ; i++) {
+                if (i == y) {break;}
+                if (getBoard()[i][y] == null) {break;}
+                for (int j = 0; j <referencePiece.Properties.length ; j++) {
+                    int h =3-j;
+                    if(referencePiece.Properties[j]==getPieceFromBoard(j,h).Properties[j]){
+                        chechkingArray[j]=true;
+                    }
+                }
+            }
+            for (int j = 0; j <chechkingArray.length; j++) {
+                if(chechkingArray[j]==true){return true;}
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+     * method to retrieve a piece from a specific position on the board
+     * @param x position of the row on the board
+     * @param y position of the column on the board
+     * @return what piece is stored at that place or null if the tile is empty
+     * */
+    public Pieces getPieceFromBoard(int x, int y){
+        return board[x][y];
+    }
+
+
+    /**
+     * method to check if the game is a draw
+     * @return true or false depending on the state of the game
+     * */
+    public boolean checkIfDraw(){
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++){
+                if (board[i][j] == null){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public boolean isGameDrawn() {
+        return gameDrawn;
     }
 }
 
