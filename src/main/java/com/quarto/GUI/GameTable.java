@@ -24,9 +24,7 @@ public class GameTable {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
-
     private final JLabel turnLabel;
-
     private final JPanel textPanel;
 
     private Pieces selectedPiece;
@@ -222,6 +220,7 @@ public class GameTable {
             }
         }
     }
+
     //panel for tiles in the side board
     private class SideTilePanel extends JPanel{
         private final int tileId;
