@@ -1,5 +1,6 @@
 package com.quarto.setup;
 
+import javax.swing.*;
 import java.lang.ref.Reference;
 import java.lang.ref.Reference;
 import java.util.ArrayList;
@@ -133,11 +134,14 @@ public class Board {
         if(checkIfWon(x,y)){
             gameWon = true;
             System.out.println("game has been won!");
+            JOptionPane.showMessageDialog(null, "You have won the game!", "Quarto!", JOptionPane.INFORMATION_MESSAGE);
         }
         else if(checkIfDraw()){
             gameDrawn = true;
             System.out.println("game ended in a tie!");
+            JOptionPane.showMessageDialog(null, "Game ended in a tie!", "Quarto", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }
 
     public void removePiece(Pieces Piece) {

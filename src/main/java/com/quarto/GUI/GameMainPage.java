@@ -136,7 +136,7 @@ public class GameMainPage extends JFrame {
     // Create a customized JTextArea with cool styling
     private static JTextArea rulesTextArea() {
         JTextArea textArea = new JTextArea();
-        textArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        textArea.setFont(new Font("Arial", Font.PLAIN, 13));
         textArea.setForeground(Color.BLACK);
         textArea.setBackground(Color.lightGray);
         textArea.setLineWrap(true);
@@ -154,7 +154,9 @@ public class GameMainPage extends JFrame {
                 "\n" +
                 "The game ends immediately when a player successfully creates a row, column, or diagonal of four pieces with a common attribute. This player wins the game.\n" +
                 "\n" +
-                "If the entire board is filled, and no player has achieved the winning condition, the game results in a draw.\n"
+                "If the entire board is filled, and no player has achieved the winning condition, the game results in a draw.\n" +
+                "\n" +
+                "Select pieces with LMB, deselect with RMB.\n"
                 ;
 
         textArea.setText(gameRules);
