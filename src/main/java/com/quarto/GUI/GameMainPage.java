@@ -1,5 +1,7 @@
 package com.quarto.GUI;
 
+import com.quarto.setup.GameLogic;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -49,7 +51,8 @@ public class GameMainPage extends JFrame {
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { 
                 try {
-                    GameTable gameTable = new GameTable();
+                    GameLogic gameLogic = new GameLogic();
+                    GameTable gameTable = new GameTable(gameLogic);
                     setVisible(false);
                     dispose();
                 } catch (IOException e1) {
