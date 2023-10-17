@@ -50,15 +50,16 @@ public class GameLogic {
          */
         boolean[] chechkingArray= new boolean[4];
         Pieces referencePiece= getPieceFromBoard(x,y);
-
+        for (int i = 0; i <chechkingArray.length; i++) {
+            chechkingArray[i]=true;
+        }
 
         //Horizontal check
         for (int i = 0; i < board.getBoard().length; i++) {
             if(i==y){break;}
-            if(board.getBoard()[x][i]==null){break;}
             for (int j = 0; j <referencePiece.Properties.length; j++) {
-                if(referencePiece.Properties[j]==getPieceFromBoard(x,i).Properties[j]){
-                    chechkingArray[j]=true;
+                if(getPieceFromBoard(x, i)!=null&&referencePiece.Properties[j]!=getPieceFromBoard(x,i).Properties[j]){
+                    chechkingArray[j]=false;
                 }
             }
         }
