@@ -1,20 +1,20 @@
 package com.quarto.setup;
 
 public class Pieces {
-private boolean Color;
+    public boolean[] Properties;
+    private boolean Color;
 private boolean Height;
 private boolean Shape;
 private boolean Hole;
 private int column;
 private int row;
-public boolean[] Properties;
 
     public Pieces(boolean color, boolean height, boolean shape, boolean hole) {
         Color = color;
         Height = height;
         Shape = shape;
         Hole = hole;
-        Properties= new boolean[]{color, height, shape, hole};
+        Properties = new boolean[]{color, height, shape, hole};
     }
 
     public boolean getColor() {
@@ -70,5 +70,4 @@ public boolean[] Properties;
     public void setColor(boolean color) {
         Color = color;
     }
-
 }

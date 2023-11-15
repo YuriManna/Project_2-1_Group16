@@ -1,12 +1,15 @@
 package com.quarto.GUI;
 
 import com.quarto.setup.Board;
+import com.quarto.setup.GameLogic;
 import com.quarto.setup.Pieces;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -20,26 +23,22 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 
 
 public class GameTable {
-    private final Board board;
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final SidePanel sidePanel;
     private final JLabel turnLabel;
     private final JPanel textPanel;
-
-    private Pieces selectedPiece;
-
-    private static Dimension GAME_FRAME_DIMENSION = new Dimension(1200,650);
+    private static Dimension GAME_FRAME_DIMENSION = new Dimension(1250,650);
     private static Dimension BOARD_PANEL_DIMENSION = new Dimension(600,605);
     private static Dimension TILE_PANEL_DIMENSION = new Dimension(20,20);
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);
-
     private static Dimension TURN_LABEL_DIMENSION = new Dimension(100,20);
 
-    private static int turnCounter = 1;
+    private final GameLogic gameLogic;
+
     //main game frame
-    public GameTable() throws IOException {
-        this.board = new Board();
+    public GameTable(GameLogic gameLogic) throws IOException {
+        this.gameLogic = gameLogic;
 
         this.gameFrame = new JFrame("Quarto");
         this.gameFrame.setSize(GAME_FRAME_DIMENSION);
@@ -61,10 +60,11 @@ public class GameTable {
         this.sidePanel = new SidePanel();
         this.gameFrame.add(this.sidePanel, BorderLayout.EAST);
 
+
         this.textPanel = new JPanel();
         this.textPanel.setSize(TURN_LABEL_DIMENSION);
         this.textPanel.setBackground(new Color(227, 215, 183));
-        this.turnLabel = new JLabel("Player 1 starts the game! Choose a white piece");
+        this.turnLabel = new JLabel("White starts the game! Choose a white piece");
         this.turnLabel.setSize(TURN_LABEL_DIMENSION);
         this.textPanel.add(this.turnLabel);
         this.gameFrame.add(textPanel, BorderLayout.NORTH);
@@ -75,25 +75,52 @@ public class GameTable {
         this.gameFrame.setVisible(true);
     }
     private void populateMenuBar(final JMenuBar tableMenuBar){
-        tableMenuBar.add(createFileMenu());
+        tableMenuBar.add(createOptionMenu());
+        tableMenuBar.add(createFileButton());
+        tableMenuBar.add(createbackToMain());
+
+    }
+    private JButton createbackToMain(){
+        final JButton backToMain = new JButton("Back to main menu");
+        backToMain.setBackground(Color.white);
+        backToMain.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    GameMainPage mainmenu = new GameMainPage();
+                    gameFrame.dispose();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        return backToMain;
+    }
+    private JButton createFileButton(){
+        final JButton openPGN = new JButton("Load game");
+        openPGN.setBackground(Color.WHITE);
+        return openPGN;
     }
 
-    private JMenu createFileMenu() {
-        final JMenu fileMenu = new JMenu("Options");
-        final JMenuItem openPGN = new JMenuItem("Load game");
+    private JMenu createOptionMenu() {
+        final JMenu optionsMenu = new JMenu("Options");
+        final JMenu openPGN = new JMenu("Load game");
         openPGN.addActionListener(e -> System.out.println("need a pgn file"));
-        fileMenu.add(openPGN);
 
         final JMenuItem hideHelp = new JMenuItem("Hide help bar");
         hideHelp.addActionListener(e -> textPanel.setVisible(false));
-        fileMenu.add(hideHelp);
+        optionsMenu.add(hideHelp);
+        final JMenuItem showBar = new JMenuItem("Show help bar");
+        showBar.addActionListener(e -> textPanel.setVisible(true));
+        optionsMenu.add(showBar);
 
         final JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(e -> System.exit(0));
-        fileMenu.add(exitMenuItem);
+        optionsMenu.add(exitMenuItem);
 
-        return fileMenu;
+        return optionsMenu;
     }
+
 
     //panel for the board of the game
     private class BoardPanel extends JPanel{
@@ -108,8 +135,7 @@ public class GameTable {
                 add(tilePanel);
             }
             setPreferredSize(BOARD_PANEL_DIMENSION);
-            
-            //this.setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
+
             this.setBackground(new Color(165, 42, 42));
             validate();
         }
@@ -127,7 +153,6 @@ public class GameTable {
             super(new GridBagLayout());
             this.tileId = tileId;
             setPreferredSize(TILE_PANEL_DIMENSION);
-            //setBorder(new MatteBorder(1, 1, 1, 1, Color.black));
             setBackground(Color.decode("#FFFACD"));
             setVisible(true);
             setOpaque(false);
@@ -137,29 +162,23 @@ public class GameTable {
                 public void mouseClicked(final MouseEvent e) {
 
                     if(isLeftMouseButton(e)){
-                        if(selectedPiece == null || board.tileIsOccupied(tileId)){return;}
-                        board.addPiece(selectedPiece, tileId);
-                        board.removePiece(selectedPiece);
-
+                    Pieces selectedPiece = gameLogic.getSelectedPiece();
+                        if(selectedPiece == null || gameLogic.getBoard().tileIsOccupied(tileId) || gameLogic.getBoard().isGameWon()){return;}
+                        gameLogic.getBoard().addPiece(selectedPiece, tileId);
+                        gameLogic.getBoard().removePiece(selectedPiece);
                         try {
-                            assignTilePieceIcon(board, tileId, selectedPiece);
-
+                            assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
                             sidePanel.reloadTiles();
-                            //turnCounter++;
-                            if(turnCounter%2==0){
-                                turnLabel.setText("Player 2 chooses the opponent's piece");
-
-                            } else {
-                                turnLabel.setText("Player 1 chooses the opponent's piece");
-
-                            }
+                            gameLogic.checkTurn();
+                            gameLogic.checkGameStatus();
+                            turnLabel.setText(gameLogic.getMessage());
 
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        System.out.println(board);
-                        selectedPiece = null;
-                        turnCounter++;
+                        System.out.println(gameLogic.getBoard());
+                        gameLogic.setPiece(null);
+                        gameLogic.incrementTurnCounter();
                     }
                 }
 
@@ -183,7 +202,6 @@ public class GameTable {
             if(board.tileIsOccupied(tileId)){
                 final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
                 this.add(new JLabel(new ImageIcon(pieceImage)));
-
             }
 
         }
@@ -213,14 +231,13 @@ public class GameTable {
         }
         public void reloadTiles() throws IOException {
             for(int i = 0; i < 8; i++){
-                whites.get(i).assignTilePieceIcon(board,i,true);
+                whites.get(i).assignTilePieceIcon(gameLogic.getBoard(),i,true);
                 whites.get(i).setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
-                blacks.get(i).assignTilePieceIcon(board,i,false);
+                blacks.get(i).assignTilePieceIcon(gameLogic.getBoard(),i,false);
                 blacks.get(i).setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
             }
         }
     }
-
     //panel for tiles in the side board
     private class SideTilePanel extends JPanel{
         private final int tileId;
@@ -233,29 +250,29 @@ public class GameTable {
             if(teamColor){color = new Color(120, 63, 4);
             }else{color = new Color(245, 245, 220);}
             setBackground(color);
-            assignTilePieceIcon(board, tileId,teamColor);
+            assignTilePieceIcon(gameLogic.getBoard(), tileId,teamColor);
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
-
+                    if(gameLogic.getBoard().isGameWon()){return;}
                     if(isRightMouseButton(e)){
-                        if(selectedPiece == null){return;}
-                        selectedPiece = null;
+                        gameLogic.setPiece(null);
                         try {
                             sidePanel.reloadTiles();
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
+                        
                     }else if(isLeftMouseButton(e)){
                         Pieces piece;
-                        if(selectedPiece != null){
+                        if(gameLogic.getSelectedPiece() != null){
                             if (teamColor) {
-                                piece = board.getAvailableWhites()[tileId];
+                                piece = gameLogic.getBoard().getAvailableWhites()[tileId];
                             }else {
-                                piece = board.getAvailableBlacks()[tileId];
+                                piece = gameLogic.getBoard().getAvailableBlacks()[tileId];
                             }
-                            if(selectedPiece == piece) {
-                                selectedPiece = null;
+                            if(gameLogic.getSelectedPiece() == piece) {
+                                gameLogic.setPiece(null);
                                 setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
                             }
                             return;
@@ -267,31 +284,15 @@ public class GameTable {
                         }
                         setBorder(new MatteBorder(3, 3, 3, 3, new Color(206, 32, 41)));
                         if (teamColor) {
-                            piece = board.getAvailableWhites()[tileId];
+                            piece = gameLogic.getBoard().getAvailableWhites()[tileId];
                         }else {
-                            piece = board.getAvailableBlacks()[tileId];
+                            piece = gameLogic.getBoard().getAvailableBlacks()[tileId];
                         }
                         if (piece != null){
-                            selectedPiece = piece;
-                            if(turnCounter%2==0){
-                                turnLabel.setText("Player 2 places the selected piece");
-                                if(selectedPiece.toString().charAt(0)!='B'){
-                                    selectedPiece = null;
-                                    turnLabel.setText("Wrong colour!");
-                                }
-
-                            } else {
-                                turnLabel.setText("Player 1 places the selected piece");
-                                if(selectedPiece.toString().charAt(0)!='W'){
-                                    selectedPiece = null;
-                                    turnLabel.setText("Wrong colour!");
-                                }
-                            }
-
+                            gameLogic.setPiece(gameLogic.checkSelectedPieceColour(piece));
+                            turnLabel.setText(gameLogic.getMessage());
                         }
-
-                        System.out.println("selected piece: " + selectedPiece);
-
+                        System.out.println("selected piece: " + gameLogic.getSelectedPiece());
                     }
                 }
 
@@ -307,6 +308,7 @@ public class GameTable {
             setVisible(true);
             validate();
         }
+
         private void assignTilePieceIcon(final Board board, final int tileId, boolean teamColor) throws IOException {
             this.removeAll();
             Pieces piece;
@@ -329,4 +331,5 @@ public class GameTable {
             }
         }
     }
+
 }
