@@ -1,5 +1,7 @@
 package com.quarto;
 
+import com.quarto.GUI.GameMainPage;
+import com.quarto.GUI.GameTable;
 import com.quarto.setup.Board;
 
 import java.io.IOException;
@@ -8,9 +10,6 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        //SpringApplication.run(App.class, args);
-
-        Board board = new Board();
-
+        GameMainPage mainmenu = new GameMainPage();
     }
 }
