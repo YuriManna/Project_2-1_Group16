@@ -1,10 +1,6 @@
 package com.quarto.setup;
 
-import javax.swing.*;
-import java.lang.ref.Reference;
-import java.lang.ref.Reference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -14,7 +10,7 @@ public class Board {
     private final Pieces[][] board = new Pieces[ROWS][COLS];
     private final Pieces[] availableWhites;
     private final Pieces[] availableBlacks;
-
+    private Pieces selectedPiece;
     private boolean gameWon = false;
     private boolean gameDrawn = false;
 
@@ -46,22 +42,38 @@ public class Board {
         Pieces BBCF = new Pieces(false,false,false,false);
         ArrayList<Pieces> blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
         availableBlacks = blacksList.toArray(new Pieces[8]);
+
+        this.selectedPiece = null;
     }
     /**
-     * returns the arraylist containing the available whites
-     * @return
+     * @return the arraylist containing the available whites
      */
     public Pieces[] getAvailableWhites() {
         return availableWhites;
     }
     /**
-     * returns the arraylist containing the available blacks
-     * @return
+     * @return the arraylist containing the available blacks
      */
     public Pieces[] getAvailableBlacks() {
         return availableBlacks;
     }
+    /**
+     * @param color team color
+     * @return the arraylist containing the available pieces depending on the color
+     */
+    public Pieces[] getAvaileblePieces(boolean color){
+        Pieces[] pieces;
+        if(color) {
+            pieces = availableWhites;
+        }
+        else{
+            pieces = availableBlacks;
+        }
+        return pieces;
+    }
 
+    public void setSelectedPiece(Pieces piece){selectedPiece=piece;}
+    public Pieces getSelectedPiece(){return selectedPiece;}
     /**
      * returns the 2D list representation of the board
      * @return
@@ -116,6 +128,17 @@ public class Board {
         }
         return false;
     }
+
+    public List<Integer> getAvailableTileIds(){
+        List<Integer> availableTiles = new ArrayList<>();
+        for(int i = 0; i < 16; i++) {
+            if (!tileIsOccupied(i)) {
+                availableTiles.add(i);
+            }
+        }
+        return availableTiles;
+    }
+
     public void addPiece(Pieces piece, int tileId){
         if(gameWon){return;}
         int tile = 0;

@@ -1,13 +1,16 @@
 package com.quarto.setup;
 
+import com.quarto.player.Player;
+
 import javax.swing.*;
 
 public class GameLogic {
     private int turnCounter = 1;
     private final Board board;
     private String message = "";
-
     private Pieces selectedPiece;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
 
 
     /* This happens after the game mode has been chosen
@@ -16,12 +19,19 @@ public class GameLogic {
             1.2 Opponents picks piece
             1.3 Current player places piece
             1.4 next iteration of the current move is called and current player is Switched
-    *
-    * comment: have to implement win condition here too
-
      */
     public GameLogic(){
         this.board = new Board();
+        this.whitePlayer = new Player(true, board);
+        this.blackPlayer = new Player(false, board);
+    }
+
+    public Player getCurrentPlayer(){
+        if(turnCounter%2==0){
+            return blackPlayer;
+        }else {
+            return whitePlayer;
+        }
     }
 
     /**
@@ -50,6 +60,7 @@ public class GameLogic {
 
     public void SetSelectedPiece(Pieces piece) {
         this.selectedPiece = piece;
+        board.setSelectedPiece(piece);
     }
 
     /**
