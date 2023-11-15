@@ -1,13 +1,6 @@
 package com.quarto.setup;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-import static javax.swing.SwingUtilities.isLeftMouseButton;
 
 public class GameLogic {
     private int turnCounter = 1;
@@ -31,8 +24,33 @@ public class GameLogic {
         this.board = new Board();
     }
 
+    /**
+     * method to place a piece on the board
+     * @param selectedPiece piece to place
+     * @param tileId position on the board
+     * */
+    public void placePiece(Pieces selectedPiece, int tileId){
+        getBoard().addPiece(selectedPiece, tileId);
+        getBoard().removePiece(selectedPiece);
+    }
 
+    /**
+     * method to check if a move is valid
+     * @param tileId position on the board
+     * @param selectedPiece piece to place
+     * @return false if the move is invalid, true otherwise
+     * */
+    public boolean moveNotValid(Pieces selectedPiece,int tileId){
+        if(getBoard().checkIfPieceIsAvailable(selectedPiece) || getBoard().tileIsOccupied(tileId) || getBoard().isGameWon()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    public void SetSelectedPiece(Pieces piece) {
+        this.selectedPiece = piece;
+    }
 
     /**
      * method to check if the conditions are met for winning
@@ -117,8 +135,6 @@ public class GameLogic {
         return false;
     }
 
-
-
     /**
      * method to retrieve a piece from a specific position on the board
      * @param x position of the row on the board
@@ -148,21 +164,24 @@ public class GameLogic {
         }
         return result;
     }
-    
 
-
+    /**
+     * method to check if the selected piece is the right team's
+     * @param piece piece to check
+     * @return null if the piece is the wrong colour, otherwise the piece will stay unchanged
+     * */
     public Pieces checkSelectedPieceColour(Pieces piece){
         Pieces selectedPiece = piece;
         if(this.turnCounter%2==0){
             setMessage("Black places the selected piece");
-            if(selectedPiece.toString().charAt(0)!='B'){
+            if(!selectedPiece.isColor()){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
             }
 
         } else {
             setMessage("White places the selected piece");
-            if(selectedPiece.toString().charAt(0)!='W'){
+            if(selectedPiece.isColor()){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
             }
@@ -181,12 +200,15 @@ public class GameLogic {
         if(board.isGameWon()){
             if(this.turnCounter%2==0){
                 setMessage("Black won the game!");
+                JOptionPane.showMessageDialog(null, "You have won the game!", "Black won!", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 setMessage("White won the game!");
+                JOptionPane.showMessageDialog(null, "You have won the game!", "White won!", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else if(board.isGameDrawn()){
             setMessage("It's a tie!");
+            JOptionPane.showMessageDialog(null, "Game ended in a tie!", "Quarto", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -205,9 +227,6 @@ public class GameLogic {
         return this.selectedPiece;
     }
 
-    public void setPiece(Pieces piece) {
-        this.selectedPiece = piece;
-    }
     public Board getBoard(){
         return this.board;
     }

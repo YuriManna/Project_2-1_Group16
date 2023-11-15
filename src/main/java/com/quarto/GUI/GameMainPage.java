@@ -1,19 +1,16 @@
 package com.quarto.GUI;
 
+import com.quarto.player.ai.MinMax;
 import com.quarto.setup.GameLogic;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.ImageObserver;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class GameMainPage extends JFrame {
     private JButton button1, button2, button3, button4;
@@ -65,9 +62,19 @@ public class GameMainPage extends JFrame {
 
        
         button2.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e){
-        JOptionPane.showMessageDialog(backgroundLabel,"Don't ask too much");}
-            
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    GameLogic gameLogic = new GameLogic();
+                    GameTable gameTable = new GameTable(gameLogic);
+                    MinMax minMaxPlayer = new MinMax(gameLogic);
+                    setVisible(false);
+                    dispose();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+            }
         });
 
         button3.addActionListener(new ActionListener() {

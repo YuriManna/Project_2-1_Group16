@@ -2,12 +2,12 @@ package com.quarto.setup;
 
 public class Pieces {
     public boolean[] Properties;
-    private boolean Color;
-private boolean Height;
-private boolean Shape;
-private boolean Hole;
-private int column;
-private int row;
+    private boolean Color; // White(T) or Black(F)
+    private boolean Height; // Small(T) or Big(F)
+    private boolean Shape; // Square(T) or Circle(F)
+    private boolean Hole; // Hole(T) or Full(F)
+    private int column;
+    private int row;
 
     public Pieces(boolean color, boolean height, boolean shape, boolean hole) {
         Color = color;

@@ -1,4 +1,6 @@
-package com.quarto.setup;
+package com.quarto.player;
+
+import com.quarto.setup.Pieces;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -136,12 +136,11 @@ public class Board {
         if(checkIfWon(x,y)){
             gameWon = true;
             System.out.println("game has been won!");
-            JOptionPane.showMessageDialog(null, "You have won the game!", "Quarto!", JOptionPane.INFORMATION_MESSAGE);
         }
         else if(checkIfDraw()){
             gameDrawn = true;
             System.out.println("game ended in a tie!");
-            JOptionPane.showMessageDialog(null, "Game ended in a tie!", "Quarto", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
     }
@@ -294,10 +293,25 @@ public class Board {
         return false;
     }
 
+    /**
+     * method check if a piece is available
+     * @param piece piece to be checked
+     * @return true if available, false if not
+     * */
+    public boolean checkIfPieceIsAvailable(Pieces piece){
 
-
-
-
+        for (int i = 0; i < (availableWhites.length); i++) {
+            if (piece == availableWhites[i]){
+                return true;
+            }
+        }
+        for (int i = 0; i < (availableBlacks.length); i++) {
+            if (piece == availableBlacks[i]){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * method to retrieve a piece from a specific position on the board
@@ -308,7 +322,6 @@ public class Board {
     public Pieces getPieceFromBoard(int x, int y){
         return board[x][y];
     }
-
 
     /**
      * method to check if the game is a draw
