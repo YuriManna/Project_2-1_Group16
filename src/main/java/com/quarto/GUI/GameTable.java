@@ -272,11 +272,7 @@ public class GameTable {
                     }else if(isLeftMouseButton(e)){
                         Pieces piece;
                         if(gameLogic.getSelectedPiece() != null){
-                            if (teamColor) {
-                                piece = gameLogic.getBoard().getAvailableWhites()[tileId];
-                            }else {
-                                piece = gameLogic.getBoard().getAvailableBlacks()[tileId];
-                            }
+                            piece = gameLogic.getBoard().getAvaileblePieces(teamColor)[tileId];
                             if(gameLogic.getSelectedPiece() == piece) {
                                 gameLogic.SetSelectedPiece(null);
                                 setBorder(new MatteBorder(1, 1, 1, 1, Color.lightGray));
@@ -289,11 +285,7 @@ public class GameTable {
                             throw new RuntimeException(ex);
                         }
                         setBorder(new MatteBorder(3, 3, 3, 3, new Color(206, 32, 41)));
-                        if (teamColor) {
-                            piece = gameLogic.getBoard().getAvailableWhites()[tileId];
-                        }else {
-                            piece = gameLogic.getBoard().getAvailableBlacks()[tileId];
-                        }
+                        piece = gameLogic.getBoard().getAvaileblePieces(teamColor)[tileId];
                         if (piece != null){
                             gameLogic.SetSelectedPiece(gameLogic.checkSelectedPieceColour(piece));
                             turnLabel.setText(gameLogic.getMessage());

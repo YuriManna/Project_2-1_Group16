@@ -63,6 +63,20 @@ public class Board {
     }
 
     /**
+     * returns the arraylist containing the available pieces depending on the teamcolor
+     * @return
+     */
+    public Pieces[] getAvaileblePieces(boolean color){
+        Pieces[] pieces;
+        if(color) {
+            pieces = availableWhites;
+        }
+        else{
+            pieces = availableBlacks;
+        }
+        return pieces;
+    }
+    /**
      * returns the 2D list representation of the board
      * @return
      */
