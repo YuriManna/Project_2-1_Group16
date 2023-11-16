@@ -1,5 +1,7 @@
 package com.quarto.setup;
 
+import com.quarto.player.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +9,14 @@ public class Board {
 
     private final int ROWS = 4;
     private final int COLS = 4;
-    private final Pieces[][] board = new Pieces[ROWS][COLS];
+    private final Pieces[][] board;
     private final Pieces[] availableWhites;
     private final Pieces[] availableBlacks;
     private Pieces selectedPiece;
+    private int turnCounter = 1;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
+
     private boolean gameWon = false;
     private boolean gameDrawn = false;
 
@@ -18,6 +24,7 @@ public class Board {
      * constructs our board with all the pieces
      */
     public Board() {
+        this.board = new Pieces[ROWS][COLS];
         // First letter White(T) or Black(F)
         // Second letter Small(T) or Big(F)
         // Third letter Square(T) or Circle(F)
@@ -44,7 +51,21 @@ public class Board {
         availableBlacks = blacksList.toArray(new Pieces[8]);
 
         this.selectedPiece = null;
+        this.whitePlayer = new Player(true, this);
+        this.blackPlayer = new Player(false, this);
     }
+    public Board(Board board){
+        this.board = board.getBoard();
+        this.availableWhites = board.getAvailableWhites();
+        this.availableBlacks = board.getAvailableBlacks();
+        this.selectedPiece = board.getSelectedPiece();
+        this.turnCounter = board.turnCounter;
+        this.whitePlayer = new Player(true, this);
+        this.blackPlayer = new Player(false, this);
+        this.gameWon = board.gameWon;
+        this.gameDrawn = board.gameDrawn;
+    }
+
     /**
      * @return the arraylist containing the available whites
      */
@@ -114,6 +135,17 @@ public class Board {
         }
         str = str + "\n";
         return str;
+    }
+    public void incrementTurnCounter(){
+        this.turnCounter++;
+    }
+
+    public Player getCurrentPlayer(){
+        if(turnCounter%2==0){
+            return blackPlayer;
+        }else {
+            return whitePlayer;
+        }
     }
 
     public boolean tileIsOccupied(int tileId){
@@ -185,6 +217,13 @@ public class Board {
         else{
             return (4*y+x);
         }
+    }
+
+    public void executeMove(Move move){
+        addPiece(move.getPieceToPlace(),move.getPieceLocation());
+        removePiece(move.getPieceToPlace());
+        setSelectedPiece(move.getPieceChosen());
+        incrementTurnCounter();
     }
 
 

@@ -6,12 +6,10 @@ import com.quarto.setup.Move;
 
 public class MinMax implements MoveStrategy {
     private final BoardEvaluator boardEvaluator;
-    private final GameLogic gameLogic;
     private final Board board;
-    public MinMax(GameLogic gameLogic) {
+    public MinMax(Board board) {
         this.boardEvaluator = null;
-        this.gameLogic = gameLogic;
-        this.board = gameLogic.getBoard();
+        this.board = new Board(board);
     }
 
     @Override
@@ -29,20 +27,29 @@ public class MinMax implements MoveStrategy {
             return this.boardEvaluator.evaluate(board, depth);
         }
         int lowestSeenValue = Integer.MAX_VALUE;
-        for(final Move move : gameLogic.getCurrentPlayer().getLegalMoves()){
-            //to finish
+        for(final Move move : board.getCurrentPlayer().getLegalMoves()){
+            board.executeMove(move);
+            int currentValue = max(new Board(board), depth -1);
+            if(currentValue <= lowestSeenValue){
+                lowestSeenValue = currentValue;
+            }
         }
         return lowestSeenValue;
     }
+
     public int max(final Board board, final int depth){
         if(depth == 0 /*game over*/) {
             return this.boardEvaluator.evaluate(board, depth);
         }
-        int lowestSeenValue = Integer.MAX_VALUE;
-        for(final Move move : gameLogic.getCurrentPlayer().getLegalMoves()){
-            //to finish
+        int highestSeenValue = Integer.MIN_VALUE;
+        for(final Move move : board.getCurrentPlayer().getLegalMoves()){
+            board.executeMove(move);
+            int currentValue = min(new Board(board), depth -1);
+            if(currentValue <= highestSeenValue){
+                highestSeenValue = currentValue;
+            }
         }
-        return lowestSeenValue;
+        return highestSeenValue;
     }
 
 }

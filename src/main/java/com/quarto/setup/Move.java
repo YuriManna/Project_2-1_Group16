@@ -10,4 +10,16 @@ public class Move {
         this.pieceToPlace = pieceToPlace;
         this.pieceChosen = pieceChosen;
     }
+
+    public Pieces getPieceToPlace() {
+        return pieceToPlace;
+    }
+
+    public int getPieceLocation() {
+        return pieceLocation;
+    }
+
+    public Pieces getPieceChosen() {
+        return pieceChosen;
+    }
 }

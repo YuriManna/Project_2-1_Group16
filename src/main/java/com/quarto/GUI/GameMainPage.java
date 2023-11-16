@@ -66,7 +66,8 @@ public class GameMainPage extends JFrame {
                 try {
                     GameLogic gameLogic = new GameLogic();
                     GameTable gameTable = new GameTable(gameLogic);
-                    MinMax minMaxPlayer = new MinMax(gameLogic);
+                    MinMax minMaxPlayer = new MinMax(gameLogic.getBoard());
+
                     setVisible(false);
                     dispose();
                 } catch (IOException e1) {

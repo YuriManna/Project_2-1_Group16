@@ -9,8 +9,7 @@ public class GameLogic {
     private final Board board;
     private String message = "";
     private Pieces selectedPiece;
-    private final Player whitePlayer;
-    private final Player blackPlayer;
+
 
 
     /* This happens after the game mode has been chosen
@@ -22,17 +21,8 @@ public class GameLogic {
      */
     public GameLogic(){
         this.board = new Board();
-        this.whitePlayer = new Player(true, board);
-        this.blackPlayer = new Player(false, board);
     }
 
-    public Player getCurrentPlayer(){
-        if(turnCounter%2==0){
-            return blackPlayer;
-        }else {
-            return whitePlayer;
-        }
-    }
 
     /**
      * method to place a piece on the board
@@ -224,7 +214,7 @@ public class GameLogic {
     }
 
     public void incrementTurnCounter(){
-        this.turnCounter++;
+        this.turnCounter++; board.incrementTurnCounter();
     }
 
     public void setMessage(String text){
