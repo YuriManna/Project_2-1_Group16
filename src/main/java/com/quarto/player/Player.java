@@ -19,17 +19,18 @@ public class Player { //Store available pieces and colour
     }
 
     // returns all the possible moves at the current game status
-    public List<Move> getLegalMoves(){
-        Pieces piece = board.getSelectedPiece();
-        List<Move> legalMoves = new ArrayList<>();
-        Pieces[] opponentPieces = board.getAvaileblePieces(!color);
+    public List<Move> getLegalMoves(Board board){
+        Pieces piece = board.getSelectedPiece(); // current selected piece to place
+        List<Move> legalMoves = new ArrayList<>(); // list of all the possible moves
+        Pieces[] opponentPieces = board.getAvaileblePieces(!color); // list of all the pieces the opponent has
 
-        for (int i = 0; i < board.getAvailableTileIds().size(); i++) {
-            for (int j = 0; j < opponentPieces.length; j++){
-                if(opponentPieces[j] == null){
+        for (int i = 0; i < board.getAvailableTileIds().size(); i++) { // for each available tile
+            for (int j = 0; j < opponentPieces.length; j++){ // for each opponent piece
+                if(opponentPieces[j] == null){ // if the piece is not available
                     continue;
                 }
-                Move move = new Move(piece, i, opponentPieces[j]);
+                Move move = new Move(piece, board.getAvailableTileIds().get(i), opponentPieces[j]); // create a move
+                legalMoves.add(move); // add the move to the list of possible moves
             }
         }
 

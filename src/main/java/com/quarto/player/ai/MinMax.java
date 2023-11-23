@@ -23,29 +23,31 @@ public class MinMax implements MoveStrategy {
     }
 
     public int min(final Board board, final int depth){
-        if(depth == 0 /*game over*/) {
-            return this.boardEvaluator.evaluate(board, depth);
+        if(depth == 0 || board.isGameDrawn() || board.isGameWon() ) { // if game is over or if we are at the end of the tree
+            return this.boardEvaluator.evaluate(board, depth); // evaluate the board
         }
-        int lowestSeenValue = Integer.MAX_VALUE;
-        for(final Move move : board.getCurrentPlayer().getLegalMoves()){
-            board.executeMove(move);
-            int currentValue = max(new Board(board), depth -1);
+        int lowestSeenValue = Integer.MAX_VALUE; // set the lowest seen value to the highest possible value (alpha)
+        for(final Move move : board.getCurrentPlayer().getLegalMoves(board)){ // loop through all the possible moves
+            board.executeMove(move); // simulate the move
+            int currentValue = max(new Board(board), depth -1); // call the max function on the new board
             if(currentValue <= lowestSeenValue){
-                lowestSeenValue = currentValue;
+                lowestSeenValue = currentValue; // if the current value is lower than the lowest seen value, set the lowest seen value to the current value
+
             }
+
         }
         return lowestSeenValue;
     }
 
     public int max(final Board board, final int depth){
-        if(depth == 0 /*game over*/) {
+        if(depth == 0 || board.isGameDrawn() || board.isGameWon()) {
             return this.boardEvaluator.evaluate(board, depth);
         }
-        int highestSeenValue = Integer.MIN_VALUE;
-        for(final Move move : board.getCurrentPlayer().getLegalMoves()){
+        int highestSeenValue = Integer.MIN_VALUE; // set the maximum seen value to the highest possible value (beta)
+        for(final Move move : board.getCurrentPlayer().getLegalMoves(board)){
             board.executeMove(move);
             int currentValue = min(new Board(board), depth -1);
-            if(currentValue <= highestSeenValue){
+            if(currentValue >= highestSeenValue){
                 highestSeenValue = currentValue;
             }
         }

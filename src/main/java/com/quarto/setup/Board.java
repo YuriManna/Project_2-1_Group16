@@ -197,7 +197,6 @@ public class Board {
             System.out.println("game ended in a tie!");
 
         }
-
     }
 
     public void removePiece(Pieces Piece) {
