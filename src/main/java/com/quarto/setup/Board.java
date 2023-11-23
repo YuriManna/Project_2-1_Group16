@@ -200,12 +200,12 @@ public class Board {
 
     }
 
-    public void removePiece(Pieces Piece) {
+    public void removePiece(Pieces piece) {
         for(int i = 0; i < 8; i++){
-            if(availableWhites[i] == Piece){
+            if(availableWhites[i] == piece){
                 availableWhites[i] = null;
             }
-            if(availableBlacks[i] == Piece){
+            if(availableBlacks[i] == piece){
                 availableBlacks[i] = null;
             }
         }
