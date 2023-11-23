@@ -175,14 +175,14 @@ public class GameLogic {
         Pieces selectedPiece = piece;
         if(this.turnCounter%2==0){
             setMessage("Black places the selected piece");
-            if(!selectedPiece.isColor()){
+            if(selectedPiece.isColor()){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
             }
 
         } else {
             setMessage("White places the selected piece");
-            if(selectedPiece.isColor()){
+            if(!selectedPiece.isColor()){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
             }
