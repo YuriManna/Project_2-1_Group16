@@ -41,7 +41,7 @@ public class GameLogic {
      * @return false if the move is invalid, true otherwise
      * */
     public boolean moveNotValid(Pieces selectedPiece,int tileId){
-        if(getBoard().checkIfPieceIsAvailable(selectedPiece) || getBoard().tileIsOccupied(tileId) || getBoard().isGameWon()){
+        if(!getBoard().checkIfPieceIsAvailable(selectedPiece) || getBoard().tileIsOccupied(tileId) || getBoard().isGameWon()){
             return true;
         }else{
             return false;

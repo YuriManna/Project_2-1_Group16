@@ -17,7 +17,7 @@ public class MinMax implements MoveStrategy {
         return "MiniMax";
     }
 
-    @Override
+    @Override       
     public void execute(Board board, int depth) {
 
     }
