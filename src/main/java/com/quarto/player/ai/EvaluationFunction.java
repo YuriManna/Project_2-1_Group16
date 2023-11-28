@@ -3,7 +3,7 @@ package com.quarto.player.ai;
 import com.quarto.setup.Board;
 import com.quarto.setup.Pieces;
 
-public class evaluationFunction {
+public class EvaluationFunction {
     
     // Method to evaluate the game board based on the selected piece
     //TODO:positive value for the maximizing player and a negative value for the minimizing player. need to be discussed
@@ -140,7 +140,7 @@ public class evaluationFunction {
     public static void main(String[] args) {
         // Create a sample board
         Board board = new Board();
-        evaluationFunction n = new evaluationFunction();
+        EvaluationFunction n = new EvaluationFunction();
         // Create a sample selected piece
         Pieces selectedPiece = new Pieces(true, true, true, true);
 

@@ -22,34 +22,39 @@ public class MinMax implements MoveStrategy {
 
     }
 
-    public int min(final Board board, final int depth){
+    public int min(final Board board, final int depth,int alpha, int beta){
+        int minEval= Integer.MAX_VALUE;
         if(depth == 0 /*game over*/) {
-            return this.boardEvaluator.evaluate(board, depth);
+            return new EvaluationFunction().evaluateBoard(board, board.getSelectedPiece());
         }
-        int lowestSeenValue = Integer.MAX_VALUE;
+
         for(final Move move : board.getCurrentPlayer().getLegalMoves()){
             board.executeMove(move);
-            int currentValue = max(new Board(board), depth -1);
-            if(currentValue <= lowestSeenValue){
-                lowestSeenValue = currentValue;
+            int eval = max(new Board(board), depth -1,alpha,beta);
+            minEval= Math.min(minEval, eval);
+            beta= Math.min(beta, eval);
+            if(beta <= alpha){
+                break;
             }
         }
-        return lowestSeenValue;
+        return minEval;
     }
 
-    public int max(final Board board, final int depth){
+    public int max(final Board board, final int depth, int alpha, int beta){
+        int maxEval= Integer.MIN_VALUE;
         if(depth == 0 /*game over*/) {
-            return this.boardEvaluator.evaluate(board, depth);
+            return new EvaluationFunction().evaluateBoard(board, board.getSelectedPiece());
         }
-        int highestSeenValue = Integer.MIN_VALUE;
         for(final Move move : board.getCurrentPlayer().getLegalMoves()){
             board.executeMove(move);
-            int currentValue = min(new Board(board), depth -1);
-            if(currentValue <= highestSeenValue){
-                highestSeenValue = currentValue;
+            int eval = min(new Board(board), depth -1,alpha,beta);
+            maxEval= Math.max(maxEval, eval);
+            alpha = Math.max(alpha, eval);
+            if(beta <= alpha){
+                break;
             }
         }
-        return highestSeenValue;
+        return maxEval;
     }
 
 }
