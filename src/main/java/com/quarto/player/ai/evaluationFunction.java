@@ -6,7 +6,6 @@ import com.quarto.setup.Pieces;
 public class evaluationFunction {
     
     // Method to evaluate the game board based on the selected piece
-    //TODO:positive value for the maximizing player and a negative value for the minimizing player. need to be discussed
     public int evaluateBoard(Board board, Pieces selectedPiece) {
         // Variable to store the total points earned by the evaluation
         int totalPoints = 0;
@@ -26,7 +25,8 @@ public class evaluationFunction {
             int colEmptyCount = 0;
             int rowSameCount = 0;
             int colSameCount = 0;
-    
+            int colProperties = 0;
+            int rowProperties = 0;
             // Loop through the row and column of the board
             for (int j = 0; j < 4; j++) {
                 // Get pieces from the row and column
@@ -37,28 +37,32 @@ public class evaluationFunction {
                 if (rowPiece == null) {
                     rowEmptyCount++;
                 } else {
-                    rowSameCount += piecesHaveSameProperties(rowPiece, selectedPiece);
+                    rowProperties += piecesHaveSameProperties(rowPiece, selectedPiece);
+                    rowSameCount = Math.max(rowSameCount, findMaxDigit(rowProperties));
                 }
     
                 // Check for empty slots and pieces with the same properties in the column
                 if (colPiece == null) {
                     colEmptyCount++;
                 } else {
-                    colSameCount += piecesHaveSameProperties(colPiece, selectedPiece);
+                    colProperties += piecesHaveSameProperties(colPiece, selectedPiece);
+                    colSameCount = Math.max(colSameCount, findMaxDigit(colProperties));
+
                 }
             }
     
             // Calculate points for the row and column and add to the total points
             totalPoints = Math.max(calculatePoints(rowSameCount, rowEmptyCount), totalPoints);
             totalPoints = Math.max(calculatePoints(colSameCount, colEmptyCount), totalPoints);
-
-        }
+            }
     
         // Check diagonals for potential wins
         int diag1EmptyCount = 0;
         int diag2EmptyCount = 0;
         int diag1SameCount = 0;
         int diag2SameCount = 0;
+        int diag1Properties = 0;
+        int diag2Properties = 0;
     
         // Loop through the diagonals of the board
         for (int i = 0; i < 4; i++) {
@@ -71,6 +75,8 @@ public class evaluationFunction {
                 diag1EmptyCount++;
             } else {
                 diag1SameCount += piecesHaveSameProperties(diag1Piece, selectedPiece);
+                diag1SameCount = Math.max(diag1SameCount, findMaxDigit(diag1Properties));
+
             }
     
             // Check for empty slots and pieces with the same properties in diagonal 2
@@ -78,13 +84,14 @@ public class evaluationFunction {
                 diag2EmptyCount++;
             } else {
                 diag2SameCount += piecesHaveSameProperties(diag2Piece, selectedPiece);
+                diag1SameCount = Math.max(diag2SameCount, findMaxDigit(diag2Properties));
+
             }
         }
     
         // Calculate points for the diagonals and add to the total points
         totalPoints = Math.max(calculatePoints(diag1SameCount, diag1EmptyCount), totalPoints);
         totalPoints = Math.max(calculatePoints(diag2SameCount, diag2EmptyCount), totalPoints);
-
         return totalPoints;
     }
     
@@ -95,16 +102,14 @@ public class evaluationFunction {
             return 0;
         }
     
-        // Variables to count occurrences of each property
-        int colorCount = hasSameColor(piece1, piece2) ? 1 : 0;
-        int heightCount = hasSameHeight(piece1, piece2) ? 1 : 0;
-        int shapeCount = hasSameShape(piece1, piece2) ? 1 : 0;
-        int holeCount = hasSameHole(piece1, piece2) ? 1 : 0;
+        // Variables to represent whether each property is the same
+        int colorSame = hasSameColor(piece1, piece2) ? 1 : 0;
+        int heightSame = hasSameHeight(piece1, piece2) ? 1 : 0;
+        int shapeSame = hasSameShape(piece1, piece2) ? 1 : 0;
+        int holeSame = hasSameHole(piece1, piece2) ? 1 : 0;
     
-        // Find the maximum count among the properties
-        int maxCount = Math.max(colorCount, Math.max(heightCount, Math.max(shapeCount, holeCount)));
-    
-        return maxCount;
+        // Construct the binary representation
+        return colorSame * 1000 + heightSame * 100 + shapeSame * 10 + holeSame;
     }
     
     private boolean hasSameColor(Pieces selectedPiece, Pieces otherPiece) {
@@ -137,6 +142,21 @@ public class evaluationFunction {
         }
     }
 
+ 
+    private static int findMaxDigit(int number) {
+            int maxDigit = 0;
+    
+            while (number > 0) {
+                int digit = number % 10;
+                maxDigit = Math.max(maxDigit, digit);
+                number /= 10;
+            }
+    
+            return maxDigit;
+    }
+    
+    
+
     // Main method for testing the evaluation function
     public static void main(String[] args) {
         // Create a sample board
@@ -144,11 +164,15 @@ public class evaluationFunction {
         evaluationFunction n = new evaluationFunction();
         // Create a sample selected piece
         Pieces selectedPiece = new Pieces(true, true, true, true);
-
+        System.out.println(selectedPiece.toString()); 
         // Place some pieces on the board for testing
         board.addPiece(new Pieces(true, true, true, false), 0); // Example piece with a different hole property
         board.addPiece(new Pieces(true, true, true, true), 7);  // Example piece with the same properties
         board.addPiece(new Pieces(false, true, false, false), 3);  // Example piece with the same properties
+        board.addPiece(new Pieces(false, false, false, true), 4); // Example piece with a different hole property
+        board.addPiece(new Pieces(false, false, false, true), 8); // Example piece with a different hole property
+
+
 
         System.out.println(board.toString());
         
