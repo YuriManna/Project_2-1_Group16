@@ -14,8 +14,8 @@ public class Board {
     private final Pieces[] availableBlacks;
     private Pieces selectedPiece;
     private int turnCounter = 1;
-    private final Player whitePlayer;
-    private final Player blackPlayer;
+    public final Player whitePlayer;
+    public final Player blackPlayer;
 
     private boolean gameWon = false;
     private boolean gameDrawn = false;

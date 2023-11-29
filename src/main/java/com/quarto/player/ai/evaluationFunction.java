@@ -10,14 +10,6 @@ public class evaluationFunction {
         // Variable to store the total points earned by the evaluation
         int totalPoints = 0;
         
-        //check if board is won, set point to 1000 is draw set to 0
-        //TODO: add here later
-        //if(board.checkIfWon()){
-        //    return totalPoints = 1000;
-        //}else if(board.checkIfDraw()){
-        //    return totalPoints = 0;
-        //}
-
         // Check rows, columns, and diagonals for potential wins
         for (int i = 0; i < 4; i++) {
             // Variables to track the count of empty slots and pieces with the same properties
@@ -92,6 +84,11 @@ public class evaluationFunction {
         // Calculate points for the diagonals and add to the total points
         totalPoints = Math.max(calculatePoints(diag1SameCount, diag1EmptyCount), totalPoints);
         totalPoints = Math.max(calculatePoints(diag2SameCount, diag2EmptyCount), totalPoints);
+        
+        if(board.getCurrentPlayer()==board.whitePlayer){
+            totalPoints = - totalPoints;
+        }
+
         return totalPoints;
     }
     
@@ -137,15 +134,15 @@ public class evaluationFunction {
             return 5; // 5 points for two pieces with the same property and two empty slots
         } else if (sameCount == 3 && emptyCount == 1) {
             return 10; // 10 points for three pieces with the same property and one empty slot
-        } else {
+        } else if(sameCount == 4 && emptyCount == 0){
+            return 1000;
+        }else {
             return 0; // 0 points for other cases
         }
     }
 
- 
     private static int findMaxDigit(int number) {
             int maxDigit = 0;
-    
             while (number > 0) {
                 int digit = number % 10;
                 maxDigit = Math.max(maxDigit, digit);
@@ -155,8 +152,6 @@ public class evaluationFunction {
             return maxDigit;
     }
     
-    
-
     // Main method for testing the evaluation function
     public static void main(String[] args) {
         // Create a sample board
