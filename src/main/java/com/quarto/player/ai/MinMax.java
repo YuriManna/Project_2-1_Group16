@@ -22,33 +22,44 @@ public class MinMax implements MoveStrategy {
 
     }
 
-    public int min(final Board board, final int depth){
+    public int min(final Board board, final int depth, int alpha, int beta){
         if(depth == 0 /*game over*/) {
             return this.boardEvaluator.evaluate(board, depth);
         }
         int lowestSeenValue = Integer.MAX_VALUE;
         for(final Move move : board.getCurrentPlayer().getLegalMoves()){
             board.executeMove(move);
-            int currentValue = max(new Board(board), depth -1);
+            int currentValue = max(new Board(board), depth -1, alpha, beta);
             if(currentValue <= lowestSeenValue){
                 lowestSeenValue = currentValue;
             }
+            if(beta >= currentValue){
+                beta = currentValue;
+            }
+            if(beta <= alpha) break;
+
         }
         return lowestSeenValue;
     }
 
-    public int max(final Board board, final int depth){
+
+
+    public int max(final Board board, final int depth, int alpha, int beta){
         if(depth == 0 /*game over*/) {
             return this.boardEvaluator.evaluate(board, depth);
         }
         int highestSeenValue = Integer.MIN_VALUE;
         for(final Move move : board.getCurrentPlayer().getLegalMoves()){
             board.executeMove(move);
-            int currentValue = min(new Board(board), depth -1);
-            if(currentValue <= highestSeenValue){
+            int currentValue = min(new Board(board), depth -1, alpha, beta);
+            if(currentValue >= highestSeenValue){
                 highestSeenValue = currentValue;
             }
-        }
+            if(alpha <= currentValue){
+                alpha = currentValue;
+            }
+            if(beta<=alpha) break;
+            }
         return highestSeenValue;
     }
 
