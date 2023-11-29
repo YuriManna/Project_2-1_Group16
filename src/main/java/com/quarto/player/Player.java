@@ -18,6 +18,10 @@ public class Player { //Store available pieces and colour
         availablePieces = board.getAvaileblePieces(color);
     }
 
+    public Pieces[] getAvailablePieces() {
+        return availablePieces;
+    }
+
     // returns all the possible moves at the current game status
     public List<Move> getLegalMoves(){
         Pieces piece = board.getSelectedPiece();
