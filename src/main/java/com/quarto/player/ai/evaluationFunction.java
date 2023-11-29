@@ -49,8 +49,9 @@ public class evaluationFunction {
             }
     
             // Calculate points for the row and column and add to the total points
-            totalPoints += calculatePoints(rowSameCount, rowEmptyCount);
-            totalPoints += calculatePoints(colSameCount, colEmptyCount);
+            totalPoints = Math.max(calculatePoints(rowSameCount, rowEmptyCount), totalPoints);
+            totalPoints = Math.max(calculatePoints(colSameCount, colEmptyCount), totalPoints);
+
         }
     
         // Check diagonals for potential wins
@@ -81,9 +82,9 @@ public class evaluationFunction {
         }
     
         // Calculate points for the diagonals and add to the total points
-        totalPoints += calculatePoints(diag1SameCount, diag1EmptyCount);
-        totalPoints += calculatePoints(diag2SameCount, diag2EmptyCount);
-    
+        totalPoints = Math.max(calculatePoints(diag1SameCount, diag1EmptyCount), totalPoints);
+        totalPoints = Math.max(calculatePoints(diag2SameCount, diag2EmptyCount), totalPoints);
+
         return totalPoints;
     }
     
