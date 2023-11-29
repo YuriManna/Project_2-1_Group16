@@ -1,45 +1,52 @@
 package com.quarto.setup;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class GameLogicTest {
     GameLogic gameLogic = new GameLogic();
+    Pieces WSSH = new Pieces(true,true,true,true);
+    Pieces WSSF = new Pieces(true,true,true,false);
+    Pieces WSCH = new Pieces(true,true,false,true);
+    Pieces WSCF = new Pieces(true,true,false,false);
 
     @Test
     public void testPlacePiece() {
-        Pieces piece = new Pieces(true, true, true, true);
-        gameLogic.placePiece(piece, 0);
-        Assertions.assertEquals(piece, gameLogic.getBoard().getPieceFromBoard(0, 0));
-        Assertions.assertFalse(gameLogic.getBoard().checkIfPieceIsAvailable(piece));
+        gameLogic.placePiece(WSSF, 0);
+        assertEquals(WSSF, gameLogic.getBoard().getPieceFromBoard(0, 0));
+        assertFalse(gameLogic.getBoard().checkIfPieceIsAvailable(WSSF));
 
-        Pieces secondPiece = new Pieces(false, false, false, false);
-        gameLogic.placePiece(secondPiece, 5);
-        Assertions.assertEquals(secondPiece, gameLogic.getBoard().getPieceFromBoard(1, 1));
+        gameLogic.placePiece(WSSH, 5);
+        assertEquals(WSSH, gameLogic.getBoard().getPieceFromBoard(1, 1));
     }
 
     @Test
     public void testCheckIfPieceIsAvailable() {
-        Pieces piece = new Pieces(true, true, true, true);
-        gameLogic.placePiece(piece, 0);
-        Assertions.assertFalse(gameLogic.getBoard().checkIfPieceIsAvailable(piece));
+        gameLogic.placePiece(WSCF, 0);
+        assertFalse(gameLogic.getBoard().checkIfPieceIsAvailable(WSCF));
     }
 
     @Test
     public void testMoveNotValid() {
-        // Test invalid move
-        Pieces piece = new Pieces(true, true, true, true);
-        gameLogic.placePiece(piece, 0);
-        Assertions.assertTrue(gameLogic.moveNotValid(piece, 0));
+        // Test when the selected piece is not available
+        gameLogic.placePiece(WSSF, 0);
+        assertTrue(gameLogic.moveNotValid(WSSF, 5));
 
-        // Test a valid move
-        Pieces newPiece = new Pieces(false, false, false, false);
-        Assertions.assertFalse(gameLogic.moveNotValid(newPiece, 1));
+        // Test when the tile is already occupied
+        gameLogic.placePiece(WSSH, 8);
+        assertTrue(gameLogic.moveNotValid(WSCH, 8));
+
+        // Test when the game is won
+        // Simulate a game won condition on the board
+        gameLogic.getBoard().addPiece(WSCH, 0);
+        gameLogic.getBoard().addPiece(WSCF, 1);
+        gameLogic.getBoard().addPiece(WSSH, 2);
+        gameLogic.getBoard().addPiece(WSSF, 3);
+        assertTrue(gameLogic.moveNotValid(new Pieces(false, false, false, false), 5));
     }
 
     @Test
     public void testSetSelectedPiece() {
-        Pieces piece = new Pieces(true, true, true, true);
-        gameLogic.SetSelectedPiece(piece);
-        Assertions.assertEquals(piece, gameLogic.getSelectedPiece());
+        gameLogic.SetSelectedPiece(WSSH);
+        assertEquals(WSSH, gameLogic.getSelectedPiece());
     }
 }

@@ -179,9 +179,7 @@ public class Board {
         for(int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (tile == tileId) {
-                 //   System.out.println("Board 127 Piece has been placed");
                     board[i][j] = piece;
-                    System.out.println("Board 127: remeber this change x<->y");
                     x = i;
                     y = j;
                 }
@@ -361,7 +359,6 @@ public class Board {
      * @return true if available, false if not
      * */
     public boolean checkIfPieceIsAvailable(Pieces piece){
-
         for (int i = 0; i < (availableWhites.length); i++) {
             if (piece == availableWhites[i]){
                 return true;

@@ -1,7 +1,4 @@
 package com.quarto.setup;
-
-import com.quarto.player.Player;
-
 import javax.swing.*;
 
 public class GameLogic {
