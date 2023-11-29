@@ -15,7 +15,7 @@ public class Player { //Store available pieces and colour
     public Player(boolean color, Board board) {
         this.board = board;
         this.color = color;
-        availablePieces = board.getAvaileblePieces(color);
+        availablePieces = board.getAvailablePieces(color);
     }
 
     public Pieces[] getAvailablePieces() {
@@ -26,7 +26,7 @@ public class Player { //Store available pieces and colour
     public List<Move> getLegalMoves(){
         Pieces piece = board.getSelectedPiece();
         List<Move> legalMoves = new ArrayList<>();
-        Pieces[] opponentPieces = board.getAvaileblePieces(!color);
+        Pieces[] opponentPieces = board.getAvailablePieces(!color);
 
         for (int i = 0; i < board.getAvailableTileIds().size(); i++) {
             for (int j = 0; j < opponentPieces.length; j++){

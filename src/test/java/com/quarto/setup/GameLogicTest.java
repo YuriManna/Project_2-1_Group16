@@ -36,7 +36,6 @@ public class GameLogicTest {
         assertTrue(gameLogic.moveNotValid(WSCH, 8));
 
         // Test when the game is won
-        // Simulate a game won condition on the board
         gameLogic.getBoard().addPiece(WSCH, 0);
         gameLogic.getBoard().addPiece(WSCF, 1);
         gameLogic.getBoard().addPiece(WSSH, 2);

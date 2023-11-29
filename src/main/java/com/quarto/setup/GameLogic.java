@@ -70,7 +70,7 @@ public class GameLogic {
             chechkingArray[i]=true;
         }
 
-        //Horizontal check
+        // Horizontal check
         for (int i = 0; i < board.getBoard().length; i++) {
             if(i==y){break;}
             for (int j = 0; j <referencePiece.Properties.length; j++) {
@@ -83,7 +83,7 @@ public class GameLogic {
             if(chechkingArray[j]==true){return true;}
         }
 
-        //Vertical check
+        // Vertical check
         for (int i = 0; i < board.getBoard().length; i++) {
             if(i==y){break;}
             if(board.getBoard()[i][y]==null){break;}

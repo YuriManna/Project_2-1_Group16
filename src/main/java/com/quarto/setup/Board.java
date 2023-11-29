@@ -82,7 +82,7 @@ public class Board {
      * @param color team color
      * @return the arraylist containing the available pieces depending on the color
      */
-    public Pieces[] getAvaileblePieces(boolean color){
+    public Pieces[] getAvailablePieces(boolean color){
         Pieces[] pieces;
         if(color) {
             pieces = availableWhites;

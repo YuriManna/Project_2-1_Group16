@@ -17,7 +17,7 @@ class BoardTest {
         board.addPiece(WSSH, 1);
         board.addPiece(WSCF, 2);
         board.addPiece(WSCH, 3);
-        assertTrue(board.checkIfWon(0, 0)); // Expecting a win at position (0,0)
+        assertTrue(board.checkIfWon(0, 0));
 
         // Test for a winning condition in a column
         board = new Board();
@@ -25,7 +25,7 @@ class BoardTest {
         board.addPiece(WSCH, 4);
         board.addPiece(WSSF, 8);
         board.addPiece(WSSH, 12);
-        assertTrue(board.checkIfWon(0, 0)); // Expecting a win at position (0,0)
+        assertTrue(board.checkIfWon(0, 0));
 
         // Test for a winning condition in a diagonal
         board = new Board();
@@ -33,7 +33,7 @@ class BoardTest {
         board.addPiece(WSSF, 5);
         board.addPiece(WSCH, 10);
         board.addPiece(WSCF, 15);
-        assertTrue(board.checkIfWon(0, 0)); // Expecting a win at position (0,0)
+        assertTrue(board.checkIfWon(0, 0));
     }
 
     @Test
