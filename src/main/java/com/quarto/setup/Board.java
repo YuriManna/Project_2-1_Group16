@@ -14,8 +14,8 @@ public class Board {
     private final Pieces[] availableBlacks;
     private Pieces selectedPiece;
     private int turnCounter = 1;
-    private final Player whitePlayer;
-    private final Player blackPlayer;
+    public final Player whitePlayer;
+    public final Player blackPlayer;
 
     private boolean gameWon = false;
     private boolean gameDrawn = false;
@@ -82,7 +82,7 @@ public class Board {
      * @param color team color
      * @return the arraylist containing the available pieces depending on the color
      */
-    public Pieces[] getAvaileblePieces(boolean color){
+    public Pieces[] getAvailablePieces(boolean color){
         Pieces[] pieces;
         if(color) {
             pieces = availableWhites;
@@ -179,9 +179,7 @@ public class Board {
         for(int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (tile == tileId) {
-                 //   System.out.println("Board 127 Piece has been placed");
                     board[i][j] = piece;
-                    System.out.println("Board 127: remeber this change x<->y");
                     x = i;
                     y = j;
                 }
@@ -199,12 +197,12 @@ public class Board {
         }
     }
 
-    public void removePiece(Pieces Piece) {
+    public void removePiece(Pieces piece) {
         for(int i = 0; i < 8; i++){
-            if(availableWhites[i] == Piece){
+            if(availableWhites[i] == piece){
                 availableWhites[i] = null;
             }
-            if(availableBlacks[i] == Piece){
+            if(availableBlacks[i] == piece){
                 availableBlacks[i] = null;
             }
         }
@@ -360,7 +358,6 @@ public class Board {
      * @return true if available, false if not
      * */
     public boolean checkIfPieceIsAvailable(Pieces piece){
-
         for (int i = 0; i < (availableWhites.length); i++) {
             if (piece == availableWhites[i]){
                 return true;

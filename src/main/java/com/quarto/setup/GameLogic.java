@@ -1,6 +1,5 @@
 package com.quarto.setup;
-
-import com.quarto.player.Player;
+import com.quarto.player.ai.MoveStrategy;
 
 import javax.swing.*;
 
@@ -9,6 +8,8 @@ public class GameLogic {
     private final Board board;
     private String message = "";
     private Pieces selectedPiece;
+    private boolean pvc = false;
+    private MoveStrategy moveStrategy;
 
 
 
@@ -25,13 +26,16 @@ public class GameLogic {
 
 
     /**
-     * method to place a piece on the board
+     * method to place a piece on the board increments the turn counter
      * @param selectedPiece piece to place
      * @param tileId position on the board
      * */
     public void placePiece(Pieces selectedPiece, int tileId){
         getBoard().addPiece(selectedPiece, tileId);
         getBoard().removePiece(selectedPiece);
+        System.out.println(board);
+        incrementTurnCounter();
+        System.out.println("turn count: " + turnCounter);
     }
 
     /**
@@ -41,7 +45,7 @@ public class GameLogic {
      * @return false if the move is invalid, true otherwise
      * */
     public boolean moveNotValid(Pieces selectedPiece,int tileId){
-        if(getBoard().checkIfPieceIsAvailable(selectedPiece) || getBoard().tileIsOccupied(tileId) || getBoard().isGameWon()){
+        if(!getBoard().checkIfPieceIsAvailable(selectedPiece) || getBoard().tileIsOccupied(tileId) || getBoard().isGameWon()){
             return true;
         }else{
             return false;
@@ -51,6 +55,7 @@ public class GameLogic {
     public void SetSelectedPiece(Pieces piece) {
         this.selectedPiece = piece;
         board.setSelectedPiece(piece);
+        System.out.println("selected piece: " + piece);
     }
 
     /**
@@ -73,7 +78,7 @@ public class GameLogic {
             chechkingArray[i]=true;
         }
 
-        //Horizontal check
+        // Horizontal check
         for (int i = 0; i < board.getBoard().length; i++) {
             if(i==y){break;}
             for (int j = 0; j <referencePiece.Properties.length; j++) {
@@ -86,7 +91,7 @@ public class GameLogic {
             if(chechkingArray[j]==true){return true;}
         }
 
-        //Vertical check
+        // Vertical check
         for (int i = 0; i < board.getBoard().length; i++) {
             if(i==y){break;}
             if(board.getBoard()[i][y]==null){break;}
@@ -135,6 +140,21 @@ public class GameLogic {
         }
         return false;
     }
+    /**
+     * method to check if the computer is playing
+     * @return true or false depending on the game mode
+     * */
+    public boolean isPvc() {
+        return pvc;
+    }
+
+    /**
+     * method to get the turn count
+     * @return the turn count
+     * */
+    public int getTurnCounter() {
+        return turnCounter;
+    }
 
     /**
      * method to retrieve a piece from a specific position on the board
@@ -175,14 +195,14 @@ public class GameLogic {
         Pieces selectedPiece = piece;
         if(this.turnCounter%2==0){
             setMessage("Black places the selected piece");
-            if(!selectedPiece.isColor()){
+            if(selectedPiece.isColor()){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
             }
 
         } else {
             setMessage("White places the selected piece");
-            if(selectedPiece.isColor()){
+            if(!selectedPiece.isColor()){
                 selectedPiece = null;
                 setMessage("Wrong colour!");
             }
@@ -192,25 +212,33 @@ public class GameLogic {
 
     public void checkTurn(){
         if(this.turnCounter%2==0){
-           setMessage("Black chooses the opponent's piece");
-        } else {
             setMessage("White chooses the opponent's piece");
+        } else {
+            setMessage("Black chooses the opponent's piece");
         }
     }
     public void checkGameStatus(){
         if(board.isGameWon()){
             if(this.turnCounter%2==0){
-                setMessage("Black won the game!");
-                JOptionPane.showMessageDialog(null, "You have won the game!", "Black won!", JOptionPane.INFORMATION_MESSAGE);
-            } else {
                 setMessage("White won the game!");
                 JOptionPane.showMessageDialog(null, "You have won the game!", "White won!", JOptionPane.INFORMATION_MESSAGE);
+            }else {
+                setMessage("Black won the game!");
+                JOptionPane.showMessageDialog(null, "You have won the game!", "Black won!", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else if(board.isGameDrawn()){
             setMessage("It's a tie!");
             JOptionPane.showMessageDialog(null, "Game ended in a tie!", "Quarto", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+    /*
+     * method to add a computer player
+     * @param moveStrategy the algorithm the computer will use to play
+     */
+    public void setComputerPlayer(MoveStrategy moveStrategy) {
+        pvc = true;
+        this.moveStrategy = moveStrategy;
     }
 
     public void incrementTurnCounter(){

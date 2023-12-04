@@ -15,14 +15,18 @@ public class Player { //Store available pieces and colour
     public Player(boolean color, Board board) {
         this.board = board;
         this.color = color;
-        availablePieces = board.getAvaileblePieces(color);
+        availablePieces = board.getAvailablePieces(color);
+    }
+
+    public Pieces[] getAvailablePieces() {
+        return availablePieces;
     }
 
     // returns all the possible moves at the current game status
-    public List<Move> getLegalMoves(Board board){
-        Pieces piece = board.getSelectedPiece(); // current selected piece to place
-        List<Move> legalMoves = new ArrayList<>(); // list of all the possible moves
-        Pieces[] opponentPieces = board.getAvaileblePieces(!color); // list of all the pieces the opponent has
+    public List<Move> getLegalMoves(){
+        Pieces piece = board.getSelectedPiece();
+        List<Move> legalMoves = new ArrayList<>();
+        Pieces[] opponentPieces = board.getAvailablePieces(!color);
 
         for (int i = 0; i < board.getAvailableTileIds().size(); i++) { // for each available tile
             for (int j = 0; j < opponentPieces.length; j++){ // for each opponent piece

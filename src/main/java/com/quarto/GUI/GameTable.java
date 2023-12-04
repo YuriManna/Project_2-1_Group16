@@ -172,7 +172,7 @@ public class GameTable {
                     if(isLeftMouseButton(e)){
                         Pieces selectedPiece = gameLogic.getSelectedPiece();
                         if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
-                            gameLogic.placePiece(selectedPiece,tileId);
+                        gameLogic.placePiece(selectedPiece,tileId);
                         try {
                             assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
                             sidePanel.reloadTiles();
@@ -182,9 +182,7 @@ public class GameTable {
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        System.out.println(gameLogic.getBoard());
                         gameLogic.SetSelectedPiece(null);
-                        gameLogic.incrementTurnCounter();
                     }
                 }
 
@@ -261,6 +259,7 @@ public class GameTable {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
                     if(gameLogic.getBoard().isGameWon()){return;}
+                    // if the player right clicks deselect the selected piece
                     if(isRightMouseButton(e)){
                         gameLogic.SetSelectedPiece(null);
                         try {
@@ -271,6 +270,7 @@ public class GameTable {
                         
                     }else if(isLeftMouseButton(e)){
                         Pieces piece;
+                        //if the player clicks on a piece that is already selected, deselect it
                         if(gameLogic.getSelectedPiece() != null){
                             if (teamColor) {
                                 piece = gameLogic.getBoard().getAvailableWhites()[tileId];
@@ -288,6 +288,8 @@ public class GameTable {
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
+
+                        // if the player clicks on a piece that is not selected, select it
                         setBorder(new MatteBorder(3, 3, 3, 3, new Color(206, 32, 41)));
                         if (teamColor) {
                             piece = gameLogic.getBoard().getAvailableWhites()[tileId];
@@ -298,7 +300,10 @@ public class GameTable {
                             gameLogic.SetSelectedPiece(gameLogic.checkSelectedPieceColour(piece));
                             turnLabel.setText(gameLogic.getMessage());
                         }
-                        System.out.println("selected piece: " + gameLogic.getSelectedPiece());
+                        if(gameLogic.isPvc()|| gameLogic.getTurnCounter()%2==0){
+                            // call the minimax algorithm and execute the play
+                            // remember to reload all the tiles
+                        }
                     }
                 }
 
