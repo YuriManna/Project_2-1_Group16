@@ -15,9 +15,44 @@ public class evaluationFunction {
         this.board = board;
         this.selectedPiece = board.getSelectedPiece();
     }
+    
+/* USE METHOD evaluateBoard TO EVALUATE BOARD.
+ * USE METHOD worstPiece TO CHOOSE WORST PIECE FOR OPPONENT
+ * 
+ * 
+ */
+
+
+
+
+
+    public Pieces worstPiece(Pieces[]availablePieces){
+        int[]points =  new int[availablePieces.length];
+        for(int i = 0; i<availablePieces.length;i++){
+            if(availablePieces[i]!=null){
+            points[i]=evaluateSelectedPiece(availablePieces[i]);  
+            }else{
+            points[i]=99999;  
+            }
+        }
+
+        int smallestIndex = 0;
+
+        for (int i = 1; i < points.length; i++) {
+            if (points[i] < points[smallestIndex]) {
+                smallestIndex = i;
+            }
+        }
         
+        for(int k =0;k<points.length;k++){
+            System.out.println(points[k]);
+        }
+
+        return availablePieces[smallestIndex];
+    }
+
     // Method to evaluate the game board based on the selected piece
-    public int evaluateBoard() {
+    public int evaluateSelectedPiece(Pieces select) {
         // Variable to store the total points earned by the evaluation
         int totalPoints = 0;
         
@@ -40,7 +75,7 @@ public class evaluationFunction {
                 if (rowPiece == null) {
                     rowEmptyCount++;
                 } else {
-                    rowProperties += piecesHaveSameProperties(rowPiece, selectedPiece);
+                    rowProperties += piecesHaveSameProperties(rowPiece, select);
                     rowSameCount = Math.max(rowSameCount, findMaxDigit(rowProperties));
                 }
     
@@ -48,7 +83,7 @@ public class evaluationFunction {
                 if (colPiece == null) {
                     colEmptyCount++;
                 } else {
-                    colProperties += piecesHaveSameProperties(colPiece, selectedPiece);
+                    colProperties += piecesHaveSameProperties(colPiece, select);
                     colSameCount = Math.max(colSameCount, findMaxDigit(colProperties));
 
                 }
@@ -77,7 +112,7 @@ public class evaluationFunction {
             if (diag1Piece == null) {
                 diag1EmptyCount++;
             } else {
-                diag1SameCount += piecesHaveSameProperties(diag1Piece, selectedPiece);
+                diag1SameCount += piecesHaveSameProperties(diag1Piece, select);
                 diag1SameCount = Math.max(diag1SameCount, findMaxDigit(diag1Properties));
 
             }
@@ -86,7 +121,7 @@ public class evaluationFunction {
             if (diag2Piece == null) {
                 diag2EmptyCount++;
             } else {
-                diag2SameCount += piecesHaveSameProperties(diag2Piece, selectedPiece);
+                diag2SameCount += piecesHaveSameProperties(diag2Piece, select);
                 diag1SameCount = Math.max(diag2SameCount, findMaxDigit(diag2Properties));
 
             }
@@ -96,10 +131,6 @@ public class evaluationFunction {
         totalPoints = Math.max(calculatePoints(diag1SameCount, diag1EmptyCount), totalPoints);
         totalPoints = Math.max(calculatePoints(diag2SameCount, diag2EmptyCount), totalPoints);
         
-        if(board.getCurrentPlayer()==board.whitePlayer){
-            totalPoints = - totalPoints;
-        }
-
         return totalPoints;
     }
     
@@ -142,9 +173,9 @@ public class evaluationFunction {
         if (sameCount == 1 && emptyCount == 3) {
             return 1; // 1 point for one piece with the same property and three empty slots
         } else if (sameCount == 2 && emptyCount == 2) {
-            return 5; // 5 points for two pieces with the same property and two empty slots
+            return 10; // 5 points for two pieces with the same property and two empty slots
         } else if (sameCount == 3 && emptyCount == 1) {
-            return 10; // 10 points for three pieces with the same property and one empty slot
+            return 100; // 10 points for three pieces with the same property and one empty slot
         } else if(sameCount == 4 && emptyCount == 0){
             return 1000;
         }else {
@@ -162,8 +193,124 @@ public class evaluationFunction {
     
             return maxDigit;
     }
+
     
     
+/////////////////////////////////////////////
+
+
+
+    public int evaluationOfOneRow(Board board, int row) {
+        int[][] trueFalseCounts = new int[4][2]; // Array to store counts for true and false
+        int emptyPieces = 0;
+        int points = 0;
+
+        for (int j = 0; j < 4; j++) {
+            
+            Pieces currentPiece = board.getPieceFromBoard(row, j);
+            if (currentPiece == null)
+            {emptyPieces++;}
+
+            for (int k =0;k<4;k++){
+
+            if (currentPiece != null){
+                trueFalseCounts[k][0] += currentPiece.Properties[k] ? 1 : 0; // Increment count for true
+                trueFalseCounts[k][1] += !currentPiece.Properties[k] ? 1 : 0; // Increment count for false
+            }
+            }
+        }
+        
+        for(int l = 0; l<4;l++ ){
+            points += calculatePoints(Math.max(trueFalseCounts[l][0],trueFalseCounts[l][1]),emptyPieces);
+        }
+        
+        return points;
+    }
+
+    public int evaluationOfOneCol(Board board, int col) {
+        int[][] trueFalseCounts = new int[4][2]; // Array to store counts for true and false
+        int emptyPieces = 0;
+        int points = 0;
+
+        for (int i = 0; i < 4; i++) {
+            Pieces currentPiece = board.getPieceFromBoard(i, col);
+            if (currentPiece == null) {
+                emptyPieces++;
+            }
+
+            for (int k = 0; k < 4; k++) {
+                if (currentPiece != null) {
+                    trueFalseCounts[k][0] += currentPiece.Properties[k] ? 1 : 0; // Increment count for true
+                    trueFalseCounts[k][1] += !currentPiece.Properties[k] ? 1 : 0; // Increment count for false
+                }
+            }
+        }
+
+        for (int l = 0; l < 4; l++) {
+            points += calculatePoints(Math.max(trueFalseCounts[l][0], trueFalseCounts[l][1]), emptyPieces);
+        }
+
+        return points;
+    }
+
+    public int evaluationOfOneDiagonal(Board board, boolean leftToRight) {
+        int[][] trueFalseCounts = new int[4][2]; // Array to store counts for true and false
+        int emptyPieces = 0;
+        int points = 0;
+
+        for (int i = 0; i < 4; i++) {
+            int j = leftToRight ? i : 3 - i;
+            Pieces currentPiece = board.getPieceFromBoard(i, j);
+            
+            if (currentPiece == null) {
+                emptyPieces++;
+            }
+
+            for (int k = 0; k < 4; k++) {
+                if (currentPiece != null) {
+                    trueFalseCounts[k][0] += currentPiece.Properties[k] ? 1 : 0; // Increment count for true
+                    trueFalseCounts[k][1] += !currentPiece.Properties[k] ? 1 : 0; // Increment count for false
+                }
+            }
+        }
+
+        for (int l = 0; l < 4; l++) {
+            points += calculatePoints(Math.max(trueFalseCounts[l][0], trueFalseCounts[l][1]), emptyPieces);
+        }
+
+        return points;
+    }
+
+    
+    public int evaluateBoard(Board board) {
+        int totalPoints = 0;
+
+        // Evaluate all rows
+        for (int i = 0; i < 4; i++) {
+            totalPoints += evaluationOfOneRow(board, i);
+        }
+
+        // Evaluate all columns
+        for (int j = 0; j < 4; j++) {
+            totalPoints += evaluationOfOneCol(board, j);
+        }
+
+        // Evaluate both diagonals
+        totalPoints += evaluationOfOneDiagonal(board, true);  // Left to right diagonal
+        totalPoints += evaluationOfOneDiagonal(board, false); // Right to left diagonal
+
+        // max turn gives positive and min turn gives negetive
+        if(board.getCurrentPlayer()==board.whitePlayer){
+            totalPoints = - totalPoints;
+        }
+
+
+        return totalPoints;
+    }
+
+
+
+
 
 
     // Main method for testing the evaluation function
@@ -176,19 +323,29 @@ public class evaluationFunction {
         board.setSelectedPiece(selectedPiece);
         System.out.println(selectedPiece.toString()); 
         // Place some pieces on the board for testing
-        board.addPiece(new Pieces(true, true, true, false), 0); // Example piece with a different hole property
+        Pieces wssf = new Pieces(true, true, true, false);
+        
+        board.addPiece(wssf, 0); // Example piece with a different hole property
         board.addPiece(new Pieces(true, true, true, true), 7);  // Example piece with the same properties
         board.addPiece(new Pieces(false, true, false, false), 3);  // Example piece with the same properties
         board.addPiece(new Pieces(false, false, false, true), 4); // Example piece with a different hole property
         board.addPiece(new Pieces(false, false, false, true), 8); // Example piece with a different hole property
 
+       
         evaluationFunction n = new evaluationFunction(board);
 
         System.out.println(board.toString());
         
         // Evaluate the board
-        int evaluation = n.evaluateBoard();
+        int evaluation = n.evaluateBoard(board);
 
         System.out.println("Board Evaluation: " + evaluation);
+
+        Pieces[] a =board.getAvailableWhites();
+        a[0]=null;
+        a[1]=null;
+
+        Pieces worst= n.worstPiece(a);
+        System.out.println(worst.toString());
     }
 }
