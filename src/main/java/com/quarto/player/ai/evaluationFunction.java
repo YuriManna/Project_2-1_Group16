@@ -1,12 +1,23 @@
 package com.quarto.player.ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.quarto.setup.Board;
 import com.quarto.setup.Pieces;
 
 public class evaluationFunction {
     
+    public Board board;
+    public Pieces selectedPiece;
+    
+    public evaluationFunction(Board board){
+        this.board = board;
+        this.selectedPiece = board.getSelectedPiece();
+    }
+        
     // Method to evaluate the game board based on the selected piece
-    public int evaluateBoard(Board board, Pieces selectedPiece) {
+    public int evaluateBoard() {
         // Variable to store the total points earned by the evaluation
         int totalPoints = 0;
         
@@ -152,13 +163,17 @@ public class evaluationFunction {
             return maxDigit;
     }
     
+    
+
+
     // Main method for testing the evaluation function
     public static void main(String[] args) {
         // Create a sample board
         Board board = new Board();
-        evaluationFunction n = new evaluationFunction();
+        
         // Create a sample selected piece
         Pieces selectedPiece = new Pieces(true, true, true, true);
+        board.setSelectedPiece(selectedPiece);
         System.out.println(selectedPiece.toString()); 
         // Place some pieces on the board for testing
         board.addPiece(new Pieces(true, true, true, false), 0); // Example piece with a different hole property
@@ -167,12 +182,12 @@ public class evaluationFunction {
         board.addPiece(new Pieces(false, false, false, true), 4); // Example piece with a different hole property
         board.addPiece(new Pieces(false, false, false, true), 8); // Example piece with a different hole property
 
-
+        evaluationFunction n = new evaluationFunction(board);
 
         System.out.println(board.toString());
         
         // Evaluate the board
-        int evaluation = n.evaluateBoard(board, selectedPiece);
+        int evaluation = n.evaluateBoard();
 
         System.out.println("Board Evaluation: " + evaluation);
     }
