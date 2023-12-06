@@ -13,9 +13,6 @@ public class GameLogic {
     private MoveStrategy moveStrategy;
     private BaselineAgent baselineAgent;
     private Move move;
-    private Pieces pieceForAI;
-
-
 
     /* This happens after the game mode has been chosen
         1.Current move
@@ -40,7 +37,8 @@ public class GameLogic {
         getBoard().removePiece(selectedPiece);
         System.out.println(board);
         incrementTurnCounter();
-        System.out.println("turn count: " + turnCounter);
+        System.out.println("GAME LOGIC turn count: " + turnCounter);
+        
     }
 
     /**
@@ -163,7 +161,7 @@ public class GameLogic {
      * @return the turn count
      * */
     public int getTurnCounter() {
-        return turnCounter;
+        return this.turnCounter;
     }
 
     /**
@@ -277,15 +275,6 @@ public class GameLogic {
     public Board getBoard(){
         return this.board;
     }
-
-    // private void setPieceForAI(Pieces pieceForAI) {
-    //     this.pieceForAI = pieceForAI;
-    // }
-
-    // private Pieces getPieceForAI() {
-    //     return this.pieceForAI;
-    // }
-
 
     public void setPVC(boolean bool) {
         this.pvc = bool;

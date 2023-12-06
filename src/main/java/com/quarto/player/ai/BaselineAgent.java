@@ -28,7 +28,7 @@ public class BaselineAgent {
         return availablePiecesAgent;
     }
 
-    // //Method to make a random move
+    //Method to make a random move
     // public void makeRandomMove(Pieces pieceToPlace) {
     //     Random random = new Random();
     //     int tileId = random.nextInt(board.getAvailableTileIds().size()); // Random tile
@@ -71,6 +71,7 @@ public class BaselineAgent {
             chosenTileId = tileId;
         }
         else chooseRandomPlace(pieceToPlace);
+        System.out.println("TILEID CHOSEN BY AI"+chosenTileId);
         return chosenTileId;
     }
 
@@ -81,6 +82,7 @@ public class BaselineAgent {
 
      
         // board.setSelectedPiece(pieceChosenForOpponent);
+        System.out.println("PIECE CHOSEN BY AI"+pieceChosenForOpponent);
         return pieceChosenForOpponent;
     }
 

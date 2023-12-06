@@ -35,6 +35,7 @@ public class GameTable {
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);
     private static Dimension TURN_LABEL_DIMENSION = new Dimension(100,20);
 
+
     private final GameLogic gameLogic;
 
     //main game frame
@@ -168,18 +169,97 @@ public class GameTable {
 
             
 
-            addMouseListener(new MouseListener() {
+            // addMouseListener(new MouseListener() {
 
-                @Override
-                public void mouseClicked(final MouseEvent e) {
-                Pieces selectedPiece = null;
+            //     @Override
+            //     public void mouseClicked(final MouseEvent e) {
+            //     Pieces selectedPiece = null;
                 
-                if(isLeftMouseButton(e)){
-                    selectedPiece = gameLogic.getSelectedPiece();
-                }
-                    if(gameLogic.isPvc()==true && gameLogic.getTurnCounter()%2==0)
-                    {
-                            System.out.println("COOOOOOOOOOOCK");
+            //     if(isLeftMouseButton(e)){
+            //         selectedPiece = gameLogic.getSelectedPiece();
+            //     }
+                
+
+
+                
+                
+            //         if(gameLogic.isPvc()==true && gameLogic.getTurnCounter()%2==0)
+            //         {
+            //                 System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            //                 int AItileId=gameLogic.getBaselineAgent().chooseRandomPlace(selectedPiece);
+            //                 System.out.println("AI tile id: "+AItileId);
+            //                 gameLogic.placePiece(selectedPiece,AItileId);
+
+            //                 try {
+            //                     assignTilePieceIcon(gameLogic.getBoard(), AItileId, selectedPiece);
+            //                     sidePanel.reloadTiles();
+            //                     gameLogic.checkTurn();
+            //                     gameLogic.checkGameStatus();
+            //                     turnLabel.setText(gameLogic.getMessage());
+
+            //                 } catch (IOException ex) {
+            //                     throw new RuntimeException(ex);
+            //                 }
+            //                 gameLogic.SetSelectedPiece(null);
+                        
+
+            //         }
+            //         else
+            //         {
+            
+            //                 if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
+            //                 gameLogic.placePiece(selectedPiece,tileId);
+            //                 try {
+            //                     assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
+            //                     sidePanel.reloadTiles();
+            //                     gameLogic.checkTurn();
+            //                     gameLogic.checkGameStatus();
+            //                     turnLabel.setText(gameLogic.getMessage());
+            //                 } catch (IOException ex) {
+            //                     throw new RuntimeException(ex);
+            //                 }
+            //                 gameLogic.SetSelectedPiece(null);
+                        
+            //         }
+                
+            // }   
+
+
+
+            //     @Override
+            //     public void mousePressed(final MouseEvent e) {}
+            //     @Override
+            //     public void mouseReleased(final MouseEvent e) {}
+            //     @Override
+            //     public void mouseEntered(final MouseEvent e) {}
+            //     @Override
+            //     public void mouseExited(final MouseEvent e) {}
+            // });
+                    
+                if(gameLogic.getTurnCounter()%2==0)
+                {
+                    System.out.println("AI TURN AI TURN AI TURN AI TURN AI TURN AI TURN AI TURN");
+                    addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(final MouseEvent e) {
+                    Pieces selectedPiece = null;
+                    if(isLeftMouseButton(e)){
+                        selectedPiece = gameLogic.getSelectedPiece();
+                    }
+                    }
+                
+                        @Override
+                        public void mousePressed(final MouseEvent e) {}
+                        @Override
+                        public void mouseReleased(final MouseEvent e) {}
+                        @Override
+                        public void mouseEntered(final MouseEvent e) {}
+                        @Override
+                        public void mouseExited(final MouseEvent e) {}
+                    });
+
+                            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                            Pieces selectedPiece=gameLogic.getSelectedPiece();
                             int AItileId=gameLogic.getBaselineAgent().chooseRandomPlace(selectedPiece);
                             System.out.println("AI tile id: "+AItileId);
                             gameLogic.placePiece(selectedPiece,AItileId);
@@ -196,41 +276,43 @@ public class GameTable {
                             }
                             gameLogic.SetSelectedPiece(null);
                         
-
                     }
                     else
                     {
-            
-                            if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
-                            gameLogic.placePiece(selectedPiece,tileId);
-                            try {
-                                assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
-                                sidePanel.reloadTiles();
-                                gameLogic.checkTurn();
-                                gameLogic.checkGameStatus();
-                                turnLabel.setText(gameLogic.getMessage());
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            gameLogic.SetSelectedPiece(null);
-                        
+
+                    System.out.println("HUMAN TURN HUMAN TURN HUMAN TURN HUMAN TURN"+gameLogic.getTurnCounter());
+                    addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(final MouseEvent e) {
+
+                        if(isLeftMouseButton(e)){
+
+                        Pieces selectedPiece=gameLogic.getSelectedPiece();
+                        if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
+                        gameLogic.placePiece(selectedPiece,tileId);
+                        try {
+                            assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
+                            sidePanel.reloadTiles();
+                            gameLogic.checkTurn();
+                            gameLogic.checkGameStatus();
+                            turnLabel.setText(gameLogic.getMessage());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        gameLogic.SetSelectedPiece(null);
+                        }
+                        }
+                    
+                        @Override
+                        public void mousePressed(final MouseEvent e) {}
+                        @Override
+                        public void mouseReleased(final MouseEvent e) {}
+                        @Override
+                        public void mouseEntered(final MouseEvent e) {}
+                        @Override
+                        public void mouseExited(final MouseEvent e) {}
+                    });
                     }
-                
-            }   
-
-
-
-                @Override
-                public void mousePressed(final MouseEvent e) {}
-                @Override
-                public void mouseReleased(final MouseEvent e) {}
-                @Override
-                public void mouseEntered(final MouseEvent e) {}
-                @Override
-                public void mouseExited(final MouseEvent e) {}
-            });
-        
-            
 
             validate();
         }
@@ -269,6 +351,8 @@ public class GameTable {
             setPreferredSize(SIDE_PANEL_DIMENSION);
             validate();
         }
+
+
         public void reloadTiles() throws IOException {
             for(int i = 0; i < 8; i++){
                 whites.get(i).assignTilePieceIcon(gameLogic.getBoard(),i,true);
@@ -363,7 +447,7 @@ public class GameTable {
         }
         else 
         {
-            if(gameLogic.isPvc()==true && gameLogic.getTurnCounter()%2==0)
+            if(gameLogic.isPvc()==true || gameLogic.getTurnCounter()%2==0)
             {
             gameLogic.SetSelectedPiece(gameLogic.getBaselineAgent().chooseRandomOpponentPiece());
             turnLabel.setText(gameLogic.getMessage());     

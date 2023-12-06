@@ -101,7 +101,7 @@ public class Board {
         removePiece(selectedPiece);
         System.out.println(board);
         incrementTurnCounter();
-        System.out.println("turn count: " + turnCounter);
+        System.out.println("BOARD turn count: " + turnCounter);
     }
 
     public Pieces getSelectedPiece(){return selectedPiece;}
@@ -231,7 +231,7 @@ public class Board {
         removePiece(move.getPieceToPlace());
         setSelectedPiece(move.getPieceChosen());
         incrementTurnCounter();
-    }
+    }   
 
 
     /**
