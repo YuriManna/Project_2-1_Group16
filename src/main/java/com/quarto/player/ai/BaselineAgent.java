@@ -60,18 +60,21 @@ public class BaselineAgent {
     // }
 
     public int chooseRandomPlace(Pieces pieceToPlace) {
-        int chosenTileId = -1;
+        //int chosenTileId = -1;
         Random random = new Random();
-        int tileId = random.nextInt(board.getAvailableTileIds().size()); // Random tile
-        Pieces pieceToChoose = availablePiecesOpponent[random.nextInt(availablePiecesOpponent.length)]; // Random piece from opponent's color
-        pieceChosenForOpponent = pieceToChoose;
-        Move move = new Move(pieceToPlace,tileId,pieceChosenForOpponent);
-        if(agent.getLegalMoves().contains(move)){
-            //board.placePiece(pieceToPlace,tileId);
-            chosenTileId = tileId;
-        }
-        else chooseRandomPlace(pieceToPlace);
-        System.out.println("TILEID CHOSEN BY AI"+chosenTileId);
+        int chosenTileId = random.nextInt(board.getAvailableTileIds().size()); // Random tile
+        // Pieces pieceToChoose = availablePiecesOpponent[random.nextInt(availablePiecesOpponent.length)]; // Random piece from opponent's color
+        // pieceChosenForOpponent = pieceToChoose;
+        // Move move = new Move(pieceToPlace,tileId,pieceChosenForOpponent);
+
+        // if(agent.getLegalMoves().contains(move)){
+        //     //board.placePiece(pieceToPlace,tileId);
+        //     chosenTileId = tileId;
+        // }
+
+        // else chooseRandomPlace(pieceToPlace);
+
+        System.out.println("TILEID CHOSEN BY AI: "+chosenTileId);
         return chosenTileId;
     }
 
@@ -82,7 +85,7 @@ public class BaselineAgent {
 
      
         // board.setSelectedPiece(pieceChosenForOpponent);
-        System.out.println("PIECE CHOSEN BY AI"+pieceChosenForOpponent);
+        System.out.println("PIECE CHOSEN BY AI: "+pieceChosenForOpponent);
         return pieceChosenForOpponent;
     }
 
