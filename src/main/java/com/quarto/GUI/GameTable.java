@@ -1,5 +1,6 @@
 package com.quarto.GUI;
 
+import com.quarto.player.ai.BaselineAgent;
 import com.quarto.setup.Board;
 import com.quarto.setup.GameLogic;
 import com.quarto.setup.Pieces;
@@ -165,26 +166,59 @@ public class GameTable {
             setVisible(true);
             setOpaque(false);
 
+            
+
             addMouseListener(new MouseListener() {
+
                 @Override
                 public void mouseClicked(final MouseEvent e) {
-
-                    if(isLeftMouseButton(e)){
-                        Pieces selectedPiece = gameLogic.getSelectedPiece();
-                        if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
-                        gameLogic.placePiece(selectedPiece,tileId);
-                        try {
-                            assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
-                            sidePanel.reloadTiles();
-                            gameLogic.checkTurn();
-                            gameLogic.checkGameStatus();
-                            turnLabel.setText(gameLogic.getMessage());
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        gameLogic.SetSelectedPiece(null);
-                    }
+                Pieces selectedPiece = null;
+                
+                if(isLeftMouseButton(e)){
+                    selectedPiece = gameLogic.getSelectedPiece();
                 }
+                    if(gameLogic.isPvc()==true && gameLogic.getTurnCounter()%2==0)
+                    {
+                            System.out.println("COOOOOOOOOOOCK");
+                            int AItileId=gameLogic.getBaselineAgent().chooseRandomPlace(selectedPiece);
+                            System.out.println("AI tile id: "+AItileId);
+                            gameLogic.placePiece(selectedPiece,AItileId);
+
+                            try {
+                                assignTilePieceIcon(gameLogic.getBoard(), AItileId, selectedPiece);
+                                sidePanel.reloadTiles();
+                                gameLogic.checkTurn();
+                                gameLogic.checkGameStatus();
+                                turnLabel.setText(gameLogic.getMessage());
+
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            gameLogic.SetSelectedPiece(null);
+                        
+
+                    }
+                    else
+                    {
+            
+                            if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
+                            gameLogic.placePiece(selectedPiece,tileId);
+                            try {
+                                assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
+                                sidePanel.reloadTiles();
+                                gameLogic.checkTurn();
+                                gameLogic.checkGameStatus();
+                                turnLabel.setText(gameLogic.getMessage());
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            gameLogic.SetSelectedPiece(null);
+                        
+                    }
+                
+            }   
+
+
 
                 @Override
                 public void mousePressed(final MouseEvent e) {}
@@ -195,6 +229,8 @@ public class GameTable {
                 @Override
                 public void mouseExited(final MouseEvent e) {}
             });
+        
+            
 
             validate();
         }
@@ -255,6 +291,7 @@ public class GameTable {
             }else{color = new Color(245, 245, 220);}
             setBackground(color);
             assignTilePieceIcon(gameLogic.getBoard(), tileId,teamColor);
+            if(gameLogic.getTurnCounter()%2!=0){
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -300,10 +337,15 @@ public class GameTable {
                             gameLogic.SetSelectedPiece(gameLogic.checkSelectedPieceColour(piece));
                             turnLabel.setText(gameLogic.getMessage());
                         }
-                        if(gameLogic.isPvc()|| gameLogic.getTurnCounter()%2==0){
-                            // call the minimax algorithm and execute the play
-                            // remember to reload all the tiles
-                        }
+
+                        // if(gameLogic.isPvc()==true && gameLogic.getTurnCounter()%2==0){
+                        //     // call the minimax algorithm and execute the play
+                        //     // remember to reload all the tiles
+
+                        //     gameLogic.SetSelectedPiece(gameLogic.getBaselineAgent().chooseRandomOpponentPiece());
+                        //     turnLabel.setText(gameLogic.getMessage());
+                        
+                        // }
                     }
                 }
 
@@ -319,6 +361,16 @@ public class GameTable {
             setVisible(true);
             validate();
         }
+        else 
+        {
+            if(gameLogic.isPvc()==true && gameLogic.getTurnCounter()%2==0)
+            {
+            gameLogic.SetSelectedPiece(gameLogic.getBaselineAgent().chooseRandomOpponentPiece());
+            turnLabel.setText(gameLogic.getMessage());     
+            sidePanel.reloadTiles();  
+            }
+        }
+    }
 
         private void assignTilePieceIcon(final Board board, final int tileId, boolean teamColor) throws IOException {
             this.removeAll();

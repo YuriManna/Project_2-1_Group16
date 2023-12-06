@@ -1,4 +1,5 @@
 package com.quarto.setup;
+import com.quarto.player.ai.BaselineAgent;
 import com.quarto.player.ai.MoveStrategy;
 
 import javax.swing.*;
@@ -10,6 +11,9 @@ public class GameLogic {
     private Pieces selectedPiece;
     private boolean pvc = false;
     private MoveStrategy moveStrategy;
+    private BaselineAgent baselineAgent;
+    private Move move;
+    private Pieces pieceForAI;
 
 
 
@@ -20,8 +24,9 @@ public class GameLogic {
             1.3 Current player places piece
             1.4 next iteration of the current move is called and current player is Switched
      */
-    public GameLogic(){
+    public GameLogic(){ 
         this.board = new Board();
+        this.baselineAgent = new BaselineAgent(true);
     }
 
 
@@ -51,6 +56,11 @@ public class GameLogic {
             return false;
         }
     }
+    
+    // public Move getMove(){
+    //     return move;
+    // }
+    
 
     public void SetSelectedPiece(Pieces piece) {
         this.selectedPiece = piece;
@@ -241,6 +251,14 @@ public class GameLogic {
         this.moveStrategy = moveStrategy;
     }
 
+    public void setBaselineAgent(BaselineAgent baselineAgent) {
+        pvc = true;
+        this.baselineAgent = baselineAgent;
+    }
+
+    public BaselineAgent getBaselineAgent() {
+        return baselineAgent;
+    }
     public void incrementTurnCounter(){
         this.turnCounter++; board.incrementTurnCounter();
     }
@@ -258,6 +276,19 @@ public class GameLogic {
 
     public Board getBoard(){
         return this.board;
+    }
+
+    // private void setPieceForAI(Pieces pieceForAI) {
+    //     this.pieceForAI = pieceForAI;
+    // }
+
+    // private Pieces getPieceForAI() {
+    //     return this.pieceForAI;
+    // }
+
+
+    public void setPVC(boolean bool) {
+        this.pvc = bool;
     }
 
 

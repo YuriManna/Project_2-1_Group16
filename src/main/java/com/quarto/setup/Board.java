@@ -94,6 +94,16 @@ public class Board {
     }
 
     public void setSelectedPiece(Pieces piece){selectedPiece=piece;}
+
+
+    public void placePiece(Pieces selectedPiece, int tileId){
+        addPiece(selectedPiece, tileId);
+        removePiece(selectedPiece);
+        System.out.println(board);
+        incrementTurnCounter();
+        System.out.println("turn count: " + turnCounter);
+    }
+
     public Pieces getSelectedPiece(){return selectedPiece;}
     /**
      * returns the 2D list representation of the board

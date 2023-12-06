@@ -28,19 +28,103 @@ public class BaselineAgent {
         return availablePiecesAgent;
     }
 
-    // Method to make a random move
-    public void makeRandomMove(Pieces pieceToPlace) {
+    // //Method to make a random move
+    // public void makeRandomMove(Pieces pieceToPlace) {
+    //     Random random = new Random();
+    //     int tileId = random.nextInt(board.getAvailableTileIds().size()); // Random tile
+    //     Pieces pieceToChoose = availablePiecesOpponent[random.nextInt(availablePiecesOpponent.length)]; // Random piece from opponent's color
+    //     pieceChosenForOpponent = pieceToChoose;
+
+    //     Move move = new Move(pieceToPlace,tileId,pieceToChoose);
+
+    //     if(agent.getLegalMoves().contains(move)){
+    //         board.executeMove(move);
+    //     }
+    //     else makeRandomMove(pieceToPlace);
+    // }
+
+    // public void makeRandomMove(Pieces pieceToPlace) {
+    //     Random random = new Random();
+    //     int tileId = random.nextInt(board.getAvailableTileIds().size()); // Random tile
+    //     Pieces pieceToChoose = availablePiecesOpponent[random.nextInt(availablePiecesOpponent.length)]; // Random piece from opponent's color
+    //     pieceChosenForOpponent = pieceToChoose;
+
+    //     Move move = new Move(pieceToPlace,tileId,pieceChosenForOpponent);
+
+    //     if(agent.getLegalMoves().contains(move)){
+    //         board.placePiece(pieceToPlace,tileId);
+    //         board.setSelectedPiece(pieceChosenForOpponent);
+    //     }
+
+    //     else makeRandomMove(pieceToPlace);
+    // }
+
+    public int chooseRandomPlace(Pieces pieceToPlace) {
+        int chosenTileId = -1;
         Random random = new Random();
         int tileId = random.nextInt(board.getAvailableTileIds().size()); // Random tile
         Pieces pieceToChoose = availablePiecesOpponent[random.nextInt(availablePiecesOpponent.length)]; // Random piece from opponent's color
         pieceChosenForOpponent = pieceToChoose;
-
-        Move move = new Move(pieceToPlace,tileId,pieceToChoose);
-
+        Move move = new Move(pieceToPlace,tileId,pieceChosenForOpponent);
         if(agent.getLegalMoves().contains(move)){
-            board.executeMove(move);
+            //board.placePiece(pieceToPlace,tileId);
+            chosenTileId = tileId;
         }
-        else makeRandomMove(pieceToPlace);
+        else chooseRandomPlace(pieceToPlace);
+        return chosenTileId;
     }
+
+    public Pieces chooseRandomOpponentPiece() {
+        Random random = new Random();
+        Pieces pieceToChoose = availablePiecesOpponent[random.nextInt(availablePiecesOpponent.length)]; // Random piece from opponent's color
+        pieceChosenForOpponent = pieceToChoose;
+
+     
+        // board.setSelectedPiece(pieceChosenForOpponent);
+        return pieceChosenForOpponent;
+    }
+
+
+
+
+
+
+    // if(isLeftMouseButton(e)){
+    //     Pieces selectedPiece = gameLogic.getSelectedPiece();
+    //     if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
+    //     gameLogic.placePiece(selectedPiece,tileId);
+    //     try {
+    //         assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
+    //         sidePanel.reloadTiles();
+    //         gameLogic.checkTurn();
+    //         gameLogic.checkGameStatus();
+    //         turnLabel.setText(gameLogic.getMessage());
+    //     } catch (IOException ex) {
+    //         throw new RuntimeException(ex);
+    //     }
+    //     gameLogic.SetSelectedPiece(null);
+
+
+
+    // public void chooseRandomPiece(Pieces pieceToPlace) {
+    //     Random random = new Random();
+    //     int tileId = random.nextInt(board.getAvailableTileIds().size()); // Random tile
+    //     Pieces pieceToChoose = availablePiecesOpponent[random.nextInt(availablePiecesOpponent.length)]; // Random piece from opponent's color
+    //     pieceChosenForOpponent = pieceToChoose;
+
+    //     Move move = new Move(pieceToPlace,tileId,pieceToChoose);
+
+    //     if(agent.getLegalMoves().contains(move)){
+    //         board.executeMove(move);
+    //     }
+    //     else chooseRandomPiece(pieceToPlace);
+    // }
+
+
+
+
+
+
+
 }
 
