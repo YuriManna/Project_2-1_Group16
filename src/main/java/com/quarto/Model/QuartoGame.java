@@ -16,17 +16,13 @@ public class QuartoGame {
     private Player currentPlayer;
     private Player opponent;
 
-    public QuartoGame(GameBoard gameBoard, Player player1, Player player2) {
-        this.gameBoard = gameBoard;
-        whitePlayer = player1;
-        blackPlayer = player2;
+    public QuartoGame(boolean isPlayer1Human, boolean isPlayer2Human) {
+        this.gameBoard = new GameBoard();
+        whitePlayer = new Player(isPlayer1Human, true, this.gameBoard.getWhitesList());
+        blackPlayer = new Player(isPlayer2Human, false, this.gameBoard.getBlacksList());
         currentPlayer = whitePlayer;
+        opponent = blackPlayer;
 
-
-        if (whitePlayer.getIsWhite()) {
-            whitePlayer.givePieces(this.gameBoard.getWhitesList());
-            blackPlayer.givePieces(this.gameBoard.getBlacksList());
-        }
     }
 
     public GameBoard getGameBoard() {
@@ -58,10 +54,6 @@ public class QuartoGame {
         return gameBoard.checkDrawCondition();
     }
 
-    public Piece choosePiece()
-    {
-
-    }
 
 
 }

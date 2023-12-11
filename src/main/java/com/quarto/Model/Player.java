@@ -15,15 +15,14 @@ public class Player {
     boolean isWhite;
     Piece[] availablePieces;
 
-    public Player(boolean isHuman, boolean isWhite) {
+    public Player(boolean isHuman, boolean isWhite, ArrayList<Piece> availablePieces) {
         this.isHuman = isHuman;
         this.isWhite = isWhite;
+        this.availablePieces = availablePieces.toArray(new Piece[0]);
     }
 
     //Getters and Setters
-    public void givePieces(ArrayList<Piece> list) {
-        this.availablePieces = list.toArray(new Piece[0]);
-    }
+
 
     public Piece[] getAvailablePieces() {
         return availablePieces;
@@ -69,9 +68,9 @@ public class Player {
     }
 
     //Player makes move
-    public Move makeMove(Piece playablePiece, int tileId)
-    {
-        return new Move(playablePiece, tileId);
+    public void makeMove(Move move, GameBoard board) {
+        // Verify that the move is valid
+        board.addPieceToBoard(move);
     }
 
 

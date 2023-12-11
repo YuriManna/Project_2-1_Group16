@@ -66,7 +66,7 @@ public class GameBoard {
 
 
     // Add piece to the board (assign piece to a tile on the board)
-    private void addPieceToBoard(Move move) {
+    public void addPieceToBoard(Move move) {
         if (isValidMove(move)) {
             int[] rowAndCol = convertTileIdToRowAndColumn(move.getTileId());
             int row = rowAndCol[0];
