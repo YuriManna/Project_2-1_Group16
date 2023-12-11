@@ -2,6 +2,7 @@ package com.quarto.setup;
 import com.quarto.player.ai.MoveStrategy;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class GameLogic {
     private int turnCounter = 1;
@@ -24,7 +25,6 @@ public class GameLogic {
         this.board = new Board();
     }
 
-
     /**
      * method to place a piece on the board increments the turn counter
      * @param selectedPiece piece to place
@@ -45,11 +45,7 @@ public class GameLogic {
      * @return false if the move is invalid, true otherwise
      * */
     public boolean moveNotValid(Pieces selectedPiece,int tileId){
-        if(!getBoard().checkIfPieceIsAvailable(selectedPiece) || getBoard().tileIsOccupied(tileId) || getBoard().isGameWon()){
-            return true;
-        }else{
-            return false;
-        }
+        return !getBoard().checkIfPieceIsAvailable(selectedPiece) || getBoard().tileIsOccupied(tileId) || getBoard().isGameWon();
     }
 
     public void SetSelectedPiece(Pieces piece) {
@@ -65,30 +61,30 @@ public class GameLogic {
      * @return true or false if the player that placed the piece at position (x, y) won
      * */
     public boolean checkIfWon(int x, int y){
-        /**
-         * 1. check vertically and horizontally
-         *      lock one of the coordinates and loop through the other
-         * 2. if possible check diagonally
-         *      2.1 if x and y match check downwards diagonal
-         *      2.2 if x+y=3 check upwards diagonal
+        /*
+          1. check vertically and horizontally
+               lock one of the coordinates and loop through the other
+          2. if possible check diagonally
+               2.1 if x and y match check downwards diagonal
+               2.2 if x+y=3 check upwards diagonal
          */
-        boolean[] chechkingArray= new boolean[4];
+        boolean[] checkingArray= new boolean[4];
         Pieces referencePiece= getPieceFromBoard(x,y);
-        for (int i = 0; i <chechkingArray.length; i++) {
-            chechkingArray[i]=true;
-        }
+        Arrays.fill(checkingArray, true);
 
         // Horizontal check
         for (int i = 0; i < board.getBoard().length; i++) {
             if(i==y){break;}
             for (int j = 0; j <referencePiece.Properties.length; j++) {
                 if(getPieceFromBoard(x, i)!=null&&referencePiece.Properties[j]!=getPieceFromBoard(x,i).Properties[j]){
-                    chechkingArray[j]=false;
+                    checkingArray[j]=false;
                 }
             }
         }
-        for (int j = 0; j <chechkingArray.length; j++) {
-            if(chechkingArray[j]==true){return true;}
+        for (boolean b : checkingArray) {
+            if (b) {
+                return true;
+            }
         }
 
         // Vertical check
@@ -97,12 +93,14 @@ public class GameLogic {
             if(board.getBoard()[i][y]==null){break;}
             for (int j = 0; j <referencePiece.Properties.length; j++) {
                 if(referencePiece.Properties[j]==getPieceFromBoard(i,y).Properties[j]){
-                    chechkingArray[j]=true;
+                    checkingArray[j]=true;
                 }
             }
         }
-        for (int j = 0; j <chechkingArray.length; j++) {
-            if(chechkingArray[j]==true){return true;}
+        for (boolean b : checkingArray) {
+            if (b) {
+                return true;
+            }
         }
 
         // Diagonal check(downwards)
@@ -112,13 +110,15 @@ public class GameLogic {
                 if (board.getBoard()[i][y] == null) {break;}
                 for (int j = 0; j <referencePiece.Properties.length ; j++) {
                     if(referencePiece.Properties[j]==getPieceFromBoard(i,i).Properties[j]){
-                        chechkingArray[j]=true;
+                        checkingArray[j]=true;
                     }
                 }
 
             }
-            for (int j = 0; j <chechkingArray.length; j++) {
-                if(chechkingArray[j]==true){return true;}
+            for (boolean b : checkingArray) {
+                if (b) {
+                    return true;
+                }
             }
         }
 
@@ -130,12 +130,14 @@ public class GameLogic {
                 for (int j = 0; j <referencePiece.Properties.length ; j++) {
                     int h =3-j;
                     if(referencePiece.Properties[j]==getPieceFromBoard(j,h).Properties[j]){
-                        chechkingArray[j]=true;
+                        checkingArray[j]=true;
                     }
                 }
             }
-            for (int j = 0; j <chechkingArray.length; j++) {
-                if(chechkingArray[j]==true){return true;}
+            for (boolean b : checkingArray) {
+                if (b) {
+                    return true;
+                }
             }
         }
         return false;

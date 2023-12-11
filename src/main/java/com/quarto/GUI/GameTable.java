@@ -50,7 +50,7 @@ public class GameTable {
         populateMenuBar(tableMenuBar);
         this.gameFrame.setJMenuBar(tableMenuBar);
 
-        // initilize panel to contain board (this is mainly here to make the gui look better, so that there is space from the borders of the frame)
+        // initialize panel to contain board (this is mainly here to make the gui look better, so that there is space from the borders of the frame)
         JPanel borderPanel = new JPanel();
         borderPanel.setLayout(new BorderLayout());
         borderPanel.setBorder(new MatteBorder(7, 7, 7, 7, new Color(165, 42, 42)));

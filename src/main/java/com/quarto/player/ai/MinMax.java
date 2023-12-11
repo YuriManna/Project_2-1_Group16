@@ -41,7 +41,7 @@ public class MinMax implements MoveStrategy {
         }
         return lowestSeenValue;
     }
-
+    //implement
 
     public int max(final Board board, final int depth, int alpha, int beta){
         if(depth == 0 || board.isGameDrawn() || board.isGameWon()) {

@@ -3,6 +3,7 @@ package com.quarto.setup;
 import com.quarto.player.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -96,8 +97,8 @@ public class Board {
     public void setSelectedPiece(Pieces piece){selectedPiece=piece;}
     public Pieces getSelectedPiece(){return selectedPiece;}
     /**
-     * returns the 2D list representation of the board
      * @return
+     * returns the 2D list representation of the board
      */
     public Pieces[][] getBoard() {
         return board;
@@ -105,36 +106,36 @@ public class Board {
 
     @Override
     public String toString() {
-        String str = "\n";
+        StringBuilder str = new StringBuilder("\n");
         for (Pieces[] row : board) {
-            str = str + "|";
+            str.append("|");
             for (Pieces p : row) {
                 if (p != null) {
-                    str = str + p.toString() + "|";
+                    str.append(p).append("|");
                 }else{
-                    str = str + "    |";
+                    str.append("    |");
                 }
             }
-            str = str + "\n";
+            str.append("\n");
         }
-        str = str + "whites: ";
+        str.append("whites: ");
         for(Pieces p : availableWhites){
             if (p != null) {
-                str = str + p.toString() + "|";
+                str.append(p).append("|");
             }else{
-                str = str + "    |";
+                str.append("    |");
             }
         }
-        str = str + "\n" + "blacks: ";
+        str.append("\n").append("blacks: ");
         for(Pieces p : availableBlacks){
             if (p != null) {
-                str = str + p.toString() + "|";
+                str.append(p).append("|");
             }else{
-                str = str + "    |";
+                str.append("    |");
             }
         }
-        str = str + "\n";
-        return str;
+        str.append("\n");
+        return str.toString();
     }
     public void incrementTurnCounter(){
         this.turnCounter++;
@@ -207,14 +208,6 @@ public class Board {
             }
         }
     }
-    public int toTileID(int x, int y){
-        if(y==0){
-            return x;
-        }
-        else{
-            return (4*y+x);
-        }
-    }
 
     public void executeMove(Move move){
         addPiece(move.getPieceToPlace(),move.getPieceLocation());
@@ -232,74 +225,63 @@ public class Board {
      * */
     public boolean checkIfWon(int x, int y){
         //("x: "+x+" y: "+y);
-        /**
-         * 0. check wether the row/collumn/diagonal is full
-         * 1. check vertically and horizontally
-         *      lock one of the coordinates and loop through the other
-         * 2. if possible check diagonally
-         *      2.1 if x and y match check downwards diagonal
-         *      2.2 if x+y=3 check upwards diagonal
+        /*
+          0. check weather the row/column/diagonal is full
+          1. check vertically and horizontally
+               lock one of the coordinates and loop through the other
+          2. if possible check diagonally
+               2.1 if x and y match check downwards diagonal
+               2.2 if x+y=3 check upwards diagonal
          */
         boolean[] chechkingArray= new boolean[4];
         int count=0; //keeps track of how many cycles the individual checks go through
         Pieces referencePiece= getPieceFromBoard(x,y);
-        for (int i = 0; i <chechkingArray.length; i++) {
-            chechkingArray[i]=true;
-        }
+        Arrays.fill(chechkingArray, true);
 
         //Horizontal check
         for (int i = 0; i < board.length; i++) {//Loops through horizontal line
             if(getPieceFromBoard(x, i)==null){ break;}
             for (int j = 0; j <referencePiece.Properties.length; j++) {//Loops through the properties of the pieces that are being compared
                 if(i==y){break;}
-                if(chechkingArray[j]!=false&&getPieceFromBoard(x, i)!=null&&referencePiece.Properties[j]==getPieceFromBoard(x,i).Properties[j]){
-                    chechkingArray[j]=true;
-                }
-                else{chechkingArray[j]=false;}
+                chechkingArray[j]= chechkingArray[j] && getPieceFromBoard(x, i) != null && referencePiece.Properties[j] == getPieceFromBoard(x, i).Properties[j];
 
             }
             count++;
         }
-        for (int i = 0; i <chechkingArray.length; i++) {
-            System.out.print(chechkingArray[i]+" ");
+        for (boolean b : chechkingArray) {
+            System.out.print(b + " ");
         }
         if(count==4) {
-            for (int j = 0; j < chechkingArray.length; j++) {
-                if (chechkingArray[j] == true) {
+            for (boolean b : chechkingArray) {
+                if (b) {
                     return true;
                 }
             }
         }
         //reset variables for new check
         count=0;
-        for (int i = 0; i < chechkingArray.length; i++) {
-            chechkingArray[i]=true;
-        }
+        Arrays.fill(chechkingArray, true);
         //Vertical check
 
         for (int i = 0; i < board.length; i++) {
             if(getPieceFromBoard(i, y)==null){ break;}
             for (int j = 0; j <referencePiece.Properties.length; j++) {
                 if(i==x){break;}
-                if(chechkingArray[j]!=false&&referencePiece.Properties[j]==getPieceFromBoard(i,y).Properties[j]){
-                    chechkingArray[j]=true;
-                }else{chechkingArray[j]=false;}
+                chechkingArray[j]= chechkingArray[j] && referencePiece.Properties[j] == getPieceFromBoard(i, y).Properties[j];
 
             }
             count++;
         }
         if(count==4) {
-            for (int j = 0; j < chechkingArray.length; j++) {
-                if (chechkingArray[j] == true) {
+            for (boolean b : chechkingArray) {
+                if (b) {
                     return true;
                 }
             }
         }
         //reset variables for new check
         count=0;
-        for (int i = 0; i < chechkingArray.length; i++) {
-            chechkingArray[i]=true;
-        }
+        Arrays.fill(chechkingArray, true);
 
         // Diagonal check(downwards)
         if(x==y){
@@ -307,16 +289,14 @@ public class Board {
                 if(getPieceFromBoard(i, i)==null){break;}
                 for (int j = 0; j <referencePiece.Properties.length ; j++) {
                     if (i == y) {break;}
-                    if(chechkingArray[j]!=false&&referencePiece.Properties[j]==getPieceFromBoard(i,i).Properties[j]){
-                        chechkingArray[j]=true;
-                    }else{chechkingArray[j]=false;}
+                    chechkingArray[j]= chechkingArray[j] && referencePiece.Properties[j] == getPieceFromBoard(i, i).Properties[j];
 
                 }
                 count++;
             }
             if(count==4) {
-                for (int j = 0; j < chechkingArray.length; j++) {
-                    if (chechkingArray[j] == true) {
+                for (boolean b : chechkingArray) {
+                    if (b) {
                         return true;
                     }
                 }
@@ -324,9 +304,7 @@ public class Board {
         }
         //reset variables for new check
         count=0;
-        for (int i = 0; i < chechkingArray.length; i++) {
-            chechkingArray[i]=true;
-        }
+        Arrays.fill(chechkingArray, true);
 
         // Diagonal check(Upwards)
         if(x+y==3){
@@ -334,15 +312,13 @@ public class Board {
                 if(getPieceFromBoard(3-i, i)==null){break;}
                 for (int j = 0; j <referencePiece.Properties.length ; j++) {
                     if(i==y){break;}
-                    if(chechkingArray[j]!=false&&referencePiece.Properties[j]==getPieceFromBoard(3-i,i).Properties[j]){
-                        chechkingArray[j]=true;
-                }else{chechkingArray[j]=false;}
+                    chechkingArray[j]= chechkingArray[j] && referencePiece.Properties[j] == getPieceFromBoard(3 - i, i).Properties[j];
             }
                 count++;
             }
             if(count==4) {
-                for (int j = 0; j < chechkingArray.length; j++) {
-                    if (chechkingArray[j] == true) {
+                for (boolean b : chechkingArray) {
+                    if (b) {
 
                         return true;
                     }
@@ -358,13 +334,13 @@ public class Board {
      * @return true if available, false if not
      * */
     public boolean checkIfPieceIsAvailable(Pieces piece){
-        for (int i = 0; i < (availableWhites.length); i++) {
-            if (piece == availableWhites[i]){
+        for (Pieces availableWhite : availableWhites) {
+            if (piece == availableWhite) {
                 return true;
             }
         }
-        for (int i = 0; i < (availableBlacks.length); i++) {
-            if (piece == availableBlacks[i]){
+        for (Pieces availableBlack : availableBlacks) {
+            if (piece == availableBlack) {
                 return true;
             }
         }
