@@ -25,8 +25,8 @@ public class GameController {
     {
         while(!game.gameOver())
         {
-
             //step 1: Black chooses White's piece
+
             //Piece chosenPiece;
             //game.getOpponent().choosePiece(game.getCurrentPlayer(), );
             //step 2: White chooses where to place the piece

@@ -12,23 +12,25 @@ Responsibilities:
 
 public class Player {
     boolean isHuman;
+    boolean isWhite;
     Piece[] availablePieces;
 
-    public Player(boolean isHuman) {
+    public Player(boolean isHuman, boolean isWhite) {
         this.isHuman = isHuman;
+        this.isWhite = isWhite;
     }
 
     //Getters and Setters
-    public void setBlackPieces(ArrayList<Piece> blacksList) {
-        this.availablePieces = blacksList.toArray(new Piece[0]);
-    }
-
-    public void setWhitePieces(ArrayList<Piece> whitesList) {
-        this.availablePieces = whitesList.toArray(new Piece[0]);
+    public void givePieces(ArrayList<Piece> list) {
+        this.availablePieces = list.toArray(new Piece[0]);
     }
 
     public Piece[] getAvailablePieces() {
         return availablePieces;
+    }
+
+    public Boolean getIsWhite() {
+        return isWhite;
     }
 
     //Other methods

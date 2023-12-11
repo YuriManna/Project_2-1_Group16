@@ -22,8 +22,11 @@ public class QuartoGame {
         blackPlayer = player2;
         currentPlayer = whitePlayer;
 
-        whitePlayer.setWhitePieces(this.gameBoard.getWhitesList());
-        blackPlayer.setBlackPieces(this.gameBoard.getBlacksList());
+
+        if (whitePlayer.getIsWhite()) {
+            whitePlayer.givePieces(this.gameBoard.getWhitesList());
+            blackPlayer.givePieces(this.gameBoard.getBlacksList());
+        }
     }
 
     public GameBoard getGameBoard() {
@@ -53,6 +56,11 @@ public class QuartoGame {
             return true;
         }
         return gameBoard.checkDrawCondition();
+    }
+
+    public Piece choosePiece()
+    {
+
     }
 
 

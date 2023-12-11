@@ -1,28 +1,24 @@
 package com.quarto.View.Console;
 
+import com.quarto.Controller.GameController;
 import com.quarto.Model.GameBoard;
 import com.quarto.Model.Piece;
 import com.quarto.Model.Player;
+import com.quarto.Model.QuartoGame;
+
+//GameView:
+// Handles the user interface and displays the game board, player information, and prompts for moves.
 
 public class ConsoleGame {
 
-    private final GameBoard board;
-    private final Player whitePlayer;
-    private final Player blackPlayer;
 
-
-    public ConsoleGame(GameBoard board, Player player1, Player player2) {
-        this.board = board;
-        this.whitePlayer = player1;
-        this.blackPlayer = player2;
-    }
 
     public void renderConsole() {
 
     }
 
     //Show the current board
-    private void showBoard() {
+    private void showBoard(GameBoard board) {
             System.out.println("Current Board:");
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
@@ -57,9 +53,23 @@ public class ConsoleGame {
         return ""+ C + He + S + Ho;
     }
 
+    // Show the available pieces for the current player
     private void showPlayerPieces(Player player) {
-
+        if (player.getIsWhite()) {
+            System.out.println("White player's available pieces:");
+        } else {
+            System.out.println("Black player's available pieces:");
+        }
+        for (Piece piece : player.getAvailablePieces()) {
+            // Display the piece details
+            System.out.print(showPiece(piece));
+            System.out.print(" ");
+        }
+        System.out.println(); // Add an empty line for better readability
     }
+
+    //choose piece
+    public Piece choosePiece
 
 
 
