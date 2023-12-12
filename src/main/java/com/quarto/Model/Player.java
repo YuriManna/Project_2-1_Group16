@@ -28,9 +28,15 @@ public class Player {
         return availablePieces;
     }
 
+    public int getAvailablePiecesLength() {
+        return getAvailablePieces().length;
+    }
+
     public Boolean getIsWhite() {
         return isWhite;
     }
+
+    public Boolean getIsHuman() { return isHuman; }
 
     //Other methods
     //======================================================================================================================
@@ -72,8 +78,6 @@ public class Player {
         // Verify that the move is valid
         board.addPieceToBoard(move);
     }
-
-
 
 
 }

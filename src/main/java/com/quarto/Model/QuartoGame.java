@@ -33,11 +33,13 @@ public class QuartoGame {
         return currentPlayer;
     }
 
+
     public Player getOpponent() {
         return opponent;
     }
 
     public void switchPlayers() {
+
         if (currentPlayer == whitePlayer) {
             currentPlayer = blackPlayer;
             opponent = whitePlayer;

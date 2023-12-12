@@ -34,8 +34,7 @@ public class GameController {
             Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
             //step 2: White chooses where to place the piece
             Move move = console.makeMove(game.getGameBoard(), choosePiece);
-            console.showBoard(game.getGameBoard());
-
+            //console.showBoard(game.getGameBoard());
             game.getCurrentPlayer().makeMove(move, game.getGameBoard());
             console.showBoard(game.getGameBoard());
             //step 3: Switch players

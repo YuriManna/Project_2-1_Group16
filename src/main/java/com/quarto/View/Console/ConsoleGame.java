@@ -1,6 +1,6 @@
 package com.quarto.View.Console;
 import com.quarto.Model.*;
-
+import java.util.Random;
 import java.util.Scanner;
 
 //GameView:
@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class ConsoleGame {
 Scanner sc = new Scanner(System.in);
+boolean AITurn;
 
     //choose game mode (AI & player)
     public boolean[] chooseGameMode(){
@@ -25,13 +26,17 @@ Scanner sc = new Scanner(System.in);
         // Return the game mode based on the user input
         if (input == 1) {
             // Human vs Human
-            return new boolean[]{true, true};
+            //return new boolean[]{true, true};
+            System.out.println("You can play Human vs Human with GUI, switching to Human vs AI");
+            return new boolean[]{true, false};
         } else if (input == 2) {
             // Human vs AI
             return new boolean[]{true, false};
         } else if (input == 3) {
             // AI vs AI
-            return new boolean[]{false, false};
+            //return new boolean[]{false, false};
+            System.out.println("You can't play AI vs AI yet, switching to Human vs AI");
+            return new boolean[]{true, false};
 
         } else {
             // Invalid input
@@ -106,34 +111,84 @@ Scanner sc = new Scanner(System.in);
     public Piece choosePiece(Player opponent){
 
         Piece chosenpiece = null;
+        if(opponent.getIsHuman()==true && opponent.getIsWhite()==true)
+        {
+            this.AITurn = false;
+            chosenpiece = AIChoosePiece(opponent);
+        }
+        else
+        {
+            this.AITurn = true;
+            System.out.println("Please choose a piece to give to your opponent:");
+            showPlayerPieces(opponent);
 
-        System.out.println("Please choose a piece to give to your opponent:");
-        showPlayerPieces(opponent);
+            chosenpiece = opponent.getAvailablePieces()[sc.nextInt() - 1];
+            opponent.removeAvailablePiece(chosenpiece);
 
-        chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
-        opponent.removeAvailablePiece(chosenpiece);
-
+        }
         return chosenpiece;
     }
 
+    public Piece AIChoosePiece(Player opponent){
+        System.out.println("AI is choosing a piece to give to the opponent:");
+        showPlayerPieces(opponent);
+        Piece chosenpiece = null;
+        Random random = new Random();
+        int randomInt = random.nextInt(opponent.getAvailablePieces().length);
+        chosenpiece = opponent.getAvailablePieces()[randomInt];
+        opponent.removeAvailablePiece(chosenpiece);
+        System.out.println("AI chose: " + showPiece(chosenpiece));
+        return chosenpiece;
+    }
+
+
+
+
     // Make a move
     public Move makeMove(GameBoard board, Piece playablePiece){
-        System.out.println("Please choose a tile to place your piece on:");
+        Move move = null;
+        if(getAITurn()==true){
+            move = AIMakeMove(board, playablePiece);
+            this.AITurn = false;
+        }
+
+        else
+        {
+            System.out.println("Please choose a tile to place your piece on:");
+            showBoard(board);
+
+            int tileId = sc.nextInt();
+
+            move = new Move(playablePiece, tileId);
+
+            if (!board.isValidMove(move)) {
+                System.out.println("Invalid move! Please choose a valid tile.");
+                return makeMove(board, playablePiece);
+            }
+        }
+        return move;
+    }
+
+
+    public Move AIMakeMove(GameBoard board, Piece playablePiece){
+        System.out.println("AI is choosing a tile to place the piece on:");
         showBoard(board);
+        Random random = new Random();
 
+        int randomTileId = random.nextInt(16);
 
-        int tileId = sc.nextInt();
-
-        Move move = new Move(playablePiece, tileId);
+        Move move = new Move(playablePiece, randomTileId);
 
         if(!board.isValidMove(move)){
             System.out.println("Invalid move! Please choose a valid tile.");
             return makeMove(board, playablePiece);
         }
-
         return move;
     }
 
+    public boolean getAITurn() {
+        return this.AITurn;
+    }
 
 
 }
