@@ -17,9 +17,11 @@ public class GameController {
     private ConsoleGame console;
     private QuartoGame game;
 
-    public GameController(ConsoleGame console) {
-        this.console = console;
-        this.game = new QuartoGame(console.chooseGameMode()[0], console.chooseGameMode()[1]);
+    public GameController() {
+        this.console = new ConsoleGame();
+        boolean[] gameMode = console.chooseGameMode(); // [0] = isPlayer1Human, [1] = isPlayer2Human
+        this.game = new QuartoGame(gameMode[0], gameMode[1]);
+        play();
     }
 
     public void play()
@@ -35,9 +37,5 @@ public class GameController {
             game.switchPlayers();
             //step 4: Repeat until game is over
         }
-    }
-
-    public QuartoGame getGame() {
-        return game;
     }
 }

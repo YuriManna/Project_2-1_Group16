@@ -86,10 +86,13 @@ Scanner sc = new Scanner(System.in);
         } else {
             System.out.println("Black player's available pieces:");
         }
+        int i = 1;
         for (Piece piece : player.getAvailablePieces()) {
+
             // Display the piece details
-            System.out.print(showPiece(piece));
+            System.out.print(i + ". " + showPiece(piece));
             System.out.print(" ");
+            i++;
         }
         System.out.println(); // Add an empty line for better readability
     }
@@ -100,16 +103,9 @@ Scanner sc = new Scanner(System.in);
 
         System.out.println("Please choose a piece to give to your opponent:");
         showPlayerPieces(opponent);
+        chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
+        opponent.removeAvailablePiece(chosenpiece);
 
-        for (Piece piece : opponent.getAvailablePieces()){
-            if (showPiece(piece).equals(sc.next())){
-                chosenpiece = piece;
-                break;
-            }
-            else{
-                System.out.println("Please choose a valid piece");
-            }
-        }
         return chosenpiece;
     }
 

@@ -36,4 +36,7 @@ public class Piece {
         return HOLE;
     }
 
+    public void setPiece(String piece) {
+
+    }
 }
