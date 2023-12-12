@@ -18,20 +18,24 @@ public class GameController {
     private QuartoGame game;
 
     public GameController() {
+        //initialize the console version of the game
         this.console = new ConsoleGame();
+        //initialize the game and therefore the player type
         boolean[] gameMode = console.chooseGameMode(); // [0] = isPlayer1Human, [1] = isPlayer2Human
         this.game = new QuartoGame(gameMode[0], gameMode[1]);
+        //start the game
         play();
     }
 
     public void play()
     {
-        while(!game.gameOver())
-        {
+        while(!game.gameOver()) {
             //step 1: Black chooses White's piece
             Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
             //step 2: White chooses where to place the piece
             Move move = console.makeMove(game.getGameBoard(), choosePiece);
+            console.showBoard(game.getGameBoard());
+
             game.getCurrentPlayer().makeMove(move, game.getGameBoard());
             //step 3: Switch players
             game.switchPlayers();

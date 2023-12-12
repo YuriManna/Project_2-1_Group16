@@ -11,15 +11,18 @@ Scanner sc = new Scanner(System.in);
 
     //choose game mode (AI & player)
     public boolean[] chooseGameMode(){
+        // Display the game mode options (creates different type of players)
         System.out.println("Welcome to Quarto!");
         System.out.println("Please choose a game mode:");
         System.out.println("1. Human vs Human");
         System.out.println("2. Human vs AI");
         System.out.println("3. AI vs AI");
 
+        // Take input from user to make a choice
         sc = new Scanner(System.in);
         int input = sc.nextInt();
 
+        // Return the game mode based on the user input
         if (input == 1) {
             // Human vs Human
             return new boolean[]{true, true};
@@ -38,10 +41,11 @@ Scanner sc = new Scanner(System.in);
     }
 
     //Show the current board
-    private void showBoard(GameBoard board) {
+    public void showBoard(GameBoard board) {
         System.out.println("Current Board:");
         int id = 0;
 
+        // Run through the board and display the pieces
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 Piece piece = board.getBoard()[i][j];
@@ -67,6 +71,7 @@ Scanner sc = new Scanner(System.in);
     //helper method to show the piece
     private String showPiece(Piece piece)
     {
+        // Looks at attributes of the piece and returns a string
         char C,He,S,Ho;
         if(piece.getColor()){C = 'W';}
         else{C = 'B';}
@@ -97,25 +102,37 @@ Scanner sc = new Scanner(System.in);
         System.out.println(); // Add an empty line for better readability
     }
 
-    //choose piece
+    // Choose a piece to give to the opponent
     public Piece choosePiece(Player opponent){
+
         Piece chosenpiece = null;
 
         System.out.println("Please choose a piece to give to your opponent:");
         showPlayerPieces(opponent);
+
         chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
         opponent.removeAvailablePiece(chosenpiece);
 
         return chosenpiece;
     }
 
+    // Make a move
     public Move makeMove(GameBoard board, Piece playablePiece){
 
         System.out.println("Please choose a tile to place your piece on:");
         showBoard(board);
 
+
         int tileId = sc.nextInt();
-        return new Move(playablePiece, tileId);
+
+        Move move = new Move(playablePiece, tileId);
+
+        if(!board.isValidMove(move)){
+            System.out.println("Invalid move! Please choose a valid tile.");
+            return makeMove(board, playablePiece);
+        }
+
+        return move;
     }
 
 

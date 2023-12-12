@@ -98,7 +98,7 @@ public class GameBoard {
     }
 
     // Check if the move is valid
-    private boolean isValidMove(Move move) {
+    public boolean isValidMove(Move move) {
         int tileId = move.getTileId();
         return tileId >= 0 && tileId < 16 && BOARD[convertTileIdToRowAndColumn(tileId)[0]][convertTileIdToRowAndColumn(tileId)[1]] == null;
     }
