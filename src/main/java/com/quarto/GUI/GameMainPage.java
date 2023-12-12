@@ -1,5 +1,6 @@
 package com.quarto.GUI;
 
+import com.quarto.PlayMinimax;
 import com.quarto.player.ai.MinMax;
 import com.quarto.setup.GameLogic;
 
@@ -63,18 +64,19 @@ public class GameMainPage extends JFrame {
        
         button2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    GameLogic gameLogic = new GameLogic();
-                    GameTable gameTable = new GameTable(gameLogic);
-                    MinMax minMaxPlayer = new MinMax(gameLogic.getBoard());
-                    gameLogic.setComputerPlayer(minMaxPlayer);
-                    setVisible(false);
-                    dispose();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
+//                try {
+//                    GameLogic gameLogic = new GameLogic();
+//                    GameTable gameTable = new GameTable(gameLogic);
+//                    MinMax minMaxPlayer = new MinMax(gameLogic.getBoard());
+//                    gameLogic.setComputerPlayer(minMaxPlayer);
+//                    setVisible(false);
+//                    dispose();
+//                } catch (IOException e1) {
+//                    // TODO Auto-generated catch block
+//                    e1.printStackTrace();
+//                }
+                PlayMinimax.main(null);
+                System.out.println("GUI for PvCPU still in development, you can try playing against Minimax model or baseline agent through the corresponding files." );
             }
         });
 

@@ -198,6 +198,14 @@ boolean AITurn;
     public boolean getAITurn() {
         return this.AITurn;
     }
+    public void showWinningMessage(Player player){
+        if (player.getIsWhite()) {
+            System.out.println("White player wins!");
+        } else {
+            System.out.println("Black player wins!");
+        }
+    }
+
 
 
 }

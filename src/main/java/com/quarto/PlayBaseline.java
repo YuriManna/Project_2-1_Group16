@@ -1,5 +1,4 @@
 package com.quarto;
-
 import com.quarto.Controller.BaselineController;
 
 public class PlayBaseline {
