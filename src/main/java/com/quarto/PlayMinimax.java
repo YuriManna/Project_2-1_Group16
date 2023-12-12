@@ -1,9 +1,9 @@
 package com.quarto;
 
-import com.quarto.Controller.GameController;
+import com.quarto.Controller.MinimaxController;
 
 public class PlayMinimax {
     public static void main(String[] args) {
-        GameController start = new GameController();
+        MinimaxController start = new MinimaxController();
     }
 }
