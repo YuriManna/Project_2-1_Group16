@@ -129,10 +129,6 @@ boolean AITurn;
         return chosenpiece;
     }
 
-
-
-
-
     public Piece AIChoosePiece(Player opponent){
         System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
@@ -145,12 +141,17 @@ boolean AITurn;
         return chosenpiece;
     }
 
+    // Choose a piece to give to the opponent
     public Piece choosePiece(Player opponent){
-        Piece chosenpiece = null;
+
+        System.out.println("Please choose a piece to give to your opponent:");
+        showPlayerPieces(opponent);
+
+        Piece chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
+        opponent.removeAvailablePiece(chosenpiece);
+
         return chosenpiece;
     }
-
-
 
 
     // Make a move
@@ -205,7 +206,5 @@ boolean AITurn;
             System.out.println("Black player wins!");
         }
     }
-
-
 
 }
