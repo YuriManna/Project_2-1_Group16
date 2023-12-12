@@ -27,7 +27,7 @@ boolean AITurn;
         if (input == 1) {
             // Human vs Human
             //return new boolean[]{true, true};
-            System.out.println("You can play Human vs Human with GUI, switching to Human vs AI");
+            System.out.println("You can play Human vs Human with GUI, using the App launcher, switching to Human vs AI");
             return new boolean[]{true, false};
         } else if (input == 2) {
             // Human vs AI
@@ -35,7 +35,7 @@ boolean AITurn;
         } else if (input == 3) {
             // AI vs AI
             //return new boolean[]{false, false};
-            System.out.println("You can't play AI vs AI yet, switching to Human vs AI");
+            System.out.println("AI vs AI still in development, switching to Human vs AI");
             return new boolean[]{true, false};
 
         } else {
