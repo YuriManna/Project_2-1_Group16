@@ -12,12 +12,12 @@ Responsibilities:
     Manage the switch between human and AI players.
 */
 
-public class GameController {
+public class BaselineController {
 
     private ConsoleGame console;
     private QuartoGame game;
 
-    public GameController() {
+    public BaselineController() {
         //initialize the console version of the game
         this.console = new ConsoleGame();
         //initialize the game and therefore the player type
