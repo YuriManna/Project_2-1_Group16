@@ -29,18 +29,31 @@ public class GameController {
 
     public void play()
     {
+        game.switchPlayers();
         while(!game.gameOver()) {
-            //step 1: Black chooses White's piece
-            Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
-            //step 2: White chooses where to place the piece
-            Move move = console.makeMove(game.getGameBoard(), choosePiece);
-            console.showBoard(game.getGameBoard());
-
-            game.getCurrentPlayer().makeMove(move, game.getGameBoard());
-            console.showBoard(game.getGameBoard());
-            //step 3: Switch players
             game.switchPlayers();
-            //step 4: Repeat until game is over
+
+            if (game.getCurrentPlayer().getIsHuman())
+            {
+                //step 1: AI chooses HUMAN's piece
+                Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
+                //step 2: Human chooses where to place the piece
+                Move move = console.makeMove(game.getGameBoard(), choosePiece);
+                game.getCurrentPlayer().makeMove(move, game.getGameBoard());
+                //step 3: Show updated board
+                console.showBoard(game.getGameBoard());
+            }
+            else{
+                //step 1:  Human chooses AI's piece
+                Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
+                //step 2: AI chooses where to place the piece
+                Move move = game.getCurrentPlayer().minimax(game.getGameBoard(), choosePiece, 4, true);
+                game.getCurrentPlayer().makeMove(move, game.getGameBoard());
+                //step 3: Show updated board
+                console.showBoard(game.getGameBoard());
+            }
+
         }
+        console.showWinningMessage(game.getCurrentPlayer());
     }
 }

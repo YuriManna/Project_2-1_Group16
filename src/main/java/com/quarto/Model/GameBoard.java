@@ -66,26 +66,14 @@ public class GameBoard {
 
     // Add piece to the board (assign piece to a tile on the board)
     public void addPieceToBoard(Move move) {
-        if (isValidMove(move)) {
-            int[] rowAndCol = convertTileIdToRowAndColumn(move.getTileId());
-            int row = rowAndCol[0];
-            int col = rowAndCol[1];
-            BOARD[row][col] = move.getPiece();
-            if (checkWinCondition()) {
-                System.out.println("Player wins!");
-                // Handle winning condition
-            } else if (checkDrawCondition()) {
-                System.out.println("The game is a draw!");
-                // Handle draw condition
-            }
-        } else {
-            // Handle invalid move
-            System.out.println("Invalid move! Please choose a valid tile.");
-        }
+        int[] rowAndCol = convertTileIdToRowAndColumn(move.getTileId());
+        int row = rowAndCol[0];
+        int col = rowAndCol[1];
+        BOARD[row][col] = move.getPiece();
     }
 
     // Check if the game is a draw (no more valid moves available)
-    boolean checkDrawCondition() {
+    public boolean checkDrawCondition() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 if (BOARD[i][j] == null) {
@@ -139,16 +127,21 @@ public class GameBoard {
             for (int j = 0; j < checkArr.length; j++) {
                 if (j != 3 && checkArr[j][i] == checkArr[j + 1][i]) {
                     count++;
-                   // System.out.println(count);
                     if (count == 4) {
                         return true;
                     }
                 }
-
             }
-            //System.out.println("next collumn");
             count = 0;
         }
         return false;
+    }
+
+    //minimax bullshit:
+    public void removePieceFromBoard(Move move) {
+        int[] rowAndCol = convertTileIdToRowAndColumn(move.getTileId());
+        int row = rowAndCol[0];
+        int col = rowAndCol[1];
+        BOARD[row][col] = null;
     }
 }

@@ -105,12 +105,10 @@ Scanner sc = new Scanner(System.in);
     // Choose a piece to give to the opponent
     public Piece choosePiece(Player opponent){
 
-        Piece chosenpiece = null;
-
         System.out.println("Please choose a piece to give to your opponent:");
         showPlayerPieces(opponent);
 
-        chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
+        Piece chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
         opponent.removeAvailablePiece(chosenpiece);
 
         return chosenpiece;
@@ -132,6 +130,14 @@ Scanner sc = new Scanner(System.in);
         }
 
         return move;
+    }
+
+    public void showWinningMessage(Player player){
+        if (player.getIsWhite()) {
+            System.out.println("White player wins!");
+        } else {
+            System.out.println("Black player wins!");
+        }
     }
 
 
