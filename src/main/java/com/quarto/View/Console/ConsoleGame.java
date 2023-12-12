@@ -108,7 +108,7 @@ boolean AITurn;
     }
 
     // Choose a piece to give to the opponent
-    public Piece choosePiece(Player opponent){
+    public Piece chooseBaselinePiece(Player opponent){
 
         Piece chosenpiece = null;
         if(opponent.getIsHuman()==true && opponent.getIsWhite()==true)
@@ -128,6 +128,10 @@ boolean AITurn;
         }
         return chosenpiece;
     }
+
+
+
+
 
     public Piece AIChoosePiece(Player opponent){
         System.out.println("AI is choosing a piece to give to the opponent:");
