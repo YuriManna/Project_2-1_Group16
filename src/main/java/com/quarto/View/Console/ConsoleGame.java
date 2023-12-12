@@ -143,13 +143,10 @@ boolean AITurn;
 
     // Choose a piece to give to the opponent
     public Piece choosePiece(Player opponent){
-
         System.out.println("Please choose a piece to give to your opponent:");
         showPlayerPieces(opponent);
-
         Piece chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
         opponent.removeAvailablePiece(chosenpiece);
-
         return chosenpiece;
     }
 

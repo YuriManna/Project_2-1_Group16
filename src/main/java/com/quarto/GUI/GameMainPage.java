@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.SQLOutput;
 
 public class GameMainPage extends JFrame {
     private JButton button1, button2, button3, button4;
@@ -75,8 +76,9 @@ public class GameMainPage extends JFrame {
 //                    // TODO Auto-generated catch block
 //                    e1.printStackTrace();
 //                }
-                PlayMinimax.main(null);
                 System.out.println("GUI for PvCPU still in development, you can try playing against Minimax model or baseline agent through the corresponding files." );
+                System.out.println("Launching PvCPU with Minimax");
+                PlayMinimax.main(null);
             }
         });
 
