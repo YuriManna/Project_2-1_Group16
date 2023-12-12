@@ -114,6 +114,12 @@ Scanner sc = new Scanner(System.in);
         return chosenpiece;
     }
 
+    public Piece chooseBaselinePiece(Player opponent){
+        Piece chosenpiece = null; 
+        return chosenpiece;
+    }
+
+
     // Make a move
     public Move makeMove(GameBoard board, Piece playablePiece){
         System.out.println("Please choose a tile to place your piece on:");
