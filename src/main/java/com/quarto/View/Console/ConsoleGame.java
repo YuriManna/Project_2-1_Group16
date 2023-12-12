@@ -38,7 +38,7 @@ Scanner sc = new Scanner(System.in);
     }
 
     //Show the current board
-    private void showBoard(GameBoard board) {
+    public void showBoard(GameBoard board) {
         System.out.println("Current Board:");
         int id = 0;
 
@@ -110,7 +110,6 @@ Scanner sc = new Scanner(System.in);
     }
 
     public Move makeMove(GameBoard board, Piece playablePiece){
-
         System.out.println("Please choose a tile to place your piece on:");
         showBoard(board);
 
