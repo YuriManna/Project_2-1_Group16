@@ -23,20 +23,26 @@ Before you can run the Quarto game, make sure you have the following prerequisit
 
 To run the Quarto game, follow these simple steps:
 
+### Phase 1: 
 1. **Download the Quarto-Phase1.jar:** You can find the Quarto-Phase1.jar file in the project's repository.
 
 2. **Open a Terminal (Linux/macOS) or Command Prompt (Windows):** Navigate to the directory where you downloaded the Quarto-Phase1.jar file.
 
 3. **Run the JAR File:** Use the following command to run the Quarto game:
-
-If you would like to test the AI agents, you can run them directly from these files:
-- PlayMinimax.java for Human vs Minimax model
-- PlayBaseline.java for Human vs baseline (random) model
 ```bash
 java -jar Quarto-Phase1.jar
 ```
 
 Make sure to replace `Quarto-Phase1.jar` with the actual filename if it's different. This command will start the Quarto game, and you can begin playing!
+
+
+### Phase 2:
+You can simply run the application from the App.java file. (src>main>java>com.quarto>)
+
+If you would like to test the AI agents, you can run them directly from these files:
+- PlayMinimax.java for Human vs Minimax model
+- PlayBaseline.java for Human vs baseline (random) model
+
 
 ## How to Play Quarto
 
