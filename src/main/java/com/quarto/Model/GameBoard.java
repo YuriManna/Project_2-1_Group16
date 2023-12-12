@@ -24,23 +24,23 @@ public class GameBoard {
         // Second letter Small(T) or Big(F)
         // Third letter Square(T) or Circle(F)
         // Fourth letter Hole(T) or Full(F)
-        Piece WSSH = new Piece(true,true,true,true);
-        Piece WSSF = new Piece(true,true,true,false);
-        Piece WSCH = new Piece(true,true,false,true);
-        Piece WSCF = new Piece(true,true,false,false);
-        Piece WBSH = new Piece(true,false,true,true);
-        Piece WBSF = new Piece(true,false,true,false);
-        Piece WBCH = new Piece(true,false,false,true);
-        Piece WBCF = new Piece(true,false,false,false);
+        Piece WSSH = new Piece(true, true, true, true);
+        Piece WSSF = new Piece(true, true, true, false);
+        Piece WSCH = new Piece(true, true, false, true);
+        Piece WSCF = new Piece(true, true, false, false);
+        Piece WBSH = new Piece(true, false, true, true);
+        Piece WBSF = new Piece(true, false, true, false);
+        Piece WBCH = new Piece(true, false, false, true);
+        Piece WBCF = new Piece(true, false, false, false);
         whitesList = new ArrayList<>(List.of(WSSH, WSSF, WSCH, WSCF, WBSH, WBSF, WBCH, WBCF));
-        Piece BSSH = new Piece(false,true,true,true);
-        Piece BSSF = new Piece(false,true,true,false);
-        Piece BSCH = new Piece(false,true,false,true);
-        Piece BSCF = new Piece(false,true,false,false);
-        Piece BBSH = new Piece(false,false,true,true);
-        Piece BBSF = new Piece(false,false,true,false);
-        Piece BBCH = new Piece(false,false,false,true);
-        Piece BBCF = new Piece(false,false,false,false);
+        Piece BSSH = new Piece(false, true, true, true);
+        Piece BSSF = new Piece(false, true, true, false);
+        Piece BSCH = new Piece(false, true, false, true);
+        Piece BSCF = new Piece(false, true, false, false);
+        Piece BBSH = new Piece(false, false, true, true);
+        Piece BBSF = new Piece(false, false, true, false);
+        Piece BBCH = new Piece(false, false, false, true);
+        Piece BBCF = new Piece(false, false, false, false);
         blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
 
     }
@@ -62,7 +62,6 @@ public class GameBoard {
     //OTHER METHODS
 
     //==================================================================================================================
-
 
 
     // Add piece to the board (assign piece to a tile on the board)
@@ -132,6 +131,24 @@ public class GameBoard {
 
     // Helper method to check if all pieces in a line are the same
     private boolean checkLine(Piece a, Piece b, Piece c, Piece d) {
-        return a != null && a.equals(b) && a.equals(c) && a.equals(d);
+        if(a==null||b==null||c==null||d==null){return false;}
+        int count = 0;
+        boolean[][] checkArr = {a.getProperties(), b.getProperties(), c.getProperties(), d.getProperties()};
+        for (int i = 0; i < checkArr.length; i++) {
+            count++;
+            for (int j = 0; j < checkArr.length; j++) {
+                if (j != 3 && checkArr[j][i] == checkArr[j + 1][i]) {
+                    count++;
+                   // System.out.println(count);
+                    if (count == 4) {
+                        return true;
+                    }
+                }
+
+            }
+            //System.out.println("next collumn");
+            count = 0;
+        }
+        return false;
     }
 }

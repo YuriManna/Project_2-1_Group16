@@ -118,7 +118,6 @@ Scanner sc = new Scanner(System.in);
 
     // Make a move
     public Move makeMove(GameBoard board, Piece playablePiece){
-
         System.out.println("Please choose a tile to place your piece on:");
         showBoard(board);
 
