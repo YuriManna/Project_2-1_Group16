@@ -4,7 +4,7 @@
 **Version:** 1.0
 
 ## Overview
-Welcome to Project 2.1, a Java version of the game Quarto developed by Group 16. In this project, we aim to create an exciting implementation of the popular board game Quarto. This version is designed to be played between human players, and we have plans to implement AI opponents in the near future.
+Welcome to Project 2.1, a Java version of the game Quarto developed by Group 16. In this project, we aim to create an exciting implementation of the popular board game Quarto. This version is designed to be played between human players. We have plans to implement AI opponents in the near future, which you can already try out (currently without the GUI).
 
 ## Table of Contents
 1. [Prerequisites](#prerequisites)
@@ -29,6 +29,9 @@ To run the Quarto game, follow these simple steps:
 
 3. **Run the JAR File:** Use the following command to run the Quarto game:
 
+If you would like to test the AI agents, you can run them directly from these files:
+- PlayMinimax.java for Human vs Minimax model
+- PlayBaseline.java for Human vs baseline (random) model
 ```bash
 java -jar Quarto-Phase1.jar
 ```
