@@ -145,6 +145,11 @@ boolean AITurn;
         return chosenpiece;
     }
 
+    public Piece choosePiece(Player opponent){
+        Piece chosenpiece = null;
+        return chosenpiece;
+    }
+
 
 
 
