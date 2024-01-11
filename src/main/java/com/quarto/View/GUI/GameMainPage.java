@@ -1,8 +1,7 @@
-package com.quarto.GUI;
+package com.quarto.View.GUI;
 
 import com.quarto.PlayMinimax;
-import com.quarto.player.ai.MinMax;
-import com.quarto.setup.GameLogic;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.sql.SQLOutput;
 
 public class GameMainPage extends JFrame {
     private JButton button1, button2, button3, button4;
@@ -49,15 +47,14 @@ public class GameMainPage extends JFrame {
 
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) { 
-                try {
-                    GameLogic gameLogic = new GameLogic();
-                    GameTable gameTable = new GameTable(gameLogic);
+                //try {
+                    // add class
                     setVisible(false);
                     dispose();
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+                //} catch (IOException e1) {
+                //    // TODO Auto-generated catch block
+                //    e1.printStackTrace();
+                //}
                 
               } 
         });

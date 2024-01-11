@@ -1,4 +1,4 @@
-package com.quarto.player.ai;
+package com.quarto.ai;
 
 import com.quarto.Model.GameBoard;
 import com.quarto.Model.Piece;

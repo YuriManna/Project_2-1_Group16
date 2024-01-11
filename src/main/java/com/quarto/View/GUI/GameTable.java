@@ -1,27 +1,6 @@
-package com.quarto.GUI;
+package com.quarto.View.GUI;
 
-import com.quarto.setup.Board;
-import com.quarto.setup.GameLogic;
-import com.quarto.setup.Pieces;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.MatteBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.swing.SwingUtilities.isLeftMouseButton;
-import static javax.swing.SwingUtilities.isRightMouseButton;
-
-
+/*
 public class GameTable {
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
@@ -34,11 +13,9 @@ public class GameTable {
     private static Dimension SIDE_PANEL_DIMENSION = new Dimension(600,600);
     private static Dimension TURN_LABEL_DIMENSION = new Dimension(100,20);
 
-    private final GameLogic gameLogic;
 
     //main game frame
-    public GameTable(GameLogic gameLogic) throws IOException {
-        this.gameLogic = gameLogic;
+    public GameTable() throws IOException {
 
         // initialize the frame
         this.gameFrame = new JFrame("Quarto");
@@ -147,11 +124,16 @@ public class GameTable {
             this.setBackground(new Color(165, 42, 42));
             validate();
         }
+        public void reloadTiles() throws IOException {
+            for(int i = 0; i < 16; i++){
+                //Board board = gameLogic.getBoard();
+                //boardTiles.get(i).assignTilePieceIcon(board, i, board.getPieceFromTile(i));
+            }
+        }
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(im, 0, 0, getWidth(), getHeight(), this);
-        
         }
     }
     //panel for the tiles inside the board
@@ -170,19 +152,19 @@ public class GameTable {
                 public void mouseClicked(final MouseEvent e) {
 
                     if(isLeftMouseButton(e)){
-                        Pieces selectedPiece = gameLogic.getSelectedPiece();
-                        if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
-                        gameLogic.placePiece(selectedPiece,tileId);
+                        //Pieces selectedPiece = gameLogic.getSelectedPiece();
+                        //if(selectedPiece == null || gameLogic.moveNotValid(selectedPiece,tileId)){return;}
+                        //gameLogic.placePiece(selectedPiece,tileId);
                         try {
-                            assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
+                        //    assignTilePieceIcon(gameLogic.getBoard(), tileId, selectedPiece);
                             sidePanel.reloadTiles();
-                            gameLogic.checkTurn();
-                            gameLogic.checkGameStatus();
-                            turnLabel.setText(gameLogic.getMessage());
+                        //    gameLogic.checkTurn();
+                        //    gameLogic.checkGameStatus();
+                        //    turnLabel.setText(gameLogic.getMessage());
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        gameLogic.SetSelectedPiece(null);
+                        //gameLogic.SetSelectedPiece(null);
                     }
                 }
 
@@ -200,13 +182,13 @@ public class GameTable {
         }
         
     
-        private void assignTilePieceIcon(final Board board, final int tileId, Pieces piece) throws IOException {
-            this.removeAll();
-            if(piece == null){return;}
-            if(board.tileIsOccupied(tileId)){
-                final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
-                this.add(new JLabel(new ImageIcon(pieceImage)));
-            }
+        //private void assignTilePieceIcon(final Board board, final int tileId, Pieces piece) throws IOException {
+        //    this.removeAll();
+        //    if(piece == null){return;}
+        //    if(board.tileIsOccupied(tileId)){
+        //        final BufferedImage pieceImage = ImageIO.read(getClass().getResource("/images/"+piece.toString()+".png"));
+        //        this.add(new JLabel(new ImageIcon(pieceImage)));
+        //    }
 
         }
     }
@@ -301,6 +283,14 @@ public class GameTable {
                             turnLabel.setText(gameLogic.getMessage());
                         }
                         if(gameLogic.isPvc()|| gameLogic.getTurnCounter()%2==0){
+                            BaselineAgent agent = new BaselineAgent(false, gameLogic);
+                            agent.makeRandomMove(piece);
+                            try {
+                                boardPanel.reloadTiles();
+                                sidePanel.reloadTiles();
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                             // call the minimax algorithm and execute the play
                             // remember to reload all the tiles
                         }
@@ -344,3 +334,4 @@ public class GameTable {
     }
 
 }
+ */

@@ -1,7 +1,6 @@
 package com.quarto.Model;
 
-import com.quarto.player.ai.EvaluationFunction;
-import com.quarto.setup.Pieces;
+import com.quarto.ai.EvaluationFunction;
 
 import java.util.ArrayList;
 
@@ -25,7 +24,6 @@ public class Player {
     }
 
     //Getters and Setters
-
 
     public Piece[] getAvailablePieces() {
         return availablePieces;

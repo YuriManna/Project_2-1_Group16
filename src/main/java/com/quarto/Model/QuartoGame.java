@@ -7,7 +7,6 @@ Responsibilities:
     Facilitate the communication between players and the game board.
 */
 
-import com.quarto.setup.Pieces;
 
 public class QuartoGame {
     private GameBoard gameBoard;
