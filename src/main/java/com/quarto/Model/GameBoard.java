@@ -58,7 +58,10 @@ public class GameBoard {
         return BOARD;
     }
 
-
+    public Piece getPieceById(int tileId){
+        int[] coord = convertTileIdToRowAndColumn(tileId);
+        return getBoard()[coord[0]][coord[1]];
+    }
     //OTHER METHODS
 
     //==================================================================================================================
@@ -96,6 +99,8 @@ public class GameBoard {
         int col = tileId % COLS;
         return new int[]{row, col};
     }
+
+
 
     // Check if there is a winner (basic implementation)
     public boolean checkWinCondition() {

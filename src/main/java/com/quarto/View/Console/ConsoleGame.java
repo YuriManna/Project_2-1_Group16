@@ -1,5 +1,8 @@
 package com.quarto.View.Console;
 import com.quarto.Model.*;
+import com.quarto.ai.MiniMax;
+import com.quarto.ai.PieceEvaluationFunction;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -7,8 +10,11 @@ import java.util.Scanner;
 // Handles the user interface and displays the game board, player information, and prompts for moves.
 
 public class ConsoleGame {
-Scanner sc = new Scanner(System.in);
-boolean AITurn;
+    Scanner sc = new Scanner(System.in);
+    QuartoGame game;
+    MiniMax minimax;
+    boolean AITurn;
+    boolean[] players = {false, false};
 
     //choose game mode (AI & player)
     public boolean[] chooseGameMode(){
@@ -26,23 +32,26 @@ boolean AITurn;
         // Return the game mode based on the user input
         if (input == 1) {
             // Human vs Human
-            //return new boolean[]{true, true};
             System.out.println("You can play Human vs Human with GUI, switching to Human vs AI");
-            return new boolean[]{true, false};
+            players[0] = true;
+            players[1] = true;
         } else if (input == 2) {
             // Human vs AI
-            return new boolean[]{true, false};
+            players[0] = true;
+            game = new QuartoGame(players[0], players[1]);
+            minimax = new MiniMax(game);
         } else if (input == 3) {
             // AI vs AI
             //return new boolean[]{false, false};
             System.out.println("You can't play AI vs AI yet, switching to Human vs AI");
-            return new boolean[]{true, false};
-
+            game = new QuartoGame(players[0], players[1]);
+            minimax = new MiniMax(game);
         } else {
             // Invalid input
             System.out.println("Invalid input! Please choose a valid game mode.");
             return chooseGameMode();
         }
+        return players;
     }
 
     //Show the current board
@@ -114,7 +123,7 @@ boolean AITurn;
         if(opponent.getIsHuman()==true && opponent.getIsWhite()==true)
         {
             this.AITurn = false;
-            chosenpiece = AIChoosePiece(opponent);
+            chosenpiece = chooseRandomPiece(opponent);
         }
         else
         {
@@ -128,8 +137,7 @@ boolean AITurn;
         }
         return chosenpiece;
     }
-
-    public Piece AIChoosePiece(Player opponent){
+    public Piece chooseRandomPiece(Player opponent){
         System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
         Piece chosenpiece = null;
@@ -139,6 +147,48 @@ boolean AITurn;
         opponent.removeAvailablePiece(chosenpiece);
         System.out.println("AI chose: " + showPiece(chosenpiece));
         return chosenpiece;
+    }
+
+    public Piece AIChoosePiece(Player opponent){
+        System.out.println("AI is choosing a piece to give to the opponent:");
+        showPlayerPieces(opponent);
+        Piece chosenPiece = null;
+        GameBoard board = game.getGameBoard();
+        PieceEvaluationFunction function = new PieceEvaluationFunction();
+        chosenPiece = function.leastLikelyPiece(opponent.getAvailablePieces(),board);
+        opponent.removeAvailablePiece(chosenPiece);
+        System.out.println("AI chose: " + showPiece(chosenPiece));
+        return chosenPiece;
+    }
+
+    public Piece AIChoosePieceMinMax(Player opponent){
+        System.out.println("AI is choosing a piece to give to the opponent:");
+        showPlayerPieces(opponent);
+        Piece chosenPiece = null;
+        GameBoard board = game.getGameBoard();
+        int minScore = Integer.MAX_VALUE;
+        int score;
+        int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
+        for (Piece piece : opponent.getAvailablePieces()){
+            for (int i = 0; i < 16; i++) {
+                Move move = new Move(piece, i);
+                if (board.isValidMove(move)) {
+                    board.addPieceToBoard(move);
+                    score = minimax.minimaxScore(game.getGameBoard(), piece, 4, false, alpha, beta);
+                    board.removePieceFromBoard(move);
+
+                    if (score < minScore) {
+                        minScore = score;
+                        chosenPiece = piece;
+                    }
+                    beta = Math.min(beta, score);
+                }
+            }
+        }
+        opponent.removeAvailablePiece(chosenPiece);
+        System.out.println("AI chose: " + showPiece(chosenPiece));
+        return chosenPiece;
     }
 
     // Choose a piece to give to the opponent
