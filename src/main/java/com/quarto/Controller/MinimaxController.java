@@ -12,21 +12,14 @@ Responsibilities:
     Manage the switch between human and AI players.
 */
 
-public class MinimaxController {
+public class MinimaxController implements Controller{
 
     private ConsoleGame console;
     private QuartoGame game;
-
-    public MinimaxController() {
-        //initialize the console version of the game
-        this.console = new ConsoleGame();
-        //initialize the game and therefore the player type
-        boolean[] gameMode = console.chooseGameMode(); // [0] = isPlayer1Human, [1] = isPlayer2Human
-        this.game = new QuartoGame(gameMode[0], gameMode[1]);
-        //start the game
-        play();
+    public MinimaxController(QuartoGame game, ConsoleGame console) {
+        this.console = console;
+        this.game = game;
     }
-
     public void play()
     {
         game.switchPlayers();

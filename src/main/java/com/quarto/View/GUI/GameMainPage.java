@@ -75,7 +75,7 @@ public class GameMainPage extends JFrame {
 //                }
                 System.out.println("GUI for PvCPU still in development, you can try playing against Minimax model or baseline agent through the corresponding files." );
                 System.out.println("Launching PvCPU with Minimax");
-                PlayMinimax.main(null);
+
             }
         });
 

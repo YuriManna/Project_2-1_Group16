@@ -12,26 +12,21 @@ Responsibilities:
     Manage the switch between human and AI players.
 */
 
-public class BaselineController {
+public class HumanVsHumanController implements Controller {
 
     private ConsoleGame console;
     private QuartoGame game;
 
-    public BaselineController(){
-        //initialize the console version of the game
-        this.console = new ConsoleGame();
-        //initialize the game and therefore the player type
-        boolean[] gameMode = console.chooseGameMode(); // [0] = isPlayer1Human, [1] = isPlayer2Human
-        this.game = new QuartoGame(gameMode[0], gameMode[1]);
-        //start the game
-        play();
+    public HumanVsHumanController(QuartoGame game, ConsoleGame console) {
+        this.console = console;
+        this.game = game;
     }
 
     public void play()
     {
         while(!game.gameOver()) {
             //step 1: Black chooses White's piece
-            Piece choosePiece = console.chooseBaselinePiece(game.getCurrentPlayer());
+            Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
             //step 2: White chooses where to place the piece
             Move move = console.makeMove(game.getGameBoard(), choosePiece);
             //console.showBoard(game.getGameBoard());
@@ -41,5 +36,7 @@ public class BaselineController {
             game.switchPlayers();
             //step 4: Repeat until game is over
         }
+        console.showWinningMessage(game.getCurrentPlayer());
     }
+
 }

@@ -13,7 +13,7 @@ public class ConsoleGame {
     Scanner sc = new Scanner(System.in);
     QuartoGame game;
     MiniMax minimax;
-    boolean AITurn;
+    boolean   AITurn;
     boolean[] players = {false, false};
 
     //choose game mode (AI & player)
@@ -138,7 +138,7 @@ public class ConsoleGame {
         return chosenpiece;
     }
     public Piece chooseRandomPiece(Player opponent){
-        System.out.println("AI is choosing a piece to give to the opponent:");
+        //System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
         Piece chosenpiece = null;
         Random random = new Random();
@@ -150,7 +150,7 @@ public class ConsoleGame {
     }
 
     public Piece AIChoosePiece(Player opponent){
-        System.out.println("AI is choosing a piece to give to the opponent:");
+        //System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
         GameBoard board = game.getGameBoard();
         PieceEvaluationFunction function = new PieceEvaluationFunction();
@@ -161,7 +161,6 @@ public class ConsoleGame {
     }
 
     public Piece AIChoosePieceMinMax(Player opponent){
-        System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
         Piece chosenPiece = null;
         GameBoard board = game.getGameBoard();
@@ -186,7 +185,7 @@ public class ConsoleGame {
             }
         }
         opponent.removeAvailablePiece(chosenPiece);
-        System.out.println("AI chose: " + showPiece(chosenPiece));
+        //System.out.println("AI chose: " + showPiece(chosenPiece));
         return chosenPiece;
     }
 
@@ -203,32 +202,22 @@ public class ConsoleGame {
     // Make a move
     public Move makeMove(GameBoard board, Piece playablePiece){
         Move move = null;
-        if(getAITurn()==true){
-            move = AIMakeMove(board, playablePiece);
-            this.AITurn = false;
-        }
+        System.out.println("Please choose a tile to place your piece on:");
+        showBoard(board);
+        int tileId = sc.nextInt();
 
-        else
-        {
-            System.out.println("Please choose a tile to place your piece on:");
-            showBoard(board);
+        move = new Move(playablePiece, tileId);
 
-            int tileId = sc.nextInt();
-
-            move = new Move(playablePiece, tileId);
-
-            if (!board.isValidMove(move)) {
-                System.out.println("Invalid move! Please choose a valid tile.");
-                return makeMove(board, playablePiece);
-            }
+        if (!board.isValidMove(move)) {
+            System.out.println("Invalid move! Please choose a valid tile.");
+            return makeMove(board, playablePiece);
         }
         return move;
     }
 
 
     public Move AIMakeMove(GameBoard board, Piece playablePiece){
-        System.out.println("AI is choosing a tile to place the piece on:");
-        showBoard(board);
+
         Random random = new Random();
 
         int randomTileId = random.nextInt(16);
@@ -236,9 +225,10 @@ public class ConsoleGame {
         Move move = new Move(playablePiece, randomTileId);
 
         if(!board.isValidMove(move)){
-            System.out.println("Invalid move! Please choose a valid tile.");
-            return makeMove(board, playablePiece);
+            //System.out.println("Invalid move! Please choose a valid tile.");
+            return AIMakeMove(board, playablePiece);
         }
+        showBoard(board);
         return move;
     }
 
