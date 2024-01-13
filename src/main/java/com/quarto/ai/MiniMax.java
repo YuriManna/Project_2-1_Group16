@@ -11,7 +11,7 @@ public class MiniMax {
 
     public MiniMax(QuartoGame game){
         this.availablePieces = game.getCurrentPlayer().getAvailablePieces();
-        this.game = game;
+
     }
 
     public Piece[] getAvailablePieces() {

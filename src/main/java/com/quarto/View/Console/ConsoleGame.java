@@ -152,10 +152,9 @@ public class ConsoleGame {
     public Piece AIChoosePiece(Player opponent){
         System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
-        Piece chosenPiece = null;
         GameBoard board = game.getGameBoard();
         PieceEvaluationFunction function = new PieceEvaluationFunction();
-        chosenPiece = function.leastLikelyPiece(opponent.getAvailablePieces(),board);
+        Piece chosenPiece = function.leastLikelyPiece(opponent.getAvailablePieces(),board);
         opponent.removeAvailablePiece(chosenPiece);
         System.out.println("AI chose: " + showPiece(chosenPiece));
         return chosenPiece;
@@ -195,9 +194,9 @@ public class ConsoleGame {
     public Piece choosePiece(Player opponent){
         System.out.println("Please choose a piece to give to your opponent:");
         showPlayerPieces(opponent);
-        Piece chosenpiece = opponent.getAvailablePieces()[sc.nextInt()-1];
-        opponent.removeAvailablePiece(chosenpiece);
-        return chosenpiece;
+        Piece chosenPiece = opponent.getAvailablePieces()[sc.nextInt()-1];
+        opponent.removeAvailablePiece(chosenPiece);
+        return chosenPiece;
     }
 
 
