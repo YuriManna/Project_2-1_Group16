@@ -63,7 +63,7 @@ public class EvaluationFunction {
                 diag2EmptyCount++;
             } else {
                 diag2SameCount += piecesHaveSameProperties(diag2Piece, selectedPiece);
-                diag1SameCount = Math.max(diag2SameCount, findMaxDigit(diag2Properties));
+                diag2SameCount = Math.max(diag2SameCount, findMaxDigit(diag2Properties));
             }
         }
 
