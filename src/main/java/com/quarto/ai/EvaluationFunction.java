@@ -1,5 +1,7 @@
 package com.quarto.ai;
 
+import java.util.Random;
+
 import com.quarto.Model.GameBoard;
 import com.quarto.Model.Piece;
 import com.quarto.Model.QuartoGame;
@@ -37,8 +39,8 @@ public class EvaluationFunction {
                 }
             }
 
-            totalPoints = Math.max(calculatePoints(rowSameCount, rowEmptyCount), totalPoints);
-            totalPoints = Math.max(calculatePoints(colSameCount, colEmptyCount), totalPoints);
+            totalPoints += calculatePoints(rowSameCount, rowEmptyCount);
+            totalPoints += calculatePoints(colSameCount, colEmptyCount);
         }
 
         int diag1EmptyCount = 0;
@@ -67,13 +69,17 @@ public class EvaluationFunction {
             }
         }
 
-        totalPoints = Math.max(calculatePoints(diag1SameCount, diag1EmptyCount), totalPoints);
-        totalPoints = Math.max(calculatePoints(diag2SameCount, diag2EmptyCount), totalPoints);
+        totalPoints += calculatePoints(diag1SameCount, diag1EmptyCount);
+        totalPoints += calculatePoints(diag2SameCount, diag2EmptyCount);
 
 
         if(game.getCurrentPlayer()==game.getWhitePlayer()){
             totalPoints = - totalPoints;
         }
+        
+        Random random = new Random();
+        double randomFactor = 0.9 + random.nextDouble() * 0.2; // Range: [0.9, 1.1]
+        totalPoints *= randomFactor;
 
         return totalPoints;
     }
@@ -111,9 +117,9 @@ public class EvaluationFunction {
         if (sameCount == 1 && emptyCount == 3) {
             return 1;
         } else if (sameCount == 2 && emptyCount == 2) {
-            return 5;
-        } else if (sameCount == 3 && emptyCount == 1) {
             return 10;
+        } else if (sameCount == 3 && emptyCount == 1) {
+            return 100;
         } else if(sameCount == 4 && emptyCount == 0){
             return 1000;
         }else {
