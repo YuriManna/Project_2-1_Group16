@@ -70,6 +70,7 @@ public class Player {
     }
 
     public Move minimax(GameBoard board, Piece chosenPiece, int depth, boolean isMaximizing, int alpha, int beta){
+
         MiniMax miniMax = new MiniMax(game);
         return miniMax.minimax(board, chosenPiece, depth, isMaximizing, alpha, beta);
     }

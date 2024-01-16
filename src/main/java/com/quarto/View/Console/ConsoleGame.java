@@ -37,14 +37,10 @@ public class ConsoleGame {
         } else if (input == 2) {
             // Human vs AI
             players[0] = true;
-            QuartoGame game = new QuartoGame(players[0], players[1]);
-            minimax = new MiniMax(game);
         } else if (input == 3) {
             // AI vs AI
             //return new boolean[]{false, false};
-            System.out.println("You can't play AI vs AI yet, switching to Human vs AI");
-            QuartoGame game = new QuartoGame(players[0], players[1]);
-            minimax = new MiniMax(game);
+            //System.out.println("You can't play AI vs AI yet, switching to Human vs AI");
         } else {
             // Invalid input
             System.out.println("Invalid input! Please choose a valid game mode.");
@@ -160,6 +156,7 @@ public class ConsoleGame {
     }
 
     public Piece AIChoosePieceMinMax(Player opponent, QuartoGame game){
+        minimax = new MiniMax(game);
         showPlayerPieces(opponent);
         Piece chosenPiece = null;
         GameBoard board = game.getGameBoard();
@@ -172,7 +169,7 @@ public class ConsoleGame {
                 Move move = new Move(piece, i);
                 if (board.isValidMove(move)) {
                     board.addPieceToBoard(move);
-                    score = minimax.minimaxScore(game.getGameBoard(), piece, 4, false, alpha, beta);
+                    score = minimax.minimaxScore(game.getGameBoard(), piece, 4, true, alpha, beta);
                     board.removePieceFromBoard(move);
 
                     if (score < minScore) {
