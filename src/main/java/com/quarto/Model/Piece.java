@@ -41,6 +41,21 @@ public class Piece {
     }
     public boolean[] getProperties(){return Properties;}
 
+    public String toString()
+    {
+        // Looks at attributes of the piece and returns a string
+        char C,He,S,Ho;
+        if(this.getColor()){C = 'W';}
+        else{C = 'B';}
+        if(this.getHeight()){He = 'S';}
+        else{He = 'B';}
+        if(this.getShape()){S = 'S';}
+        else{S = 'C';}
+        if(this.getHole()){Ho = 'H';}
+        else{Ho = 'F';}
+        return ""+ C + He + S + Ho;
+    }
+
 //    public static void main(String[] args) {
 //        int count =0;
 //        Piece p1=new Piece(true,true,false,false);

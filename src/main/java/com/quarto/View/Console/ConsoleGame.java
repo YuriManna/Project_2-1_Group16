@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class ConsoleGame {
     Scanner sc = new Scanner(System.in);
-    QuartoGame game;
     MiniMax minimax;
     boolean   AITurn;
     boolean[] players = {false, false};
@@ -38,13 +37,13 @@ public class ConsoleGame {
         } else if (input == 2) {
             // Human vs AI
             players[0] = true;
-            game = new QuartoGame(players[0], players[1]);
+            QuartoGame game = new QuartoGame(players[0], players[1]);
             minimax = new MiniMax(game);
         } else if (input == 3) {
             // AI vs AI
             //return new boolean[]{false, false};
             System.out.println("You can't play AI vs AI yet, switching to Human vs AI");
-            game = new QuartoGame(players[0], players[1]);
+            QuartoGame game = new QuartoGame(players[0], players[1]);
             minimax = new MiniMax(game);
         } else {
             // Invalid input
@@ -149,7 +148,7 @@ public class ConsoleGame {
         return chosenpiece;
     }
 
-    public Piece AIChoosePiece(Player opponent){
+    public Piece AIChoosePiece(Player opponent, QuartoGame game){
         //System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
         GameBoard board = game.getGameBoard();
@@ -160,7 +159,7 @@ public class ConsoleGame {
         return chosenPiece;
     }
 
-    public Piece AIChoosePieceMinMax(Player opponent){
+    public Piece AIChoosePieceMinMax(Player opponent, QuartoGame game){
         showPlayerPieces(opponent);
         Piece chosenPiece = null;
         GameBoard board = game.getGameBoard();

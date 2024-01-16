@@ -35,7 +35,6 @@ public class PieceEvaluationFunction {
             } else {
                 featureCount[Feature.BIG.ordinal()] += 1;
             }
-
             if (piece.getShape()) {
                 featureCount[Feature.SQUARE.ordinal()] += 1;
             } else {
