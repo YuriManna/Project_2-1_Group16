@@ -3,6 +3,9 @@ import com.quarto.Model.*;
 import com.quarto.ai.MiniMax;
 import com.quarto.ai.PieceEvaluationFunction;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -14,6 +17,8 @@ public class ConsoleGame {
     MiniMax minimax;
     boolean   AITurn;
     boolean[] players = {false, false};
+
+    StringBuilder gameStates = new StringBuilder();
 
     //choose game mode (AI & player)
     public boolean[] chooseGameMode(){
@@ -49,32 +54,87 @@ public class ConsoleGame {
         return players;
     }
 
-    //Show the current board
-    public void showBoard(GameBoard board) {
-        System.out.println("Current Board:");
-        int id = 0;
+    // //Show the current board
+    // public void showBoard(GameBoard board) {
+    //     System.out.println("Current Board:");
+    //     int id = 0;
 
-        // Run through the board and display the pieces
+    //     // Run through the board and display the pieces
+    //     for (int i = 0; i < 4; i++) {
+    //         for (int j = 0; j < 4; j++) {
+    //             Piece piece = board.getBoard()[i][j];
+
+    //             if (piece != null) {
+    //                 // Display the piece details
+    //                 System.out.print(showPiece(piece));
+    //             } else {
+    //                 // Display an empty space with an ID
+    //                 System.out.printf("--%02d-", id);
+    //             }
+
+    //             System.out.print(" ");
+    //             id++;
+    //         }
+    //         System.out.println(); // Move to the next row
+    //     }
+
+
+    //     System.out.println(); // Add an empty line for better readability
+    // }
+
+    public void showBoard(GameBoard board) {
+        StringBuilder printedBoard = new StringBuilder();
+        System.out.println("Current Board:\n");
+        int id = 0;
+    
+        // Run through the board and append the pieces to the StringBuilder
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 Piece piece = board.getBoard()[i][j];
-
+    
                 if (piece != null) {
-                    // Display the piece details
-                    System.out.print(showPiece(piece));
+                    // Append the piece details
+                    printedBoard.append(showPiece(piece));
                 } else {
-                    // Display an empty space with an ID
-                    System.out.printf("--%02d-", id);
+                    // Append an empty space with an ID
+                    printedBoard.append(String.format("%02d", id));
                 }
-
-                System.out.print(" ");
+    
+                printedBoard.append(" ");
                 id++;
             }
-            System.out.println(); // Move to the next row
+            printedBoard.append("\n"); // Move to the next row
+        }
+    
+        printedBoard.append("\n"); // Add an empty line for better readability
+    
+        // Print the original board to the console
+        System.out.println(printedBoard.toString());
+        String savedBoard = printedBoard.toString().replace("\n", "");
+        gameStates.append(printedBoard.toString().replace("\n", "")).append("\n");
+
+
+    
+        // Save the printed board to the database or perform other actions
+        // (Code for saving to the database or other actions goes here)
+    
+        // You can use printedBoard.toString() to get the String representation for further processing if needed
+    }
+
+    public void saveBoardToFile(String savedBoard) {
+        String filePath = "src/main/resources/states.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
+            // Append the savedBoard to the file with a newline character
+            writer.write(savedBoard);
+            writer.newLine();
+            //System.out.println("Board saved to file successfully.");
+        } catch (IOException e) {
+            System.err.println("Error saving board to file: " + e.getMessage());
         }
 
-        System.out.println(); // Add an empty line for better readability
     }
+
+    
 
 
     //helper method to show the piece
@@ -237,6 +297,7 @@ public class ConsoleGame {
         } else {
             System.out.println("Black player wins!");
         }
+        saveBoardToFile(gameStates.toString());
     }
 
 }
