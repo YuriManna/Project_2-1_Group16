@@ -14,6 +14,7 @@ public class QuartoGame {
     private final Player blackPlayer;
     private Player currentPlayer;
     private Player opponent;
+    private int turnCounter;
 
     public QuartoGame(boolean isPlayer1Human, boolean isPlayer2Human) {
         this.gameBoard = new GameBoard();
@@ -21,6 +22,7 @@ public class QuartoGame {
         blackPlayer = new Player(isPlayer2Human, false, this.gameBoard.getBlacksList(), this);
         currentPlayer = whitePlayer;
         opponent = blackPlayer;
+        turnCounter = 1;
 
     }
 
@@ -45,6 +47,7 @@ public class QuartoGame {
         if (currentPlayer == whitePlayer) {
             currentPlayer = blackPlayer;
             opponent = whitePlayer;
+            turnCounter++;
         } else {
             currentPlayer = whitePlayer;
             opponent = blackPlayer;

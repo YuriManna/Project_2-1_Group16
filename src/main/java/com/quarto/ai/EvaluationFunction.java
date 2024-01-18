@@ -6,28 +6,33 @@ import com.quarto.Model.QuartoGame;
 
 public class EvaluationFunction {
 
-    public int evaluateBoard(GameBoard board, Piece selectedPiece, QuartoGame game) {
-        int totalPoints = 0;
+    public EvaluationFunction() {
+
+    }
+
+    public stateScore evaluateBoard(GameBoard board, Piece selectedPiece, QuartoGame game) {
+        stateScore totalPoints = new stateScore(board, 0);
 
         // Check rows, columns, and diagonals for potential wins
         for (int i = 0; i < 4; i++) {
             int rowProperties = evaluateLine(board.getRow(i), selectedPiece);
             int colProperties = evaluateLine(board.getColumn(i), selectedPiece);
 
-            totalPoints = Math.max(totalPoints, calculatePoints(rowProperties));
-            totalPoints = Math.max(totalPoints, calculatePoints(colProperties));
+            totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(rowProperties)));
+            totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(colProperties)));
         }
 
         // Check diagonals
         int diag1Properties = evaluateLine(board.getDiagonal1(), selectedPiece);
         int diag2Properties = evaluateLine(board.getDiagonal2(), selectedPiece);
 
-        totalPoints = Math.max(totalPoints, calculatePoints(diag1Properties));
-        totalPoints = Math.max(totalPoints, calculatePoints(diag2Properties));
+        totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(diag1Properties)));
+        totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(diag2Properties)));
+
 
         // Adjust points based on player's perspective
         if (game.getCurrentPlayer() == game.getWhitePlayer()) {
-            totalPoints = -totalPoints;
+            totalPoints.setScore(-totalPoints.getScore());
         }
 
         return totalPoints;

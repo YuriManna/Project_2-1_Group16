@@ -60,7 +60,18 @@ public class GameBoard {
 
     public Piece getPieceById(int tileId){
         int[] coord = convertTileIdToRowAndColumn(tileId);
-        return getBoard()[coord[0]][coord[1]];
+        return BOARD[coord[0]][coord[1]];
+    }
+
+    public int getIdByPiece(Piece piece){
+        for(int i = 0; i < ROWS; i++){
+            for(int j = 0; j < COLS; j++){
+                if(BOARD[i][j] == piece){
+                    return convertRowAndColumnToTileId(i,j);
+                }
+            }
+        }
+        return 0;
     }
     //OTHER METHODS
 
@@ -93,11 +104,26 @@ public class GameBoard {
         return tileId >= 0 && tileId < 16 && BOARD[convertTileIdToRowAndColumn(tileId)[0]][convertTileIdToRowAndColumn(tileId)[1]] == null;
     }
 
+    private int convertRowAndColumnToTileId(int row, int col) {
+        return row * COLS + col;
+    }
+
     // Convert tileId to row and column
     private int[] convertTileIdToRowAndColumn(int tileId) {
         int row = tileId / COLS;
         int col = tileId % COLS;
         return new int[]{row, col};
+    }
+
+    public boolean isPieceOnBoard(Piece piece) {
+        for (Piece[] row : BOARD) {
+            for (Piece currentPiece : row) {
+                if (currentPiece != null && currentPiece.equals(piece)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
