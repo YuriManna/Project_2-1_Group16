@@ -149,4 +149,34 @@ public class GameBoard {
         int col = rowAndCol[1];
         BOARD[row][col] = null;
     }
+
+    public Piece[] getRow(int i) {
+        return BOARD[i];
+    }
+
+    public Piece[] getColumn(int i) {
+        Piece[] column = new Piece[4];
+        for (int j = 0; j < 4; j++) {
+            column[j] = BOARD[j][i];
+        }
+        return column;
+    }
+
+
+    public Piece[] getDiagonal1() {
+        Piece[] diagonal = new Piece[4];
+        for (int i = 0; i < 4; i++) {
+            diagonal[i] = BOARD[i][i];
+        }
+        return diagonal;
+    }
+
+
+    public Piece[] getDiagonal2() {
+        Piece[] diagonal = new Piece[4];
+        for (int i = 0; i < 4; i++) {
+            diagonal[i] = BOARD[i][3 - i];
+        }
+        return diagonal;
+    }
 }
