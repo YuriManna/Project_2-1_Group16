@@ -37,7 +37,7 @@ public class MiniMaxVsMiniMaxController implements Controller{
                 duration = (endTime - startTime);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
                 //step 3: Show updated board
-                console.showBoard(game.getGameBoard());
+                console.updateBoard(game.getGameBoard());
                 System.out.println("MiniMax 2 move calculation took " + duration + " milliseconds");
             }
             else{
@@ -54,7 +54,7 @@ public class MiniMaxVsMiniMaxController implements Controller{
                 duration = (endTime - startTime);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
                 //step 3: Show updated board
-                console.showBoard(game.getGameBoard());
+                console.updateBoard(game.getGameBoard());
                 System.out.println("MiniMax 1 move calculation took " + duration + " milliseconds");
             }
 

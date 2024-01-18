@@ -4,6 +4,9 @@ import com.quarto.Model.Move;
 import com.quarto.Model.Piece;
 import com.quarto.Model.QuartoGame;
 import com.quarto.View.Console.ConsoleGame;
+import com.quarto.View.GameInterface;
+
+import java.io.IOException;
 
 /*
 Responsibilities:
@@ -14,29 +17,28 @@ Responsibilities:
 
 public class HumanVsHumanController implements Controller {
 
-    private ConsoleGame console;
+    private GameInterface gameView;
     private QuartoGame game;
 
-    public HumanVsHumanController(QuartoGame game, ConsoleGame console) {
-        this.console = console;
+    public HumanVsHumanController(QuartoGame game, GameInterface gameView) {
+        this.gameView = gameView;
         this.game = game;
     }
 
-    public void play()
-    {
+    public void play() throws IOException {
         while(!game.gameOver()) {
             //step 1: Black chooses White's piece
-            Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
+            Piece choosePiece = gameView.choosePiece(game.getCurrentPlayer());
             //step 2: White chooses where to place the piece
-            Move move = console.makeMove(game.getGameBoard(), choosePiece);
+            Move move = gameView.makeMove(game.getGameBoard(), choosePiece);
             //console.showBoard(game.getGameBoard());
             game.getCurrentPlayer().makeMove(move, game.getGameBoard());
-            console.showBoard(game.getGameBoard());
+            gameView.updateBoard(game.getGameBoard());
             //step 3: Switch players
             game.switchPlayers();
             //step 4: Repeat until game is over
         }
-        console.showWinningMessage(game.getCurrentPlayer());
+        gameView.showWinningMessage(game.getOpponent());
     }
 
 }

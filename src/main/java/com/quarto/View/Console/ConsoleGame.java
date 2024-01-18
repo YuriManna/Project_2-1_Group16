@@ -1,5 +1,6 @@
 package com.quarto.View.Console;
 import com.quarto.Model.*;
+import com.quarto.View.GameInterface;
 import com.quarto.ai.MiniMax;
 import com.quarto.ai.PieceEvaluationFunction;
 
@@ -9,7 +10,7 @@ import java.util.Scanner;
 //GameView:
 // Handles the user interface and displays the game board, player information, and prompts for moves.
 
-public class ConsoleGame {
+public class ConsoleGame implements GameInterface {
     Scanner sc = new Scanner(System.in);
     MiniMax minimax;
     boolean   AITurn;
@@ -31,7 +32,6 @@ public class ConsoleGame {
         // Return the game mode based on the user input
         if (input == 1) {
             // Human vs Human
-            System.out.println("You can play Human vs Human with GUI, switching to Human vs AI");
             players[0] = true;
             players[1] = true;
         } else if (input == 2) {
@@ -39,8 +39,6 @@ public class ConsoleGame {
             players[0] = true;
         } else if (input == 3) {
             // AI vs AI
-            //return new boolean[]{false, false};
-            //System.out.println("You can't play AI vs AI yet, switching to Human vs AI");
         } else {
             // Invalid input
             System.out.println("Invalid input! Please choose a valid game mode.");
@@ -50,7 +48,7 @@ public class ConsoleGame {
     }
 
     //Show the current board
-    public void showBoard(GameBoard board) {
+    public void updateBoard(GameBoard board) {
         System.out.println("Current Board:");
         int id = 0;
 
@@ -181,7 +179,7 @@ public class ConsoleGame {
             }
         }
         opponent.removeAvailablePiece(chosenPiece);
-        //System.out.println("AI chose: " + showPiece(chosenPiece));
+        System.out.println("AI chose: " + showPiece(chosenPiece));
         return chosenPiece;
     }
 
@@ -199,7 +197,7 @@ public class ConsoleGame {
     public Move makeMove(GameBoard board, Piece playablePiece){
         Move move = null;
         System.out.println("Please choose a tile to place your piece on:");
-        showBoard(board);
+        updateBoard(board);
         int tileId = sc.nextInt();
 
         move = new Move(playablePiece, tileId);
@@ -224,7 +222,7 @@ public class ConsoleGame {
             //System.out.println("Invalid move! Please choose a valid tile.");
             return AIMakeMove(board, playablePiece);
         }
-        showBoard(board);
+        updateBoard(board);
         return move;
     }
 

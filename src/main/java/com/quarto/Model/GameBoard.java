@@ -15,6 +15,8 @@ public class GameBoard {
     private final int COLS = 4;
     private final Piece[][] BOARD = new Piece[ROWS][COLS];
     private final ArrayList<Piece> whitesList;
+    private Piece[] whitesArray;
+    private Piece[] blacksArray;
     private final ArrayList<Piece> blacksList;
 
     public GameBoard() {
@@ -33,6 +35,7 @@ public class GameBoard {
         Piece WBCH = new Piece(true, false, false, true);
         Piece WBCF = new Piece(true, false, false, false);
         whitesList = new ArrayList<>(List.of(WSSH, WSSF, WSCH, WSCF, WBSH, WBSF, WBCH, WBCF));
+        whitesArray = whitesList.toArray(new Piece[0]);
         Piece BSSH = new Piece(false, true, true, true);
         Piece BSSF = new Piece(false, true, true, false);
         Piece BSCH = new Piece(false, true, false, true);
@@ -42,17 +45,15 @@ public class GameBoard {
         Piece BBCH = new Piece(false, false, false, true);
         Piece BBCF = new Piece(false, false, false, false);
         blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
-
+        blacksArray = blacksList.toArray(new Piece[0]);
     }
 
     //GETTERS AND SETTERS
-    public ArrayList<Piece> getBlacksList() {
-        return blacksList;
-    }
+    public ArrayList<Piece> getBlacksList() { return blacksList; }
 
-    public ArrayList<Piece> getWhitesList() {
-        return whitesList;
-    }
+    public ArrayList<Piece> getWhitesList() { return whitesList; }
+    public Piece[] getWhitesArray() { return whitesArray; }
+    public Piece[] getBlacksArray() { return blacksArray; }
 
     public Piece[][] getBoard() {
         return BOARD;
@@ -62,10 +63,16 @@ public class GameBoard {
         int[] coord = convertTileIdToRowAndColumn(tileId);
         return getBoard()[coord[0]][coord[1]];
     }
+    public void setPiecesArray(Piece[] pieceArray, boolean isWhite){
+        if(isWhite) {
+            this.whitesArray = pieceArray;
+        }else {
+            this.blacksArray = pieceArray;
+        }
+    }
+
     //OTHER METHODS
-
     //==================================================================================================================
-
 
     // Add piece to the board (assign piece to a tile on the board)
     public void addPieceToBoard(Move move) {
@@ -99,7 +106,6 @@ public class GameBoard {
         int col = tileId % COLS;
         return new int[]{row, col};
     }
-
 
 
     // Check if there is a winner (basic implementation)

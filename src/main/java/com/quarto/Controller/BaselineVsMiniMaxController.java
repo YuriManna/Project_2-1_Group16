@@ -4,7 +4,6 @@ import com.quarto.Model.Move;
 import com.quarto.Model.Piece;
 import com.quarto.Model.QuartoGame;
 import com.quarto.View.Console.ConsoleGame;
-import com.quarto.ai.MiniMax;
 
 public class BaselineVsMiniMaxController implements Controller{
 
@@ -39,7 +38,7 @@ public class BaselineVsMiniMaxController implements Controller{
                 duration = (endTime - startTime);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
                 //step 3: Show updated board
-                console.showBoard(game.getGameBoard());
+                console.updateBoard(game.getGameBoard());
                 System.out.println("Baseline move calculation took " + duration + " milliseconds");
             }
             else{
@@ -56,7 +55,7 @@ public class BaselineVsMiniMaxController implements Controller{
                 duration = (endTime - startTime);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
                 //step 3: Show updated board
-                console.showBoard(game.getGameBoard());
+                console.updateBoard(game.getGameBoard());
                 System.out.println("MiniMax move calculation took " + duration + " milliseconds");
             }
 
