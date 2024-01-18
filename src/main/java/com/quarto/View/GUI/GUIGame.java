@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static javax.swing.SwingUtilities.isLeftMouseButton;
 import static javax.swing.SwingUtilities.isRightMouseButton;
@@ -386,9 +387,18 @@ public class GUIGame implements GameInterface {
         if(!isAIGame){
             isAIGame = true;
         }
+        // first move is random
+        // if the opponent has less than 5 pieces left use the minimax algorithm
+        // otherwise use the least likely piece algorithm
         GameBoard board = game.getGameBoard();
         Piece chosenPiece;
-        if(opponent.getAvailablePieces().length < 5){
+        if (opponent.getAvailablePieces().length == 8){
+            // randomize the first move
+            Random random = new Random();
+            int randomInt = random.nextInt(opponent.getAvailablePieces().length);
+            chosenPiece = opponent.getAvailablePieces()[randomInt];
+        }
+        else if(opponent.getAvailablePieces().length < 5){
             chosenPiece = AIChoosePieceMinMax(opponent, game);
         }else {
             PieceEvaluationFunction function = new PieceEvaluationFunction();
@@ -398,7 +408,6 @@ public class GUIGame implements GameInterface {
         //color the selected piece's tile
         for (int i = 0; i < whites.length; i++) {
             if(chosenPiece.equals(whites[i])){
-                System.out.println("piece found");
                 sidePanel.getWhites().get(i).setBorder(new MatteBorder(3, 3, 3, 3, new Color(206, 32, 41)));
                 break;
             }
