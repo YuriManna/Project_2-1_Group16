@@ -149,4 +149,10 @@ public class GameBoard {
         int col = rowAndCol[1];
         BOARD[row][col] = null;
     }
+
+    //qlearning bullshit
+    public boolean isGameFinished() {
+    return checkWinCondition() || checkDrawCondition();
+    }
+
 }
