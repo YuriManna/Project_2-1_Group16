@@ -8,13 +8,8 @@ import com.quarto.Model.GameBoard;
 import com.quarto.Model.Move;
 import com.quarto.Model.Piece;
 
-import java.util.Arrays;
 
-import java.util.Random;
-
-import java.util.Random;
-
-public class QLearning {
+public class    QLearning {
 
     private static double[] weights = {1.0, 1.0, 1.0, 1.0}; // w1, w2, w3, w4
     private static double alpha = 0.1;
@@ -23,9 +18,10 @@ public class QLearning {
 
     public static void main(String[] args) {
         GameBoard gameBoard = new GameBoard();  // Instantiate the game board
-        int episodes = 10000;
+        int episodes = 1000;
 
         for (int episode = 0; episode < episodes; episode++) {
+            System.out.println("Episode " + (episode + 1));
             playGame(gameBoard);
         }
 
@@ -72,6 +68,7 @@ public class QLearning {
         Random rand = new Random();
         int tileId = rand.nextInt(16);
         Piece piece = new Piece(rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean(), rand.nextBoolean());
+
         return new Move(piece, tileId);
     }
 
@@ -92,7 +89,6 @@ public class QLearning {
                 }
             }
         }
-
         return bestAction;
     }
 
@@ -104,9 +100,14 @@ public class QLearning {
         }
 
         // Apply the chosen action to the game board
+        System.out.println("Whites: " + gameBoard.getWhitesList());
+        System.out.println("Blacks: " + gameBoard.getBlacksList());
         gameBoard.addPieceToBoard(action);
 
-        // Convert the game board state to the format expected by Q-learning
+        //remove piece from list
+        gameBoard.getWhitesList().remove(action.getPiece());
+        showBoard(gameBoard);
+        // Convert the game board state to the format expected by Q-learning);
         return convertGameBoardToState(gameBoard);
     }
 
@@ -213,5 +214,31 @@ public class QLearning {
         for (int i = 0; i < weights.length; i++) {
             System.out.println("w" + (i + 1) + ": " + weights[i]);
         }
+    }
+
+    public static void showBoard(GameBoard board) {
+        System.out.println("Current Board:");
+        int id = 0;
+
+        // Run through the board and display the pieces
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                Piece piece = board.getBoard()[i][j];
+
+                if (piece != null) {
+                    // Display the piece details
+                    System.out.print(piece.toString());
+                } else {
+                    // Display an empty space with an ID
+                    System.out.printf("--%02d-", id);
+                }
+
+                System.out.print(" ");
+                id++;
+            }
+            System.out.println(); // Move to the next row
+        }
+
+        System.out.println(); // Add an empty line for better readability
     }
 }

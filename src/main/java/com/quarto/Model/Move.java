@@ -16,4 +16,12 @@ public class Move {
     public int getTileId() {
         return tileId;
     }
+
+    public String moveToString() {
+
+        return "Piece: " + this.getPiece().toString() + ", Tile: " + this.getTileId();
+    }
+
+
 }
+
