@@ -16,6 +16,7 @@ public class GameBoard {
     private final Piece[][] BOARD = new Piece[ROWS][COLS];
     private final ArrayList<Piece> whitesList;
     private final ArrayList<Piece> blacksList;
+    private Piece latestPieceAdded;
 
     public GameBoard() {
         // Sets up dimensions of the board (aka the grid)
@@ -41,7 +42,7 @@ public class GameBoard {
         Piece BBSF = new Piece(false, false, true, false);
         Piece BBCH = new Piece(false, false, false, true);
         Piece BBCF = new Piece(false, false, false, false);
-        blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
+       blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
 
     }
 
@@ -204,5 +205,33 @@ public class GameBoard {
             diagonal[i] = BOARD[i][3 - i];
         }
         return diagonal;
+    }
+    //helper methods
+    public void copyGameBoard(GameBoard board){
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                this.BOARD[i][j]=board.BOARD[i][j];
+            }
+        }
+
+    }
+    public boolean isBoardEmpty(GameBoard board){
+        for (int i = 0; i < board.BOARD.length; i++) {
+            for (int j = 0; j < board.BOARD.length; j++) {
+                if(board.BOARD[i][j]!=null){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public Piece getLatestPieceAdded() {
+        return latestPieceAdded;
+    }
+
+    public void setLatestPieceAdded(Piece latestPieceAdded) {
+        this.latestPieceAdded = latestPieceAdded;
     }
 }

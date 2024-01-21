@@ -9,8 +9,37 @@ public class EvaluationFunction {
     public EvaluationFunction() {
 
     }
+    //method to evaluate just the board. Still needs adjustment.
+    public stateScore boardEval(GameBoard board,QuartoGame game){
+        stateScore totalPoints = new stateScore(board, 0);
 
+        // Check rows, columns, and diagonals for potential wins
+        for (int i = 0; i < 4; i++) {
+            int rowProperties = evalLine(board.getRow(i));
+            int colProperties = evalLine(board.getColumn(i));
+
+            totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(rowProperties)));
+            totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(colProperties)));
+        }
+
+        // Check diagonals
+        int diag1Properties = evalLine(board.getDiagonal1());
+        int diag2Properties = evalLine(board.getDiagonal2());
+
+        totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(diag1Properties)));
+        totalPoints.setScore(Math.max(totalPoints.getScore(), calculatePoints(diag2Properties)));
+
+
+        // Adjust points based on player's perspective
+        if (game.getCurrentPlayer() == game.getWhitePlayer()) {
+            totalPoints.setScore(-totalPoints.getScore());
+        }
+
+        return totalPoints;
+
+    }
     public stateScore evaluateBoard(GameBoard board, Piece selectedPiece, QuartoGame game) {
+
         stateScore totalPoints = new stateScore(board, 0);
 
         // Check rows, columns, and diagonals for potential wins
@@ -31,13 +60,24 @@ public class EvaluationFunction {
 
 
         // Adjust points based on player's perspective
-        if (game.getCurrentPlayer() == game.getWhitePlayer()) {
+        if (game.getCurrentPlayer() == game.getWhitePlayer()) {//shouldnt this be black?
             totalPoints.setScore(-totalPoints.getScore());
         }
 
         return totalPoints;
     }
+    //eval line without an unplaced piece. Still needs adjustment
+    private int evalLine(Piece[] line){
+        int sameCount = 0;
+        int emptyCount = 0;
 
+        for (Piece piece : line) {
+          if (piece!=null){break;}
+
+        }
+
+        return sameCount * 1000 + emptyCount;
+    }
     private int evaluateLine(Piece[] line, Piece selectedPiece) {
         int sameCount = 0;
         int emptyCount = 0;
@@ -47,7 +87,11 @@ public class EvaluationFunction {
                 emptyCount++;
             } else {
                 sameCount += piecesHaveSameProperties(piece, selectedPiece);
+                if (piece.equals(selectedPiece)){
+                    System.out.println("Youre fucked");
+                }
             }
+
         }
 
         return sameCount * 1000 + emptyCount;

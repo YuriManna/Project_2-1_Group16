@@ -46,6 +46,7 @@ public class ConsoleGame {
             System.out.println("Invalid input! Please choose a valid game mode.");
             return chooseGameMode();
         }
+        sc.close();//helps with performance?
         return players;
     }
 
@@ -154,36 +155,37 @@ public class ConsoleGame {
         System.out.println("AI chose: " + showPiece(chosenPiece));
         return chosenPiece;
     }
+//TODO this method needs fixing to be used
 
-    public Piece AIChoosePieceMinMax(Player opponent, QuartoGame game){
-        minimax = new MiniMax(game);
-        showPlayerPieces(opponent);
-        Piece chosenPiece = null;
-        GameBoard board = game.getGameBoard();
-        int minScore = Integer.MAX_VALUE;
-        int score;
-        int alpha = Integer.MIN_VALUE;
-        int beta = Integer.MAX_VALUE;
-        for (Piece piece : opponent.getAvailablePieces()){
-            for (int i = 0; i < 16; i++) {
-                Move move = new Move(piece, i);
-                if (board.isValidMove(move)) {
-                    board.addPieceToBoard(move);
-                    score = minimax.minimaxScore(game.getGameBoard(), piece, 4, true, alpha, beta);
-                    board.removePieceFromBoard(move);
-
-                    if (score < minScore) {
-                        minScore = score;
-                        chosenPiece = piece;
-                    }
-                    beta = Math.min(beta, score);
-                }
-            }
-        }
-        opponent.removeAvailablePiece(chosenPiece);
-        //System.out.println("AI chose: " + showPiece(chosenPiece));
-        return chosenPiece;
-    }
+//    public Piece AIChoosePieceMinMax(Player opponent, QuartoGame game){
+//        minimax = new MiniMax(game);
+//        showPlayerPieces(opponent);
+//        Piece chosenPiece = null;
+//        GameBoard board = game.getGameBoard();
+//        int minScore = Integer.MAX_VALUE;
+//        int score;
+//        int alpha = Integer.MIN_VALUE;
+//        int beta = Integer.MAX_VALUE;
+//        for (Piece piece : opponent.getAvailablePieces()){
+//            for (int i = 0; i < 16; i++) {
+//                Move move = new Move(piece, i);
+//                if (board.isValidMove(move)) {
+//                    board.addPieceToBoard(move);
+//                    score = minimax.minimaxScore(game.getGameBoard(), piece, 4, true, alpha, beta);
+//                    board.removePieceFromBoard(move);
+//
+//                    if (score < minScore) {
+//                        minScore = score;
+//                        chosenPiece = piece;
+//                    }
+//                    beta = Math.min(beta, score);
+//                }
+//            }
+//        }
+//        opponent.removeAvailablePiece(chosenPiece);
+//        //System.out.println("AI chose: " + showPiece(chosenPiece));
+//        return chosenPiece;
+//    }
 
     // Choose a piece to give to the opponent
     public Piece choosePiece(Player opponent){

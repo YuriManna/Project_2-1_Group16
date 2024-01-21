@@ -47,7 +47,7 @@ public class Player {
         int index = 0;
 
         // Copy pieces to the new array, excluding the specified piece
-        for (Piece currentPiece : availablePieces) {
+        for (Piece currentPiece : availablePieces) {//Issues with removing pieces. Should be resolved.
             if (!currentPiece.equals(piece)) {
                 updatedPieces[index++] = currentPiece;
             }
@@ -68,11 +68,11 @@ public class Player {
         // Verify that the move is valid
         board.addPieceToBoard(move);
     }
-
+//changed a lot to accommodate the app starting
     public Move minimax(GameBoard board, Piece chosenPiece, int depth, boolean isMaximizing, int alpha, int beta){
-
-        MiniMax miniMax = new MiniMax(game);
-        return miniMax.minimax(board, chosenPiece, depth, isMaximizing, alpha, beta);
+        //game.getCurrentPlayer().removeAvailablePiece(chosenPiece);
+        MiniMax miniMax = new MiniMax(game,chosenPiece);//what is the game that is being passed to this constructor
+        return miniMax.iterative_deepening( board, chosenPiece, depth, isMaximizing, alpha, beta);
     }
 
 }
