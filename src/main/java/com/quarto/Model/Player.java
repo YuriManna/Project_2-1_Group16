@@ -2,6 +2,7 @@ package com.quarto.Model;
 
 import com.quarto.ai.EvaluationFunction;
 import com.quarto.ai.MiniMax;
+import com.quarto.ai.PieceEvaluationFunction;
 
 import java.util.ArrayList;
 
@@ -15,13 +16,17 @@ public class Player {
     boolean isHuman;
     boolean isWhite;
     Piece[] availablePieces;
-    QuartoGame game;
 
     public Player(boolean isHuman, boolean isWhite, ArrayList<Piece> availablePieces, QuartoGame game) {
         this.isHuman = isHuman;
         this.isWhite = isWhite;
         this.availablePieces = availablePieces.toArray(new Piece[0]);
-        this.game = game;
+    }
+
+    public Player(Player currentPlayer) {
+        this.isHuman = currentPlayer.getIsHuman();
+        this.isWhite = currentPlayer.getIsWhite();
+        this.availablePieces = currentPlayer.getAvailablePieces();
     }
 
     //Getters and Setters
@@ -69,10 +74,19 @@ public class Player {
         board.addPieceToBoard(move);
     }
 
-    public Move minimax(GameBoard board, Piece chosenPiece, int depth, boolean isMaximizing, int alpha, int beta){
+    public Move minimaxPlace(QuartoGame game, Piece chosenPiece){
 
-        MiniMax miniMax = new MiniMax(game);
-        return miniMax.minimax(board, chosenPiece, depth, isMaximizing, alpha, beta);
+        Move move;
+        MiniMax miniMax = new MiniMax(game, chosenPiece);
+        move = new Move(chosenPiece, miniMax.iterative_deepening(game));
+        return move;
+    }
+
+    public Piece AIChoosePiece(Player opponent, GameBoard board){
+        PieceEvaluationFunction function = new PieceEvaluationFunction();
+        Piece chosenPiece = function.leastLikelyPiece(opponent.getAvailablePieces(),board);
+        opponent.removeAvailablePiece(chosenPiece);
+        return chosenPiece;
     }
 
 }

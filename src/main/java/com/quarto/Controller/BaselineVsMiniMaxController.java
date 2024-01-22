@@ -27,7 +27,7 @@ public class BaselineVsMiniMaxController implements Controller{
             {
                 //step 1: minimax chooses baseline's piece
                 long startTime = System.currentTimeMillis();
-                Piece choosePiece = console.AIChoosePiece(game.getCurrentPlayer(), game);
+                Piece choosePiece = game.getOpponent().AIChoosePiece(game.getCurrentPlayer(), game.getGameBoard());
 
                 long endTime = System.currentTimeMillis();
                 long duration = (endTime - startTime);
@@ -51,7 +51,7 @@ public class BaselineVsMiniMaxController implements Controller{
                 System.out.println("Baseline piece calculation took " + duration + " milliseconds");
                 //step 2: minimax chooses where to place the piece
                 startTime = System.currentTimeMillis();
-                Move move = game.getCurrentPlayer().minimax(game.getGameBoard(), choosePiece, 6, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                Move move = game.getCurrentPlayer().minimaxPlace(game, choosePiece);
                 endTime = System.currentTimeMillis();
                 duration = (endTime - startTime);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());

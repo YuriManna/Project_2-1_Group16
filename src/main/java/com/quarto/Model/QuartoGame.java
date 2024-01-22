@@ -22,7 +22,7 @@ public class QuartoGame {
         blackPlayer = new Player(isPlayer2Human, false, this.gameBoard.getBlacksList(), this);
         currentPlayer = whitePlayer;
         opponent = blackPlayer;
-        turnCounter = 1;
+        this.turnCounter = 0;
 
     }
 
@@ -42,12 +42,14 @@ public class QuartoGame {
         return opponent;
     }
 
+    public int getTurnCounter() { return turnCounter; }
+
     public void switchPlayers() {
 
         if (currentPlayer == whitePlayer) {
             currentPlayer = blackPlayer;
             opponent = whitePlayer;
-            turnCounter++;
+            this.turnCounter++;
         } else {
             currentPlayer = whitePlayer;
             opponent = blackPlayer;

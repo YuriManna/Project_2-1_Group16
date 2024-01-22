@@ -30,7 +30,7 @@ public class MinimaxController implements Controller{
             {
                 //step 1: AI chooses HUMAN's piece
                 long startTime = System.currentTimeMillis();
-                Piece choosePiece = console.AIChoosePiece(game.getCurrentPlayer(), game);
+                Piece choosePiece = game.getOpponent().AIChoosePiece(game.getCurrentPlayer(), game.getGameBoard());
                 long endTime = System.currentTimeMillis();
                 long duration = (endTime - startTime);
                 System.out.println("AI piece calculation took " + duration + " milliseconds");
@@ -45,7 +45,7 @@ public class MinimaxController implements Controller{
                 Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
                 //step 2: AI chooses where to place the piece
                 long startTime = System.currentTimeMillis();
-                Move move = game.getCurrentPlayer().minimax(game.getGameBoard(), choosePiece, 6, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                Move move = game.getCurrentPlayer().minimaxPlace(game, choosePiece);
                 long endTime = System.currentTimeMillis();
                 long duration = (endTime - startTime);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());

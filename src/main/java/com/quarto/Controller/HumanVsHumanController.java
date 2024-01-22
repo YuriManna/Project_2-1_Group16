@@ -27,6 +27,8 @@ public class HumanVsHumanController implements Controller {
         while(!game.gameOver()) {
             //step 1: Black chooses White's piece
             Piece choosePiece = console.choosePiece(game.getCurrentPlayer());
+            game.getCurrentPlayer().removeAvailablePiece(choosePiece);
+            console.showPlayerPieces(game.getCurrentPlayer());
             //step 2: White chooses where to place the piece
             Move move = console.makeMove(game.getGameBoard(), choosePiece);
             //console.showBoard(game.getGameBoard());

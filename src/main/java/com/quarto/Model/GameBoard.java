@@ -13,9 +13,10 @@ RESPONSIBILITIES:
 public class GameBoard {
     private final int ROWS = 4;
     private final int COLS = 4;
-    private final Piece[][] BOARD = new Piece[ROWS][COLS];
-    private final ArrayList<Piece> whitesList;
-    private final ArrayList<Piece> blacksList;
+    private Piece[][] BOARD = new Piece[ROWS][COLS];
+    private ArrayList<Piece> whitesList;
+    private ArrayList<Piece> blacksList;
+
 
     public GameBoard() {
         // Sets up dimensions of the board (aka the grid)
@@ -43,6 +44,11 @@ public class GameBoard {
         Piece BBCF = new Piece(false, false, false, false);
         blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
 
+    }
+
+    public GameBoard(GameBoard board)
+    {
+        this.BOARD = board.getBoard();
     }
 
     //GETTERS AND SETTERS
@@ -77,6 +83,10 @@ public class GameBoard {
 
     //==================================================================================================================
 
+
+    public Piece getPieceFromBoard(int row, int j) {
+        return this.BOARD[row][j];
+    }
 
     // Add piece to the board (assign piece to a tile on the board)
     public void addPieceToBoard(Move move) {
@@ -187,6 +197,8 @@ public class GameBoard {
         }
         return column;
     }
+
+
 
 
     public Piece[] getDiagonal1() {

@@ -94,7 +94,7 @@ public class ConsoleGame {
     }
 
     // Show the available pieces for the current player
-    private void showPlayerPieces(Player player) {
+    public void showPlayerPieces(Player player) {
         if (player.getIsWhite()) {
             System.out.println("White player's available pieces:");
         } else {
@@ -132,6 +132,8 @@ public class ConsoleGame {
         }
         return chosenpiece;
     }
+
+
     public Piece chooseRandomPiece(Player opponent){
         //System.out.println("AI is choosing a piece to give to the opponent:");
         showPlayerPieces(opponent);
@@ -144,17 +146,17 @@ public class ConsoleGame {
         return chosenpiece;
     }
 
-    public Piece AIChoosePiece(Player opponent, QuartoGame game){
-        //System.out.println("AI is choosing a piece to give to the opponent:");
+    public void AIChoosePiece(Piece chosenPiece, Player opponent){
+        System.out.println("AI chose the piece: " + showPiece(chosenPiece));
         showPlayerPieces(opponent);
-        GameBoard board = game.getGameBoard();
-        PieceEvaluationFunction function = new PieceEvaluationFunction();
-        Piece chosenPiece = function.leastLikelyPiece(opponent.getAvailablePieces(),board);
-        opponent.removeAvailablePiece(chosenPiece);
-        System.out.println("AI chose: " + showPiece(chosenPiece));
-        return chosenPiece;
     }
 
+    public void AIMakeMove(Move move, GameBoard board){
+        System.out.println("AI chose the tile: " + move.getTileId() + " to place the piece: " + showPiece(move.getPiece()));
+        showBoard(board);
+    }
+
+    /*
     public Piece AIChoosePieceMinMax(Player opponent, QuartoGame game){
         minimax = new MiniMax(game);
         showPlayerPieces(opponent);
@@ -184,14 +186,11 @@ public class ConsoleGame {
         //System.out.println("AI chose: " + showPiece(chosenPiece));
         return chosenPiece;
     }
-
+*/
     // Choose a piece to give to the opponent
     public Piece choosePiece(Player opponent){
         System.out.println("Please choose a piece to give to your opponent:");
-        showPlayerPieces(opponent);
-        Piece chosenPiece = opponent.getAvailablePieces()[sc.nextInt()-1];
-        opponent.removeAvailablePiece(chosenPiece);
-        return chosenPiece;
+        return opponent.getAvailablePieces()[sc.nextInt()-1];
     }
 
 
@@ -228,9 +227,6 @@ public class ConsoleGame {
         return move;
     }
 
-    public boolean getAITurn() {
-        return this.AITurn;
-    }
     public void showWinningMessage(Player player){
         if (player.getIsWhite()) {
             System.out.println("White player wins!");
