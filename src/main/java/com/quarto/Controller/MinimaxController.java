@@ -29,11 +29,8 @@ public class MinimaxController implements Controller{
             if (game.getCurrentPlayer().getIsHuman())
             {
                 //step 1: AI chooses HUMAN's piece
-                long startTime = System.currentTimeMillis();
+
                 Piece choosePiece = gameView.AIChoosePiece(game.getCurrentPlayer(), game);
-                long endTime = System.currentTimeMillis();
-                long duration = (endTime - startTime);
-                System.out.println("AI piece calculation took " + duration + " milliseconds");
                 //step 2: Human chooses where to place the piece
                 Move move = gameView.makeMove(game.getGameBoard(), choosePiece);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
@@ -44,14 +41,12 @@ public class MinimaxController implements Controller{
                 //step 1:  Human chooses AI's piece
                 Piece choosePiece = gameView.choosePiece(game.getCurrentPlayer());
                 //step 2: AI chooses where to place the piece
-                long startTime = System.currentTimeMillis();
+
                 Move move = game.getCurrentPlayer().minimaxPlace(game, choosePiece);
-                long endTime = System.currentTimeMillis();
-                long duration = (endTime - startTime);
+
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
                 //step 3: Show updated board
                 gameView.updateBoard(game.getGameBoard());
-                System.out.println("AI move calculation took " + duration + " milliseconds");
             }
 
         }

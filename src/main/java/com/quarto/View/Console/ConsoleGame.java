@@ -144,47 +144,12 @@ public class ConsoleGame implements GameInterface {
         return chosenpiece;
     }
 
-    public void AIChoosePiece(Piece chosenPiece, Player opponent){
-        System.out.println("AI chose the piece: " + showPiece(chosenPiece));
-        showPlayerPieces(opponent);
-    }
 
     public void AIMakeMove(Move move, GameBoard board){
         System.out.println("AI chose the tile: " + move.getTileId() + " to place the piece: " + showPiece(move.getPiece()));
-        showBoard(board);
+        updateBoard(board);
     }
 
-    /*
-    public Piece AIChoosePieceMinMax(Player opponent, QuartoGame game){
-        minimax = new MiniMax(game);
-        showPlayerPieces(opponent);
-        Piece chosenPiece = null;
-        GameBoard board = game.getGameBoard();
-        int minScore = Integer.MAX_VALUE;
-        int score;
-        int alpha = Integer.MIN_VALUE;
-        int beta = Integer.MAX_VALUE;
-        for (Piece piece : opponent.getAvailablePieces()){
-            for (int i = 0; i < 16; i++) {
-                Move move = new Move(piece, i);
-                if (board.isValidMove(move)) {
-                    board.addPieceToBoard(move);
-                    score = minimax.minimaxScore(game.getGameBoard(), piece, 4, true, alpha, beta);
-                    board.removePieceFromBoard(move);
-
-                    if (score < minScore) {
-                        minScore = score;
-                        chosenPiece = piece;
-                    }
-                    beta = Math.min(beta, score);
-                }
-            }
-        }
-        opponent.removeAvailablePiece(chosenPiece);
-        System.out.println("AI chose: " + showPiece(chosenPiece));
-        return chosenPiece;
-    }
-*/
     // Choose a piece to give to the opponent
     public Piece choosePiece(Player opponent){
         System.out.println("Please choose a piece to give to your opponent:");
@@ -232,5 +197,15 @@ public class ConsoleGame implements GameInterface {
             System.out.println("Black player wins!");
         }
     }
+
+    public Piece AIChoosePiece(Player opponent, QuartoGame game){
+        PieceEvaluationFunction function = new PieceEvaluationFunction();
+        Piece chosenPiece = function.leastLikelyPiece(opponent.getAvailablePieces(),game.getGameBoard());
+        opponent.removeAvailablePiece(chosenPiece);
+        return chosenPiece;
+    }
+
+
+
 
 }

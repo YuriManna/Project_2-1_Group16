@@ -70,13 +70,5 @@ public class QuartoGame {
         return null;
     }
 
-    public boolean getGameJustEnded(){
-        return this.justEnded;
-    }
-
-    public void setGameJustEnded(boolean justEnded){
-        this.justEnded = justEnded;
-    }
-
 
 }

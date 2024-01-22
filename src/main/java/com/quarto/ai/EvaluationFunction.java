@@ -1,5 +1,7 @@
 package com.quarto.ai;
 
+import java.util.Random;
+
 import com.quarto.Model.GameBoard;
 import com.quarto.Model.Piece;
 
@@ -109,14 +111,6 @@ public class EvaluationFunction {
         }
 
         return points;
-        totalPoints += calculatePoints(diag1SameCount, diag1EmptyCount);
-        totalPoints += calculatePoints(diag2SameCount, diag2EmptyCount);
-
-        
-        Random random = new Random();
-        double randomFactor = 0.9 + random.nextDouble() * 0.2; // Range: [0.9, 1.1]
-        totalPoints *= randomFactor;
-        return totalPoints;
     }
 
     public int piecesHaveSameProperties(Piece piece1, Piece piece2) {

@@ -33,7 +33,6 @@ public class GameDataGenerator {
 
     void playGame(BufferedWriter writer) throws IOException {
         GameBoard gameBoard = new GameBoard();
-        game.setGameJustEnded(false);
 
         // Perform actions in the environment
         while(!gameBoard.isGameFinished()) {

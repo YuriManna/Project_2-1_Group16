@@ -397,9 +397,7 @@ public class GUIGame implements GameInterface {
             Random random = new Random();
             int randomInt = random.nextInt(opponent.getAvailablePieces().length);
             chosenPiece = opponent.getAvailablePieces()[randomInt];
-        }
-        else if(opponent.getAvailablePieces().length < 5){
-            chosenPiece = AIChoosePieceMinMax(opponent, game);
+        
         }else {
             PieceEvaluationFunction function = new PieceEvaluationFunction();
             chosenPiece = function.leastLikelyPiece(opponent.getAvailablePieces(), board);
@@ -415,32 +413,7 @@ public class GUIGame implements GameInterface {
         opponent.removeAvailablePiece(chosenPiece);
         return chosenPiece;
     }
-    public Piece AIChoosePieceMinMax(Player opponent, QuartoGame game){
-        MiniMax minimax = new MiniMax(game);
-        Piece chosenPiece = null;
-        GameBoard board = game.getGameBoard();
-        int minScore = Integer.MAX_VALUE;
-        int score;
-        int alpha = Integer.MIN_VALUE;
-        int beta = Integer.MAX_VALUE;
-        for (Piece piece : opponent.getAvailablePieces()){
-            for (int i = 0; i < 16; i++) {
-                Move move = new Move(piece, i);
-                if (board.isValidMove(move)) {
-                    board.addPieceToBoard(move);
-                    score = minimax.minimaxScore(game.getGameBoard(), piece, 5, true, alpha, beta);
-                    board.removePieceFromBoard(move);
 
-                    if (score < minScore) {
-                        minScore = score;
-                        chosenPiece = piece;
-                    }
-                    beta = Math.min(beta, score);
-                }
-            }
-        }
-        return chosenPiece;
-    }
 
     //------------------------------------------------------------------------------------------------------------------
     // MENU BAR METHODS

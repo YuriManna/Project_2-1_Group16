@@ -104,4 +104,18 @@ public class Player {
         return chosenPiece;
     }
 
+
+
+    @Override
+    public String toString() {
+        if(game.getCurrentPlayer()==game.getWhitePlayer()){
+            return "White";
+        }
+        else{
+            return "Black";
+        }
+
+    }
+
+
 }

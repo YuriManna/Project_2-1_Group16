@@ -228,10 +228,7 @@ public class GameBoard {
 
         // regular move reward
         EvaluationFunction ef = new EvaluationFunction();
-        int reward = ef.evaluateBoard(this, chosenPiece, game);
-        if(!isWhitesTurn){
-            reward = -reward;       
-        }
+        int reward = ef.evaluateBoard(this, true);
 
         sb.append(Math.abs(reward));
         return sb.toString();
@@ -265,5 +262,15 @@ public class GameBoard {
             diagonal[i] = BOARD[i][3 - i];
         }
         return diagonal;
+    }
+
+    public void copyGameBoard(GameBoard board){
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                this.BOARD[i][j]=board.BOARD[i][j];
+            }
+        }
+
     }
 }
