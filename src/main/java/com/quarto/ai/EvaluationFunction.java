@@ -109,6 +109,43 @@ public class EvaluationFunction {
         }
 
         return points;
+        totalPoints += calculatePoints(diag1SameCount, diag1EmptyCount);
+        totalPoints += calculatePoints(diag2SameCount, diag2EmptyCount);
+
+        
+        Random random = new Random();
+        double randomFactor = 0.9 + random.nextDouble() * 0.2; // Range: [0.9, 1.1]
+        totalPoints *= randomFactor;
+        return totalPoints;
+    }
+
+    public int piecesHaveSameProperties(Piece piece1, Piece piece2) {
+        if (piece1 == null || piece2 == null) {
+            return 0;
+        }
+
+        int colorSame = hasSameColor(piece1, piece2) ? 1 : 0;
+        int heightSame = hasSameHeight(piece1, piece2) ? 1 : 0;
+        int shapeSame = hasSameShape(piece1, piece2) ? 1 : 0;
+        int holeSame = hasSameHole(piece1, piece2) ? 1 : 0;
+
+        return colorSame * 1000 + heightSame * 100+ shapeSame * 10 + holeSame;
+    }
+
+    private boolean hasSameColor(Piece selectedPiece, Piece otherPiece) {
+        return selectedPiece.getColor() == otherPiece.getColor();
+    }
+
+    private boolean hasSameHeight(Piece selectedPiece, Piece otherPiece) {
+        return selectedPiece.getHeight() == otherPiece.getHeight();
+    }
+
+    private boolean hasSameHole(Piece selectedPiece, Piece otherPiece) {
+        return selectedPiece.getHole() == otherPiece.getHole();
+    }
+
+    private boolean hasSameShape(Piece selectedPiece, Piece otherPiece) {
+        return selectedPiece.getShape() == otherPiece.getShape();
     }
 
     private int calculatePoints(int sameCount, int emptyCount) {

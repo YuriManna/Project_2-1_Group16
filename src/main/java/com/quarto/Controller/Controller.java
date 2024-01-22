@@ -1,6 +1,8 @@
 package com.quarto.Controller;
 
+import java.io.IOException;
+
 public interface Controller {
-    void play();
+    void play() throws IOException;
 
 }

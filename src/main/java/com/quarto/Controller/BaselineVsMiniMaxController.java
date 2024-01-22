@@ -4,7 +4,6 @@ import com.quarto.Model.Move;
 import com.quarto.Model.Piece;
 import com.quarto.Model.QuartoGame;
 import com.quarto.View.Console.ConsoleGame;
-import com.quarto.ai.MiniMax;
 
 public class BaselineVsMiniMaxController implements Controller{
 
@@ -30,7 +29,7 @@ public class BaselineVsMiniMaxController implements Controller{
                 Move move = console.AIMakeMove(game.getGameBoard(), choosePiece);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
                 //step 3: Show updated board
-                console.showBoard(game.getGameBoard());
+                console.updateBoard(game.getGameBoard());
 
             }
             else{
@@ -40,7 +39,7 @@ public class BaselineVsMiniMaxController implements Controller{
                 Move move = game.getCurrentPlayer().minimaxPlace(game, choosePiece);
                 game.getCurrentPlayer().makeMove(move, game.getGameBoard());
                 //step 3: Show updated board
-                console.showBoard(game.getGameBoard());
+                console.updateBoard(game.getGameBoard());
             }
 
         }

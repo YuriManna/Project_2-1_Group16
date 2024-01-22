@@ -1,7 +1,12 @@
 package com.quarto.Model;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import com.quarto.ai.EvaluationFunction;
 
 /*
 RESPONSIBILITIES:
@@ -15,6 +20,8 @@ public class GameBoard {
     private final int COLS = 4;
     private Piece[][] BOARD = new Piece[ROWS][COLS];
     private ArrayList<Piece> whitesList;
+    private Piece[] whitesArray;
+    private Piece[] blacksArray;
     private ArrayList<Piece> blacksList;
 
 
@@ -34,6 +41,7 @@ public class GameBoard {
         Piece WBCH = new Piece(true, false, false, true);
         Piece WBCF = new Piece(true, false, false, false);
         whitesList = new ArrayList<>(List.of(WSSH, WSSF, WSCH, WSCF, WBSH, WBSF, WBCH, WBCF));
+        whitesArray = whitesList.toArray(new Piece[0]);
         Piece BSSH = new Piece(false, true, true, true);
         Piece BSSF = new Piece(false, true, true, false);
         Piece BSCH = new Piece(false, true, false, true);
@@ -43,17 +51,15 @@ public class GameBoard {
         Piece BBCH = new Piece(false, false, false, true);
         Piece BBCF = new Piece(false, false, false, false);
         blacksList = new ArrayList<>(List.of(BSSH, BSSF, BSCH, BSCF, BBSH, BBSF, BBCH, BBCF));
-
+        blacksArray = blacksList.toArray(new Piece[0]);
     }
 
     //GETTERS AND SETTERS
-    public ArrayList<Piece> getBlacksList() {
-        return blacksList;
-    }
+    public ArrayList<Piece> getBlacksList() { return blacksList; }
 
-    public ArrayList<Piece> getWhitesList() {
-        return whitesList;
-    }
+    public ArrayList<Piece> getWhitesList() { return whitesList; }
+    public Piece[] getWhitesArray() { return whitesArray; }
+    public Piece[] getBlacksArray() { return blacksArray; }
 
     public Piece[][] getBoard() {
         return BOARD;
@@ -63,10 +69,15 @@ public class GameBoard {
         int[] coord = convertTileIdToRowAndColumn(tileId);
         return BOARD[coord[0]][coord[1]];
     }
-
+    public void setPiecesArray(Piece[] pieceArray, boolean isWhite){
+        if(isWhite) {
+            this.whitesArray = pieceArray;
+        }else {
+            this.blacksArray = pieceArray;
+        }
+    }
 
     //OTHER METHODS
-
     //==================================================================================================================
 
 
@@ -175,6 +186,8 @@ public class GameBoard {
         return false;
     }
 
+    
+
     //minimax bullshit:
     public void removePieceFromBoard(Move move) {
         int[] rowAndCol = convertTileIdToRowAndColumn(move.getTileId());
@@ -182,6 +195,134 @@ public class GameBoard {
         int col = rowAndCol[1];
         BOARD[row][col] = null;
     }
+
+    //qlearning bullshit
+    public boolean isGameFinished() {
+    return checkWinCondition() || checkDrawCondition();
+    }
+
+
+
+    public String gameStateToCSV(Piece chosenPiece, QuartoGame game, boolean isWhitesTurn) {
+        StringBuilder sb = new StringBuilder();
+    
+        // Iterate over each piece in the game board
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                // Get the piece at the current position
+                Piece piece = BOARD[i][j];
+    
+                // If the position is occupied, append the properties of the piece to the CSV string
+                if (piece != null) {
+                    sb.append(piece.getColor() ? 1 : 0).append(",");
+                    sb.append(piece.getHeight() ? 1 : 0).append(",");
+                    sb.append(piece.getShape() ? 1 : 0).append(",");
+                    sb.append(piece.getHole() ? 1 : 0).append(",");
+                }
+                // If the position is not occupied, append zeros to the CSV string
+                else {
+                    sb.append("-1,-1,-1,-1,");
+                }
+            }
+        }
+
+        // regular move reward
+        EvaluationFunction ef = new EvaluationFunction();
+        int reward = ef.evaluateBoard(this, chosenPiece, game);
+        if(!isWhitesTurn){
+            reward = -reward;       
+        }
+
+        sb.append(Math.abs(reward));
+        return sb.toString();
+    }
+
+    // public String gameStateToCSV() {
+    //     StringBuilder sb = new StringBuilder();
+    
+    //     // Iterate over each piece in the game board
+    //     for (int i = 0; i < ROWS; i++) {
+    //         for (int j = 0; j < COLS; j++) {
+    //             // Get the piece at the current position
+    //             Piece piece = BOARD[i][j];
+    
+    //             // If the position is occupied, append the properties of the piece to the CSV string
+    //             if (piece != null) {
+    //                 sb.append(piece.getColor() ? 1 : 0).append(",");
+    //                 sb.append(piece.getHeight() ? 1 : 0).append(",");
+    //                 sb.append(piece.getShape() ? 1 : 0).append(",");
+    //                 sb.append(piece.getHole() ? 1 : 0).append(",");
+    //             }
+    //             // If the position is not occupied, append zeros to the CSV string
+    //             else {
+    //                 sb.append("0,0,0,0,");
+    //             }
+    //         }
+    //     }
+    
+    //     // Append the reward for the current game state
+    //     //int reward = calculateReward();
+    //     EvaluationFunction ef = new EvaluationFunction();
+    //     int reward = ef.evaluateBoard(this, null, Quarto game);
+    //     sb.append(reward);
+    
+    //     return sb.toString();
+    // }
+
+    // // Method to export game data to a CSV file
+    // public void exportGameData(String filename, List<GameBoard> gameStates) {
+        
+
+    //     try (FileWriter writer = new FileWriter(filename)) {
+    //         for (GameBoard state : gameStates) {
+    //             writer.append(state.gameStateToCSV()).append("\n");
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+
+//     public int calculateReward() {
+//     int totalPoints = 0;
+//     EvaluationFunction eval = new EvaluationFunction();
+
+//     // Iterate over each piece in the game board
+//     for (int i = 0; i < ROWS; i++) {
+//         for (int j = 0; j < COLS; j++) {
+//             // Get the piece at the current position
+//             Piece piece = BOARD[i][j];
+
+//             // If the position is occupied, calculate the points based on the properties of the piece
+//             if (piece != null) {
+//                 for (int k = 0; k < ROWS; k++) {
+//                     for (int l = 0; l < COLS; l++) {
+//                         // Get the piece at the other position
+//                         Piece otherPiece = BOARD[k][l];
+
+//                         // If the other position is occupied, add the points for the properties that the two pieces have in common
+//                         if (otherPiece != null) {
+                            
+//                             totalPoints += eval.piecesHaveSameProperties(piece, otherPiece);
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//         // // Adjust the total points based on the current player
+//         // if (game.getCurrentPlayer().getIsWhite()) {
+//         //     totalPoints = -totalPoints;
+//         // }
+
+//     // Adjust the total points by a random factor
+//     Random random = new Random();
+//     double randomFactor = 0.9 + random.nextDouble() * 0.2; // Range: [0.9, 1.1]
+//     totalPoints *= randomFactor;
+
+//     return totalPoints;
+// }
+
 
     public Piece[] getRow(int i) {
         return BOARD[i];

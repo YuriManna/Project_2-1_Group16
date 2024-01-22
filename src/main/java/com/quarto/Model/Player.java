@@ -16,11 +16,15 @@ public class Player {
     boolean isHuman;
     boolean isWhite;
     Piece[] availablePieces;
+    Piece[] fixedSizeAvailablePieces;
+    QuartoGame game;
 
     public Player(boolean isHuman, boolean isWhite, ArrayList<Piece> availablePieces, QuartoGame game) {
         this.isHuman = isHuman;
         this.isWhite = isWhite;
         this.availablePieces = availablePieces.toArray(new Piece[0]);
+        this.fixedSizeAvailablePieces = this.availablePieces;
+        this.game = game;
     }
 
     public Player(Player currentPlayer) {
@@ -33,6 +37,9 @@ public class Player {
 
     public Piece[] getAvailablePieces() {
         return availablePieces;
+    }
+    public Piece[] getFixedSizeAvailablePieces() {
+        return fixedSizeAvailablePieces;
     }
 
     public int getAvailablePiecesLength() {
@@ -59,6 +66,14 @@ public class Player {
         }
         // Update the availablePieces array
         availablePieces = updatedPieces;
+
+        // Update the fixedSizeAvailablePieces arrays
+        for (int i = 0; i < fixedSizeAvailablePieces.length; i++) {
+            if (fixedSizeAvailablePieces[i] == piece) {
+                fixedSizeAvailablePieces[i] = null;
+            }
+        }
+        game.getGameBoard().setPiecesArray(fixedSizeAvailablePieces, isWhite);
     }
 
     public void addAvailablePiece(Piece piece) {

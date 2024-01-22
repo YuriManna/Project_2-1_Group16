@@ -3,11 +3,13 @@ package com.quarto.Controller;
 import com.quarto.Model.QuartoGame;
 import com.quarto.View.Console.ConsoleGame;
 
+import java.io.IOException;
+
 public class MasterController {
     private ConsoleGame console;
     private QuartoGame game;
 
-    public MasterController() {
+    public MasterController() throws IOException {
         //initialize the console version of the game
         this.console = new ConsoleGame();
         //initialize the game and therefore the player type

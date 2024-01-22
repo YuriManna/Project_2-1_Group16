@@ -1,6 +1,10 @@
 package com.quarto.View.GUI;
 
-import com.quarto.PlayMinimax;
+import com.quarto.Controller.Controller;
+import com.quarto.Controller.HumanVsHumanController;
+import com.quarto.Controller.MinimaxController;
+import com.quarto.Model.QuartoGame;
+
 
 
 import javax.imageio.ImageIO;
@@ -16,6 +20,8 @@ public class GameMainPage extends JFrame {
     private JButton button1, button2, button3, button4;
     private JFrame textFrame;
     private int size = 600;
+    private QuartoGame game;
+    private Controller controller;
 
     public GameMainPage() throws IOException {
         setTitle("Quarto");
@@ -45,35 +51,46 @@ public class GameMainPage extends JFrame {
         // Create a panel to hold the buttons
         JPanel buttonPanel = new JPanel();
 
+        // human vs human
         button1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { 
-                //try {
-                    // add class
-                    setVisible(false);
-                    dispose();
-                //} catch (IOException e1) {
-                //    // TODO Auto-generated catch block
-                //    e1.printStackTrace();
-                //}
-                
+            public void actionPerformed(ActionEvent e) {
+                game = new QuartoGame(true, true);
+                try {
+                    controller = new HumanVsHumanController(game, new GUIGame(game.getGameBoard()));
+                    new Thread(() -> {
+                        try {
+                            controller.play();
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }).start();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                setVisible(false);
+                dispose();
               } 
         });
 
-       
+       // human vs computer
         button2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-//                try {
-//                    GameLogic gameLogic = new GameLogic();
-//                    GameTable gameTable = new GameTable(gameLogic);
-//                    MinMax minMaxPlayer = new MinMax(gameLogic.getBoard());
-//                    gameLogic.setComputerPlayer(minMaxPlayer);
-//                    setVisible(false);
-//                    dispose();
-//                } catch (IOException e1) {
-//                    // TODO Auto-generated catch block
-//                    e1.printStackTrace();
-//                }
-                System.out.println("GUI for PvCPU still in development, you can try playing against Minimax model or baseline agent through the corresponding files." );
+
+                game = new QuartoGame(true, false);
+                try {
+                    controller = new MinimaxController(game, new GUIGame(game.getGameBoard()));
+                    new Thread(() -> {
+                        try {
+                            controller.play();
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }).start();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                setVisible(false);
+                dispose();
                 System.out.println("Launching PvCPU with Minimax");
 
             }

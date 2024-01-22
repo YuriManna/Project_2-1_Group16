@@ -55,5 +55,11 @@ public class Piece {
         else{Ho = 'F';}
         return ""+ C + He + S + Ho;
     }
+    public boolean equals(Piece piece){
+        if(piece == null) {
+            return false;
+        }
+        return this.getColor() == piece.getColor() && this.getHeight() == piece.getHeight() && this.getShape() == piece.getShape() && this.getHole() == piece.getHole();
+    }
 
 }

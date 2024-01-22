@@ -63,6 +63,20 @@ public class QuartoGame {
         return gameBoard.checkDrawCondition();
     }
 
+    public Player getWinner() {
+        if (gameOver() && gameBoard.checkWinCondition()) {
+            return currentPlayer;
+        }
+        return null;
+    }
+
+    public boolean getGameJustEnded(){
+        return this.justEnded;
+    }
+
+    public void setGameJustEnded(boolean justEnded){
+        this.justEnded = justEnded;
+    }
 
 
 }
