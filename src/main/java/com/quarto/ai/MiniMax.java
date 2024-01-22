@@ -74,7 +74,7 @@ public class MiniMax {
             tmp_gameboard.addPieceToBoard(move);
             childStates.add(tmp_gameboard);
         }
-        System.out.println("child states" + childStates.size());
+       // System.out.println("child states" + childStates.size());
         return childStates;
     }
 
@@ -101,7 +101,7 @@ public class MiniMax {
         if (depth == 0 || gameState.checkWinCondition() || gameState.checkDrawCondition()) {
 
             EvaluationFunction evaluate = new EvaluationFunction();
-            stateScore tmp=new stateScore(gameState,evaluate.evaluateBoard(gameState));
+            stateScore tmp=new stateScore(gameState,evaluate.evaluateBoard(gameState,isMaximizingPlayer));
             return tmp ;//this is wrong
 
         }
@@ -114,8 +114,11 @@ public class MiniMax {
                 //maximize1++;
 
                 stateScore eval = minimax(childState, depth - 1, false, alpha, beta);
-                maxEval = new stateScore(childState, Math.max(maxEval.getScore(), eval.getScore()));
-                alpha = Math.max(alpha, eval.getScore());
+                if(maxEval.getScore()<eval.getScore()){
+                    maxEval = new stateScore(childState,eval.getScore());
+                    alpha = Math.max(alpha, eval.getScore());
+                }
+
 
                 if (beta <= alpha) {
                     break;
@@ -129,9 +132,10 @@ public class MiniMax {
               //  System.out.println("min" + minimize1+"child state size" + childStates.size());
                 //minimize1++;
                 stateScore eval = minimax(childState, depth - 1, true, alpha, beta);
-                minEval = new stateScore(childState, Math.min(minEval.getScore(), eval.getScore()));
-                beta = Math.min(beta, eval.getScore());
-
+                if(minEval.getScore()> eval.getScore()) {
+                    minEval = new stateScore(childState,eval.getScore() );
+                    beta = Math.min(beta, eval.getScore());
+                }
                 if (beta <= alpha) {
                     break;
                 }

@@ -14,19 +14,21 @@ public class ConsoleGame {
     MiniMax minimax;
     boolean   AITurn;
     boolean[] players = {false, false};
+  public static int white=0;
+   public static int black=0;
 
     //choose game mode (AI & player)
     public boolean[] chooseGameMode(){
         // Display the game mode options (creates different type of players)
-        System.out.println("Welcome to Quarto!");
-        System.out.println("Please choose a game mode:");
-        System.out.println("1. Human vs Human");
-        System.out.println("2. Human vs AI");
-        System.out.println("3. AI vs AI");
+//        System.out.println("Welcome to Quarto!");
+//        System.out.println("Please choose a game mode:");
+//        System.out.println("1. Human vs Human");
+//        System.out.println("2. Human vs AI");
+//        System.out.println("3. AI vs AI");
 
         // Take input from user to make a choice
-        sc = new Scanner(System.in);
-        int input = sc.nextInt();
+       // sc = new Scanner(System.in);
+        int input =3;// sc.nextInt();
 
         // Return the game mode based on the user input
         if (input == 1) {
@@ -136,13 +138,13 @@ public class ConsoleGame {
 
     public Piece chooseRandomPiece(Player opponent){
         //System.out.println("AI is choosing a piece to give to the opponent:");
-        showPlayerPieces(opponent);
+       // showPlayerPieces(opponent);
         Piece chosenpiece = null;
         Random random = new Random();
         int randomInt = random.nextInt(opponent.getAvailablePieces().length);
         chosenpiece = opponent.getAvailablePieces()[randomInt];
         opponent.removeAvailablePiece(chosenpiece);
-        System.out.println("AI chose: " + showPiece(chosenpiece));
+       // System.out.println("AI chose: " + showPiece(chosenpiece));
         return chosenpiece;
     }
 
@@ -152,8 +154,8 @@ public class ConsoleGame {
     }
 
     public void AIMakeMove(Move move, GameBoard board){
-        System.out.println("AI chose the tile: " + move.getTileId() + " to place the piece: " + showPiece(move.getPiece()));
-        showBoard(board);
+      //  System.out.println("AI chose the tile: " + move.getTileId() + " to place the piece: " + showPiece(move.getPiece()));
+       // showBoard(board);
     }
 
     /*
@@ -197,8 +199,8 @@ public class ConsoleGame {
     // Make a move
     public Move makeMove(GameBoard board, Piece playablePiece){
         Move move = null;
-        System.out.println("Please choose a tile to place your piece on:");
-        showBoard(board);
+       // System.out.println("Please choose a tile to place your piece on:");
+      //  showBoard(board);
         int tileId = sc.nextInt();
 
         move = new Move(playablePiece, tileId);
@@ -223,15 +225,17 @@ public class ConsoleGame {
             //System.out.println("Invalid move! Please choose a valid tile.");
             return AIMakeMove(board, playablePiece);
         }
-        showBoard(board);
+       // showBoard(board);
         return move;
     }
 
     public void showWinningMessage(Player player){
         if (player.getIsWhite()) {
-            System.out.println("White player wins!");
+            white++;
+            System.out.println(white+" W");
         } else {
-            System.out.println("Black player wins!");
+            black++;
+            System.out.println(black+" B");
         }
     }
 

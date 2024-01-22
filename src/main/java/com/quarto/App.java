@@ -8,6 +8,12 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) {
-        MasterController start = new MasterController();
+        MasterController start;
+        for (int i = 0; i < 1000; i++) {
+           start = new MasterController();
+
+        }
+
+
     }
 }

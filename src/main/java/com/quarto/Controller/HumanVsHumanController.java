@@ -33,7 +33,7 @@ public class HumanVsHumanController implements Controller {
             Move move = console.makeMove(game.getGameBoard(), choosePiece);
             //console.showBoard(game.getGameBoard());
             game.getCurrentPlayer().makeMove(move, game.getGameBoard());
-            console.showBoard(game.getGameBoard());
+           // console.showBoard(game.getGameBoard());
             //step 3: Switch players
             game.switchPlayers();
             //step 4: Repeat until game is over
