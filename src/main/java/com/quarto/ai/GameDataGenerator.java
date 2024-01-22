@@ -38,6 +38,10 @@ public class GameDataGenerator {
         // Perform actions in the environment
         while(!gameBoard.isGameFinished()) {
 
+            String csv = gameBoard.gameStateToCSV(null, game, true);
+            writer.write(csv);
+            writer.newLine();
+
             // Whites' turn
             // Piece chosenPiece = chooseRandomPiece(game.getCurrentPlayer(), this.game);
             // makeRandomMove(gameBoard, chosenPiece);
@@ -45,7 +49,7 @@ public class GameDataGenerator {
             Move whiteMove = getRandomAction(gameBoard, true);
             takeAction(gameBoard, whiteMove, true);
 
-            String csv = gameBoard.gameStateToCSV(whiteMove.getPiece(), game, true);
+            csv = gameBoard.gameStateToCSV(whiteMove.getPiece(), game, true);
             writer.write(csv);
             writer.newLine();
 
@@ -167,7 +171,7 @@ public class GameDataGenerator {
     public static void main(String[] args) {
         GameDataGenerator generator = new GameDataGenerator();
         try {
-            generator.generateGameData("src/main/resources/gamedata.csv", 1000);
+            generator.generateGameData("src/main/resources/gamedata.csv", 10000);
         } catch (IOException e) {
             e.printStackTrace();
         }

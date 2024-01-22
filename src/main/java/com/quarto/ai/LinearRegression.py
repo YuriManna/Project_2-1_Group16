@@ -25,38 +25,38 @@ def extract_features(boardstate):
     #rows
     rows_properties = []
     for i in range(0, 16, 4):
-        rows_properties.append([boardstate[i], boardstate[i+4], boardstate[i+8], boardstate[i+12]])
-        rows_properties.append([boardstate[i+1], boardstate[i+1+4], boardstate[i+1+8], boardstate[i+1+12]])
-        rows_properties.append([boardstate[i+2], boardstate[i+2+4], boardstate[i+2+8], boardstate[i+2+12]])
-        rows_properties.append([boardstate[i+3], boardstate[i+3+4], boardstate[i+3+8], boardstate[i+3+12]])
+        rows_properties.append([boardstate.iloc[i], boardstate.iloc[i+4], boardstate.iloc[i+8], boardstate.iloc[i+12]])
+        rows_properties.append([boardstate.iloc[i+1], boardstate.iloc[i+1+4], boardstate.iloc[i+1+8], boardstate.iloc[i+1+12]])
+        rows_properties.append([boardstate.iloc[i+2], boardstate.iloc[i+2+4], boardstate.iloc[i+2+8], boardstate.iloc[i+2+12]])
+        rows_properties.append([boardstate.iloc[i+3], boardstate.iloc[i+3+4], boardstate.iloc[i+3+8], boardstate.iloc[i+3+12]])
 
     count_features(rows_properties,features)
     
     #cols
     cols_properties = []
     for i in range(4):
-        cols_properties.append([boardstate[i], boardstate[i+16], boardstate[i+32], boardstate[i+48]])
-        cols_properties.append([boardstate[i+1], boardstate[i+1+16], boardstate[i+1+32], boardstate[i+1+48]])
-        cols_properties.append([boardstate[i+2], boardstate[i+2+16], boardstate[i+2+32], boardstate[i+2+48]])
-        cols_properties.append([boardstate[i+3], boardstate[i+3+16], boardstate[i+3+32], boardstate[i+3+48]])
+        cols_properties.append([boardstate.iloc[i], boardstate.iloc[i+16], boardstate.iloc[i+32], boardstate.iloc[i+48]])
+        cols_properties.append([boardstate.iloc[i+1], boardstate.iloc[i+1+16], boardstate.iloc[i+1+32], boardstate.iloc[i+1+48]])
+        cols_properties.append([boardstate.iloc[i+2], boardstate.iloc[i+2+16], boardstate.iloc[i+2+32], boardstate.iloc[i+2+48]])
+        cols_properties.append([boardstate.iloc[i+3], boardstate.iloc[i+3+16], boardstate.iloc[i+3+32], boardstate.iloc[i+3+48]])
 
     count_features(cols_properties,features)
     
     #diagnal1
     diag1_properties=[]
-    diag1_properties.append([boardstate[0], boardstate[20], boardstate[40], boardstate[60]])
-    diag1_properties.append([boardstate[0+1], boardstate[20+1], boardstate[40+1], boardstate[60+1]])
-    diag1_properties.append([boardstate[0+2], boardstate[20+2], boardstate[40+2], boardstate[60+2]])
-    diag1_properties.append([boardstate[0+3], boardstate[20+3], boardstate[40+3], boardstate[60+3]])
+    diag1_properties.append([boardstate.iloc[0], boardstate.iloc[20], boardstate.iloc[40], boardstate.iloc[60]])
+    diag1_properties.append([boardstate.iloc[0+1], boardstate.iloc[20+1], boardstate.iloc[40+1], boardstate.iloc[60+1]])
+    diag1_properties.append([boardstate.iloc[0+2], boardstate.iloc[20+2], boardstate.iloc[40+2], boardstate.iloc[60+2]])
+    diag1_properties.append([boardstate.iloc[0+3], boardstate.iloc[20+3], boardstate.iloc[40+3], boardstate.iloc[60+3]])
 
     count_features(diag1_properties,features)
 
     #diagnal2
     diag2_properties=[]
-    diag2_properties.append([boardstate[12], boardstate[28], boardstate[36], boardstate[48]])
-    diag2_properties.append([boardstate[12+1], boardstate[28+1], boardstate[36+1], boardstate[48+1]])
-    diag2_properties.append([boardstate[12+2], boardstate[28+2], boardstate[36+2], boardstate[48+2]])
-    diag2_properties.append([boardstate[12+3], boardstate[28+3], boardstate[36+3], boardstate[48+3]])
+    diag2_properties.append([boardstate.iloc[12], boardstate.iloc[28], boardstate.iloc[36], boardstate.iloc[48]])
+    diag2_properties.append([boardstate.iloc[12+1], boardstate.iloc[28+1], boardstate.iloc[36+1], boardstate.iloc[48+1]])
+    diag2_properties.append([boardstate.iloc[12+2], boardstate.iloc[28+2], boardstate.iloc[36+2], boardstate.iloc[48+2]])
+    diag2_properties.append([boardstate.iloc[12+3], boardstate.iloc[28+3], boardstate.iloc[36+3], boardstate.iloc[48+3]])
 
     return features
 

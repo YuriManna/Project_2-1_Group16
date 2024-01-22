@@ -7,15 +7,32 @@ import com.quarto.Model.Piece;
 import com.quarto.Model.QuartoGame;
 
 public class EvaluationFunction {
-    private int colorWeight = 1000;
-    private int heightWeight = 100;
-    private int shapeWeight = 10;
-    private int holeWeight = 1;
 
-    private int oneSameWeight = 1;
-    private int twoSameWeight = 10;
-    private int threeSameWeight = 100;
-    private int fourSameWeight = 1000;
+
+    private int colorWeight = 100;
+    private int heightWeight = 10;
+    private int shapeWeight = 10;
+    private int holeWeight = 10;
+
+    // 1s: -3.4273666776994673
+    // 2s: 1.8706987076540713
+    // 3s: 25.028965483361482
+    // 4s: 198.04048336411017
+    // private int oneSameWeight = -6;
+    // private int twoSameWeight = -4;
+    // private int threeSameWeight = 14;
+    // private int fourSameWeight = 105;
+
+    // 1s: -3.809749699582184
+    // 2s: -1.948377708036995
+    // 3s: 13.013280802628836
+    // 4s: 109.3656921157749
+
+    private int oneSameWeight = -4;
+    private int twoSameWeight = -2;
+    private int threeSameWeight = 13;
+    private int fourSameWeight = 109;
+    
 
     public int evaluateBoard(GameBoard board, Piece selectedPiece, QuartoGame game){
         int totalPoints = 0;
