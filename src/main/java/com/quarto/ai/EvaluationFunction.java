@@ -145,22 +145,17 @@ public class EvaluationFunction {
     private int calculatePoints(int sameCount, int emptyCount) {
         // Determine the points based on the count of pieces with the same properties and empty slots
         if (sameCount == 1 && emptyCount == 3) {
-            return 1; // 1 point for one piece with the same property and three empty slots
+            return -1; // 1 point for one piece with the same property and three empty slots
         } else if (sameCount == 2 && emptyCount == 2) {
-            return 5; // 5 points for two pieces with the same property and two empty slots
+            return 3; // 5 points for two pieces with the same property and two empty slots
         } else if (sameCount == 3 && emptyCount == 1) {
-            return 10; // 10 points for three pieces with the same property and one empty slot
+            return 13; // 10 points for three pieces with the same property and one empty slot
         } else if (sameCount == 4 && emptyCount == 0) {
-            return 1000;
+            return 289;
         } else {
             return 0; // 0 points for other cases
         }
 
-        // Overall Weights:
-        // 1s: -1.7233752593467018
-        // 2s: 3.220352446030766
-        // 3s: 13.205590168355503
-        // 4s: 289.38119544742034
 
 
     }
