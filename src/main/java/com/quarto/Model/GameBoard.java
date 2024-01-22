@@ -1,7 +1,12 @@
 package com.quarto.Model;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import com.quarto.ai.EvaluationFunction;
 
 /*
 RESPONSIBILITIES:
@@ -142,6 +147,8 @@ public class GameBoard {
         return false;
     }
 
+    
+
     //minimax bullshit:
     public void removePieceFromBoard(Move move) {
         int[] rowAndCol = convertTileIdToRowAndColumn(move.getTileId());
@@ -154,5 +161,127 @@ public class GameBoard {
     public boolean isGameFinished() {
     return checkWinCondition() || checkDrawCondition();
     }
+
+
+
+    public String gameStateToCSV(Piece chosenPiece, QuartoGame game, boolean isWhitesTurn) {
+        StringBuilder sb = new StringBuilder();
+    
+        // Iterate over each piece in the game board
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                // Get the piece at the current position
+                Piece piece = BOARD[i][j];
+    
+                // If the position is occupied, append the properties of the piece to the CSV string
+                if (piece != null) {
+                    sb.append(piece.getColor() ? 1 : 0).append(",");
+                    sb.append(piece.getHeight() ? 1 : 0).append(",");
+                    sb.append(piece.getShape() ? 1 : 0).append(",");
+                    sb.append(piece.getHole() ? 1 : 0).append(",");
+                }
+                // If the position is not occupied, append zeros to the CSV string
+                else {
+                    sb.append("0,0,0,0,");
+                }
+            }
+        }
+
+        // regular move reward
+        EvaluationFunction ef = new EvaluationFunction();
+        int reward = ef.evaluateBoard(this, chosenPiece, game);
+        if(!isWhitesTurn){
+            reward = -reward;       
+        }
+
+        sb.append(reward);
+        return sb.toString();
+    }
+
+    // public String gameStateToCSV() {
+    //     StringBuilder sb = new StringBuilder();
+    
+    //     // Iterate over each piece in the game board
+    //     for (int i = 0; i < ROWS; i++) {
+    //         for (int j = 0; j < COLS; j++) {
+    //             // Get the piece at the current position
+    //             Piece piece = BOARD[i][j];
+    
+    //             // If the position is occupied, append the properties of the piece to the CSV string
+    //             if (piece != null) {
+    //                 sb.append(piece.getColor() ? 1 : 0).append(",");
+    //                 sb.append(piece.getHeight() ? 1 : 0).append(",");
+    //                 sb.append(piece.getShape() ? 1 : 0).append(",");
+    //                 sb.append(piece.getHole() ? 1 : 0).append(",");
+    //             }
+    //             // If the position is not occupied, append zeros to the CSV string
+    //             else {
+    //                 sb.append("0,0,0,0,");
+    //             }
+    //         }
+    //     }
+    
+    //     // Append the reward for the current game state
+    //     //int reward = calculateReward();
+    //     EvaluationFunction ef = new EvaluationFunction();
+    //     int reward = ef.evaluateBoard(this, null, Quarto game);
+    //     sb.append(reward);
+    
+    //     return sb.toString();
+    // }
+
+    // // Method to export game data to a CSV file
+    // public void exportGameData(String filename, List<GameBoard> gameStates) {
+        
+
+    //     try (FileWriter writer = new FileWriter(filename)) {
+    //         for (GameBoard state : gameStates) {
+    //             writer.append(state.gameStateToCSV()).append("\n");
+    //         }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+
+//     public int calculateReward() {
+//     int totalPoints = 0;
+//     EvaluationFunction eval = new EvaluationFunction();
+
+//     // Iterate over each piece in the game board
+//     for (int i = 0; i < ROWS; i++) {
+//         for (int j = 0; j < COLS; j++) {
+//             // Get the piece at the current position
+//             Piece piece = BOARD[i][j];
+
+//             // If the position is occupied, calculate the points based on the properties of the piece
+//             if (piece != null) {
+//                 for (int k = 0; k < ROWS; k++) {
+//                     for (int l = 0; l < COLS; l++) {
+//                         // Get the piece at the other position
+//                         Piece otherPiece = BOARD[k][l];
+
+//                         // If the other position is occupied, add the points for the properties that the two pieces have in common
+//                         if (otherPiece != null) {
+                            
+//                             totalPoints += eval.piecesHaveSameProperties(piece, otherPiece);
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//         // // Adjust the total points based on the current player
+//         // if (game.getCurrentPlayer().getIsWhite()) {
+//         //     totalPoints = -totalPoints;
+//         // }
+
+//     // Adjust the total points by a random factor
+//     Random random = new Random();
+//     double randomFactor = 0.9 + random.nextDouble() * 0.2; // Range: [0.9, 1.1]
+//     totalPoints *= randomFactor;
+
+//     return totalPoints;
+// }
 
 }

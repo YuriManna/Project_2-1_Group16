@@ -7,6 +7,15 @@ import com.quarto.Model.Piece;
 import com.quarto.Model.QuartoGame;
 
 public class EvaluationFunction {
+    private int colorWeight = 1000;
+    private int heightWeight = 100;
+    private int shapeWeight = 10;
+    private int holeWeight = 1;
+
+    private int oneSameWeight = 1;
+    private int twoSameWeight = 10;
+    private int threeSameWeight = 100;
+    private int fourSameWeight = 1000;
 
     public int evaluateBoard(GameBoard board, Piece selectedPiece, QuartoGame game){
         int totalPoints = 0;
@@ -73,18 +82,29 @@ public class EvaluationFunction {
         totalPoints += calculatePoints(diag2SameCount, diag2EmptyCount);
 
 
-        if(game.getCurrentPlayer()==game.getWhitePlayer()){
-            totalPoints = - totalPoints;
-        }
+        // if(game.getCurrentPlayer()==game.getWhitePlayer()){
+        //     totalPoints = - totalPoints;
+        // }
         
         Random random = new Random();
         double randomFactor = 0.9 + random.nextDouble() * 0.2; // Range: [0.9, 1.1]
         totalPoints *= randomFactor;
 
-        return totalPoints;
+        // int reward;
+        // if (game.gameOver()) {
+        //     if (game.getWinner() == game.getWhitePlayer()) {
+        //         reward = 10000; // large positive reward for winning
+        //     } else {
+        //         reward = -10000; // large negative reward for losing
+        //     }
+        // } else {
+        //     reward = 0;
+        // }
+
+        return totalPoints;//+reward;
     }
 
-    private int piecesHaveSameProperties(Piece piece1, Piece piece2) {
+    public int piecesHaveSameProperties(Piece piece1, Piece piece2) {
         if (piece1 == null || piece2 == null) {
             return 0;
         }
@@ -94,7 +114,7 @@ public class EvaluationFunction {
         int shapeSame = hasSameShape(piece1, piece2) ? 1 : 0;
         int holeSame = hasSameHole(piece1, piece2) ? 1 : 0;
 
-        return colorSame * 1000 + heightSame * 100 + shapeSame * 10 + holeSame;
+        return colorSame * colorWeight + heightSame * heightWeight + shapeSame * shapeWeight + holeSame * holeWeight;
     }
 
     private boolean hasSameColor(Piece selectedPiece, Piece otherPiece) {
@@ -115,13 +135,13 @@ public class EvaluationFunction {
 
     private int calculatePoints(int sameCount, int emptyCount) {
         if (sameCount == 1 && emptyCount == 3) {
-            return 1;
+            return oneSameWeight;
         } else if (sameCount == 2 && emptyCount == 2) {
-            return 10;
+            return twoSameWeight;
         } else if (sameCount == 3 && emptyCount == 1) {
-            return 100;
+            return threeSameWeight;
         } else if(sameCount == 4 && emptyCount == 0){
-            return 1000;
+            return fourSameWeight;
         }else {
             return 0;
         }

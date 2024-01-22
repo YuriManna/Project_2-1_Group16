@@ -14,6 +14,7 @@ public class QuartoGame {
     private final Player blackPlayer;
     private Player currentPlayer;
     private Player opponent;
+    private boolean justEnded;
 
     public QuartoGame(boolean isPlayer1Human, boolean isPlayer2Human) {
         this.gameBoard = new GameBoard();
@@ -21,6 +22,7 @@ public class QuartoGame {
         blackPlayer = new Player(isPlayer2Human, false, this.gameBoard.getBlacksList(), this);
         currentPlayer = whitePlayer;
         opponent = blackPlayer;
+        this.justEnded = false;
 
     }
 
@@ -58,6 +60,20 @@ public class QuartoGame {
         return gameBoard.checkDrawCondition();
     }
 
+    public Player getWinner() {
+        if (gameOver() && gameBoard.checkWinCondition()) {
+            return currentPlayer;
+        }
+        return null;
+    }
+
+    public boolean getGameJustEnded(){
+        return this.justEnded;
+    }
+
+    public void setGameJustEnded(boolean justEnded){
+        this.justEnded = justEnded;
+    }
 
 
 }
