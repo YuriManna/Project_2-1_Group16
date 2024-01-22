@@ -19,7 +19,10 @@ public class MiniMaxVsMiniMaxController implements Controller{
     {
         game.switchPlayers();
         while(!game.gameOver()) {
+
+            
             game.switchPlayers();
+            if(game.getCurrentPlayer()==game.getWhitePlayer())
             {
                 //step 1: minimax 1 chooses a piece
 
