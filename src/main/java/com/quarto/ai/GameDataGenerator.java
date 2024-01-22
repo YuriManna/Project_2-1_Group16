@@ -42,10 +42,6 @@ public class GameDataGenerator {
             writer.write(csv);
             writer.newLine();
 
-            // Whites' turn
-            // Piece chosenPiece = chooseRandomPiece(game.getCurrentPlayer(), this.game);
-            // makeRandomMove(gameBoard, chosenPiece);
-
             Move whiteMove = getRandomAction(gameBoard, true);
             takeAction(gameBoard, whiteMove, true);
 
@@ -54,13 +50,8 @@ public class GameDataGenerator {
             writer.newLine();
 
             if (gameBoard.isGameFinished()) {
-                //showWinningMessage(true);
                 break;
             }
-
-            // Blacks' turn
-            // chosenPiece = chooseRandomPiece(game.getCurrentPlayer(), this.game);
-            // makeRandomMove(gameBoard, chosenPiece);
 
             Move blackMove = getRandomAction(gameBoard, false);
             takeAction(gameBoard, blackMove, false);
@@ -70,7 +61,6 @@ public class GameDataGenerator {
             writer.newLine();
 
             if (gameBoard.isGameFinished()) {
-                //showWinningMessage(false);
                 break;
             }
         }
@@ -97,7 +87,6 @@ public class GameDataGenerator {
             opponent.removeAvailablePiece(chosenPiece);
             return chosenPiece;
         } else {
-            // Handle the case where there are no available pieces
             return null;
         }
     }
@@ -115,22 +104,17 @@ public class GameDataGenerator {
         }
 
     static void takeAction(GameBoard gameBoard, Move action, boolean isWhitesTurn) {
-        // Check if the selected move is valid
         while (!gameBoard.isValidMove(action)) {
-            // If the move is invalid, choose another action
             action = getRandomAction(gameBoard, isWhitesTurn);
         }
 
-        // Apply the chosen action to the game board
         gameBoard.addPieceToBoard(action);
 
-        // Remove piece from list
         if (isWhitesTurn) {
             gameBoard.getWhitesList().remove(action.getPiece());
         } else {
             gameBoard.getBlacksList().remove(action.getPiece());
         }
-
         //showBoard(gameBoard);
     }
 
@@ -138,26 +122,24 @@ public class GameDataGenerator {
         System.out.println("Current Board:");
         int id = 0;
 
-        // Run through the board and display the pieces
+        //Run through the board and display the pieces
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 Piece piece = board.getBoard()[i][j];
 
                 if (piece != null) {
-                    // Display the piece details
                     System.out.print(piece.toString());
                 } else {
-                    // Display an empty space with an ID
                     System.out.printf("--%02d-", id);
                 }
 
                 System.out.print(" ");
                 id++;
             }
-            System.out.println(); // Move to the next row
+            System.out.println(); 
         }
 
-        System.out.println(); // Add an empty line for better readability
+        System.out.println(); 
     }
 
     public void showWinningMessage(boolean isWhitesTurn){

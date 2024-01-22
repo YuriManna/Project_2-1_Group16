@@ -3,7 +3,8 @@ package com.quarto.Controller;
 import com.quarto.Model.Move;
 import com.quarto.Model.Piece;
 import com.quarto.Model.QuartoGame;
-import com.quarto.View.GameInterface;;import java.io.IOException;
+import com.quarto.View.GameInterface;
+import java.io.IOException;
 
 /*
 Responsibilities:
