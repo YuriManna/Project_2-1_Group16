@@ -61,12 +61,12 @@ def extract_features(boardstate):
     return features
 
 
-# Load the data
+
 data = pd.read_csv('src/main/resources/gamedata.csv')
 
-# Split the data into features (X) and target (y)
-X = data.iloc[:, :-1]  # All columns except the last
-y = data.iloc[:, -1]  # Only the last column
+
+X = data.iloc[:, :-1]  
+y = data.iloc[:, -1]  
 
 num_rows, num_cols = X.shape
 features_df = pd.DataFrame(index=range(num_rows), columns=['1s', '2s', '3s', '4s'])
@@ -77,20 +77,20 @@ for i in range(num_rows):
     features_list = extract_features(row_iloc)
     features_df.loc[i] = features_list
 
-#print(features_df)
 
-# Split the data into training and test sets
+
+
 X_train, X_test, y_train, y_test = train_test_split(features_df, y, test_size=0.34, random_state=42)
 
-# Create and train the model
+
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# Map weights to feature names
+
 feature_names = features_df.columns
 weights = model.coef_
 
-# Print overall weights
+
 print("Overall Weights:")
 for feature, weight in zip(feature_names, weights):
     print(f"{feature}: {weight}")
