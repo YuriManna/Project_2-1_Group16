@@ -156,6 +156,12 @@ public class EvaluationFunction {
             return 0; // 0 points for other cases
         }
 
+        // Overall Weights:
+        // 1s: -1.7233752593467018
+        // 2s: 3.220352446030766
+        // 3s: 13.205590168355503
+        // 4s: 289.38119544742034
+
 
     }
 }
