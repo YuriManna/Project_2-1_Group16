@@ -182,7 +182,7 @@ public class GameBoard {
                 }
                 // If the position is not occupied, append zeros to the CSV string
                 else {
-                    sb.append("0,0,0,0,");
+                    sb.append("-1,-1,-1,-1,");
                 }
             }
         }
@@ -194,7 +194,7 @@ public class GameBoard {
             reward = -reward;       
         }
 
-        sb.append(reward);
+        sb.append(Math.abs(reward));
         return sb.toString();
     }
 
