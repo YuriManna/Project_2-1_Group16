@@ -46,11 +46,6 @@ public class GameBoard {
 
     }
 
-    public GameBoard(GameBoard board)
-    {
-        this.BOARD = board.getBoard();
-    }
-
     //GETTERS AND SETTERS
     public ArrayList<Piece> getBlacksList() {
         return blacksList;
@@ -69,6 +64,12 @@ public class GameBoard {
         return BOARD[coord[0]][coord[1]];
     }
 
+
+    //OTHER METHODS
+
+    //==================================================================================================================
+
+
     public int getIdByPiece(Piece piece){
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLS; j++){
@@ -79,10 +80,6 @@ public class GameBoard {
         }
         return 0;
     }
-    //OTHER METHODS
-
-    //==================================================================================================================
-
 
     public Piece getPieceFromBoard(int row, int j) {
         return this.BOARD[row][j];

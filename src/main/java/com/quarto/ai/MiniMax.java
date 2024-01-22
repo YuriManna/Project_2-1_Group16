@@ -19,9 +19,6 @@ public class MiniMax {
     private Piece[] oPaP;
     private Piece chosenPiece;
 
-    int maximize1 = 0;
-    int minimize1 = 0;
-
     public MiniMax(QuartoGame game, Piece chosenPiece) {
         this.game = game;
         gameState = game.getGameBoard();
@@ -51,8 +48,6 @@ public class MiniMax {
                 tmp_gameboard.addPieceToBoard(move);
                 childStates.add(tmp_gameboard);
             }
-
-        //System.out.println("child states no piece" + childStates.size());
 
         return childStates;
     }
@@ -101,8 +96,7 @@ public class MiniMax {
         if (depth == 0 || gameState.checkWinCondition() || gameState.checkDrawCondition()) {
 
             EvaluationFunction evaluate = new EvaluationFunction();
-            stateScore tmp=new stateScore(gameState,evaluate.evaluateBoard(gameState));
-            return tmp ;//this is wrong
+            stateScore tmp = new stateScore(gameState,evaluate.evaluateBoard(gameState, isMaximizingPlayer));
 
         }
         if (isMaximizingPlayer) {
@@ -110,8 +104,6 @@ public class MiniMax {
 
             ArrayList<GameBoard> childStates = generate_moves(gameState, cPaP);
             for (GameBoard childState : childStates) {
-                //System.out.println("max" + maximize1+" child state size" + childStates.size());
-                //maximize1++;
 
                 stateScore eval = minimax(childState, depth - 1, false, alpha, beta);
                 maxEval = new stateScore(childState, Math.max(maxEval.getScore(), eval.getScore()));
@@ -126,8 +118,6 @@ public class MiniMax {
             stateScore minEval = new stateScore(null, Integer.MAX_VALUE);
             ArrayList<GameBoard> childStates = generate_moves(gameState, oPaP);
             for (GameBoard childState : childStates) {
-              //  System.out.println("min" + minimize1+"child state size" + childStates.size());
-                //minimize1++;
                 stateScore eval = minimax(childState, depth - 1, true, alpha, beta);
                 minEval = new stateScore(childState, Math.min(minEval.getScore(), eval.getScore()));
                 beta = Math.min(beta, eval.getScore());
@@ -141,7 +131,7 @@ public class MiniMax {
     }
 
     public int iterative_deepening(QuartoGame game) {
-        int maxDepth = 2;
+        int maxDepth = game.getTurnCounter();
         int bestMove = 0;
         stateScore result;
 
@@ -149,6 +139,7 @@ public class MiniMax {
 
        int score = Integer.MIN_VALUE;
        for (GameBoard state : gameStates) {
+           System.out.println(maxDepth);
            result = minimax(state, maxDepth, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
            if( score < result.getScore()) {
                score = result.getScore();

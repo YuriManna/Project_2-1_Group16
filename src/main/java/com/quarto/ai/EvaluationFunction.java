@@ -2,12 +2,10 @@ package com.quarto.ai;
 
 import com.quarto.Model.GameBoard;
 import com.quarto.Model.Piece;
-import com.quarto.Model.Player;
-import com.quarto.Model.QuartoGame;
 
 public class EvaluationFunction {
 
-    public int evaluateBoard(GameBoard board) {
+    public int evaluateBoard(GameBoard board, Boolean isMaximizing) {
         int totalPoints = 0;
 
         // Evaluate all rows
@@ -25,11 +23,9 @@ public class EvaluationFunction {
         totalPoints += evaluationOfOneDiagonal(board, false); // Right to left diagonal
 
         // max turn gives positive and min turn gives negetive
-//        if(game.getCurrentPlayer() == game.getWhitePlayer()){
-//            totalPoints = - totalPoints;
-//        }
-
-        //System.out.println(totalPoints);
+        if(isMaximizing){
+            totalPoints = - totalPoints;
+        }
         return totalPoints;
     }
 

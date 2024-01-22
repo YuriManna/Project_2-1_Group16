@@ -28,7 +28,7 @@ public class MasterController {
             controller = new MinimaxController(game,console);
 
         } else {
-            controller = new MiniMaxVsMiniMaxController(game,console);
+            controller = new BaselineVsMiniMaxController(game,console);
         }
 
         controller.play();
