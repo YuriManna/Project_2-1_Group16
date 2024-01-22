@@ -71,13 +71,13 @@ y = data.iloc[:, -1]  # Only the last column
 num_rows, num_cols = X.shape
 features_df = pd.DataFrame(index=range(num_rows), columns=['1s', '2s', '3s', '4s'])
 
+#extract features for all rows
 for i in range(num_rows):
-# Get the first row using iloc (integer-location based indexing)
     row_iloc = X.iloc[i]
     features_list = extract_features(row_iloc)
     features_df.loc[i] = features_list
 
-print(features_df)
+#print(features_df)
 
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(features_df, y, test_size=0.34, random_state=42)
