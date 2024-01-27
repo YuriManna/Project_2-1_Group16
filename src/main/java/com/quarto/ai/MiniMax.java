@@ -145,7 +145,7 @@ public class MiniMax {
     }
 
     public int iterative_deepening(QuartoGame game) {
-        int maxDepth = 2;
+        int maxDepth = game.getTurnCounter();
         int bestMove = 0;
         stateScore result;
 
